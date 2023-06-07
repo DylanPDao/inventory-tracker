@@ -1,4 +1,6 @@
-export function UseSignUpOrIn() {
+import { response } from 'express';
+
+export function Api() {
   type UsersProps = {
     token: string;
     user: {
@@ -33,7 +35,19 @@ export function UseSignUpOrIn() {
     return user;
   }
 
+  async function upload(image: File) {
+    const req = {
+      method: 'POST',
+      body: image,
+    };
+    const res = await fetch('/uploadproduct', req);
+    if (!res.ok) throw new Error(`fetch Error ${res.status}`);
+    const result = await response.json();
+    return result;
+  }
+
   return {
     signUpOrIn,
+    upload,
   };
 }

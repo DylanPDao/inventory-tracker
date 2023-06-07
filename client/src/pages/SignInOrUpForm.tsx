@@ -1,6 +1,6 @@
 import { FormEvent, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { UseSignUpOrIn } from '../lib/UseSignUpOrIn';
+import { Api } from '../lib/Api';
 
 type Props = {
   action: string;
@@ -8,7 +8,7 @@ type Props = {
 };
 
 export default function SignInOrUpForm({ action, user }: Props) {
-  const { signUpOrIn } = UseSignUpOrIn();
+  const { signUpOrIn } = Api();
   const navigate = useNavigate();
   const [error, setError] = useState<unknown>();
 
