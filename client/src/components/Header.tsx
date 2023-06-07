@@ -2,8 +2,12 @@ import { Link, Outlet } from 'react-router-dom';
 import SearchBar from './SearchBar';
 import { ShoppingCartIcon } from '@heroicons/react/24/outline';
 import MenuItem from './MenuItem';
+import { UserContext } from '../lib/UserContext';
+import { useContext } from 'react';
 
 export default function Header(): JSX.Element {
+  const user = useContext(UserContext);
+
   return (
     <div className="lg:container my-auto mx-auto">
       <div className="flex items-center border-b-2">
@@ -19,7 +23,9 @@ export default function Header(): JSX.Element {
           <SearchBar />
         </div>
         <div className="flex w-4/12 items-center justify-around">
-          <h1 className="w-6/12">Sign in/Register</h1>
+          <Link to="sign-in" className="w-6/12">
+            {user ? 'Sign In' : 'Sign Out'}
+          </Link>
           <ShoppingCartIcon className="h-8 w-8 flex-no-shrink" />
         </div>
       </div>

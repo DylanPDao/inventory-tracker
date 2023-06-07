@@ -4,15 +4,18 @@
     "node": true,
     "browser": true
   },
-  "extends": ["eslint:recommended", "standard", "prettier"],
+  "extends": ["eslint:recommended", "standard", "prettier","eslint:recommended",
+    			"plugin:@typescript-eslint/recommended",
+    			"prettier"],
   "rules": {
     "no-console": "off",
     "object-shorthand": "off"
   },
   "overrides": [
     {
-      "files": ["**/*.html"],
-      "plugins": ["eslint-plugin-html"]
+      "files": ["**/*.html", "*.ts", "*.tsx"],
+      "plugins": ["eslint-plugin-html", "@typescript-eslint"]
     }
-  ]
+  ],
+  "parser": "@typescript-eslint/parser"
 }
