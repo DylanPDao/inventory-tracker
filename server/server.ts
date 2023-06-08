@@ -121,7 +121,7 @@ app.post(
   }
 );
 
-app.get('/catalog', async (req, res, next) => {
+app.post('/catalog', async (req, res, next) => {
   try {
     const { type } = req.body;
     if (!type) {
