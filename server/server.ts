@@ -4,11 +4,11 @@ import { ClientError, errorMiddleware } from './lib/index.js';
 import pg from 'pg';
 import argon2 from 'argon2';
 import jwt from 'jsonwebtoken';
+import uploadsMiddleware from './lib/uploads-middleware.js';
 
 const tokenSecret = process.env.TOKEN_SECRET;
 if (!tokenSecret) throw new Error('token secret not defined');
 
-// eslint-disable-next-line no-unused-vars -- Remove when used
 const db = new pg.Pool({
   connectionString: process.env.DATABASE_URL,
   ssl: {
@@ -23,9 +23,10 @@ app.use(express.json());
 const reactStaticDir = new URL('../client/build', import.meta.url).pathname;
 const uploadsStaticDir = new URL('public', import.meta.url).pathname;
 
-app.use(express.static(reactStaticDir));
 // Static directory for file uploads server/public/
+app.use(express.static(reactStaticDir));
 app.use(express.static(uploadsStaticDir));
+app.use(express.static('public'));
 app.use(express.json());
 
 app.post('/sign-up', async (req, res, next) => {
@@ -79,6 +80,43 @@ app.post('/sign-in', async (req, res, next) => {
     next(err);
   }
 });
+
+app.post(
+  '/upload',
+  uploadsMiddleware.single('image'),
+  async (req, res, next) => {
+    try {
+      const { name, price, shortDescription, stock, type, longDescription } =
+        req.body;
+      if (!name || !price || !type || !stock) {
+        throw new ClientError(401, 'invalid product details');
+      }
+      const url = `/images/${req.file.filename}`;
+      const sql = `
+      insert into "products" ("name", "price", "imageUrl", "shortDescription", "longDescription", "stock", "type")
+      values ($1, $2, $3, $4, $5, $6, $7)
+      returning *
+    `;
+      const params = [
+        name,
+        price,
+        url,
+        shortDescription,
+        longDescription,
+        stock,
+        type,
+      ];
+      const result = await db.query(sql, params);
+      const [product] = result.rows;
+      if (!product) {
+        throw new ClientError(401, 'invalid login');
+      }
+      res.status(201).json(product);
+    } catch (err) {
+      next(err);
+    }
+  }
+);
 
 /**
  * Serves React's index.html if no api route matches.
