@@ -1,10 +1,13 @@
 import 'dotenv/config';
 import express from 'express';
-import { ClientError, errorMiddleware } from './lib/index.js';
+import {
+  ClientError,
+  errorMiddleware,
+  uploadsMiddleware,
+} from './lib/index.js';
 import pg from 'pg';
 import argon2 from 'argon2';
 import jwt from 'jsonwebtoken';
-import uploadsMiddleware from './lib/uploads-middleware.js';
 
 const tokenSecret = process.env.TOKEN_SECRET;
 if (!tokenSecret) throw new Error('token secret not defined');
