@@ -1,5 +1,3 @@
-import { response } from 'express';
-
 export function Api() {
   type UsersProps = {
     token: string;
@@ -35,19 +33,27 @@ export function Api() {
     return user;
   }
 
-  async function upload(image: File) {
+  /**
+   * Grabs products according to type of product
+   * @param type string representing what type of item to get
+   * @returns an object with all product data
+   */
+  async function getProducts(type: string) {
     const req = {
-      method: 'POST',
-      body: image,
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ type }),
     };
-    const res = await fetch('/uploadproduct', req);
+    const res = await fetch('/catalog', req);
     if (!res.ok) throw new Error(`fetch Error ${res.status}`);
-    const result = await response.json();
-    return result;
+    const products = await res.json();
+    return products;
   }
 
   return {
     signUpOrIn,
-    upload,
+    getProducts,
   };
 }

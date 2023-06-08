@@ -33,10 +33,10 @@ CREATE TABLE "public"."cards" (
 CREATE TABLE "public"."products" (
 	"productId" serial NOT NULL,
 	"name" VARCHAR(255) NOT NULL,
-	"price" int NOT NULL,
+	"price"  DECIMAL NOT  NULL,
 	"imageUrl" VARCHAR(255) NOT NULL,
 	"shortDescription" VARCHAR(255) NOT NULL,
-	"longDescription" VARCHAR(255) NOT NULL,
+	"longDescription" VARCHAR(10000) NOT NULL,
 	"stock" int NOT NULL,
 	"type" VARCHAR(255) NOT NULL,
 	CONSTRAINT "products_pk" PRIMARY KEY ("productId")

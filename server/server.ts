@@ -136,10 +136,10 @@ app.get('/catalog', async (req, res, next) => {
       sql = `
     select *
     from "products"
-    where "type" = $1 or "type" = "set"
+    where "type" = $1 OR "type" = $2
     `;
     }
-    const params = [type];
+    const params = type === 'cards' ? [type, 'set'] : [type];
     const result = await db.query(sql, params);
     const [products] = result.rows;
     if (!products) {

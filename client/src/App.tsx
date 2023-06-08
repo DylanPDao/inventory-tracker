@@ -1,11 +1,12 @@
 import './App.css';
 import { Routes, Route } from 'react-router-dom';
-import Header from './components/Header';
-import SignInOrUpForm from './pages/SignInOrUpForm';
-import NotFound from './pages/NotFound';
 import { useState } from 'react';
 import { UserContext } from './lib/UserContext';
+import Header from './components/Header';
+import SignInOrUpForm from './pages/SignInOrUpForm';
 import Admin from './pages/Admin';
+import Catalog from './pages/Catalog';
+import NotFound from './pages/NotFound';
 
 function App() {
   const [user, setUser] = useState({});
@@ -23,7 +24,8 @@ function App() {
               path="sign-up"
               element={<SignInOrUpForm user={setUser} action="sign-up" />}
             />
-            <Route path="/" element={<Admin />}></Route>
+            <Route path="/" element={<Admin />} />
+            <Route path="catalog/cards" element={<Catalog type="cards" />} />
             <Route path="*" element={<NotFound />} />
           </Route>
         </Routes>

@@ -1,12 +1,22 @@
 import { FormEvent, useState } from 'react';
 
 export default function Admin() {
+  const [error, setError] = useState<unknown>();
+
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     const formData = new FormData(event.currentTarget);
-    console.log(Object.fromEntries(formData.entries()));
-    let { name, price, shortDescription, stock, type, longDescription, image } =
-      Object.fromEntries(formData.entries());
+    try {
+      const req = {
+        method: 'POST',
+        body: formData,
+      };
+      const res = await fetch('/upload', req);
+      const result = await res.json();
+      console.log(result);
+    } catch (err) {
+      setError(err);
+    }
   }
 
   return (

@@ -12,11 +12,9 @@ export default function Header(): JSX.Element {
     <div className="lg:container my-auto mx-auto">
       <div className="flex items-center border-b-2">
         <div className="flex w-4/12 items-center justify-center">
-          <img
-            className="w-5/12"
-            alt="pikachu logo"
-            src="./images/pikachu-head.svg"
-          />
+          <Link to="/" className="w-5/12">
+            <img alt="pikachu logo" src="./images/pikachu-head.svg" />
+          </Link>
           <h1 className="w-6/12">Gimme Pokemon</h1>
         </div>
         <div className="w-4/12">
@@ -34,10 +32,26 @@ export default function Header(): JSX.Element {
           src="./images/blank-cards.svg"
           alt="blank cards"
           text="Cards"
+          link="catalog/cards"
         />
-        <MenuItem src="./images/eevee.svg" alt="Eevee" text="Toys/Plush" />
-        <MenuItem src="./images/gameboy.svg" alt="Gamboy Color" text="Games" />
-        <MenuItem src="./images/pokeball.svg" alt="Pokeball" text="Other" />
+        <MenuItem
+          src="./images/eevee.svg"
+          alt="Eevee"
+          text="Toys/Plush"
+          link="catalog/toys"
+        />
+        <MenuItem
+          src="./images/gameboy.svg"
+          alt="Gamboy Color"
+          text="Games"
+          link="catalog/games"
+        />
+        <MenuItem
+          src="./images/pokeball.svg"
+          alt="Pokeball"
+          text="Other"
+          link="catalog/other"
+        />
       </div>
       {<Outlet />}
     </div>
