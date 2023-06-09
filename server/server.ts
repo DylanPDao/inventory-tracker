@@ -151,6 +151,31 @@ app.post('/catalog', async (req, res, next) => {
   }
 });
 
+app.get('/products/:productId', async (req, res, next) => {
+  try {
+    const productId = Number(req.params.productId);
+    if (!productId) {
+      throw new ClientError(401, 'invalid login');
+    }
+    const sql = `
+    select *
+    from "products"
+    where "productId" = $1
+    `;
+
+    const params = [productId];
+    const result = await db.query(sql, params);
+    const [products] = result.rows;
+
+    if (!products) {
+      throw new ClientError(401, 'invalid login');
+    }
+    res.status(201).json(products);
+  } catch (err) {
+    next(err);
+  }
+});
+
 /**
  * Serves React's index.html if no api route matches.
  *
