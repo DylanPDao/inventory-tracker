@@ -141,7 +141,7 @@ app.post('/catalog', async (req, res, next) => {
     }
     const params = type === 'cards' ? [type, 'set'] : [type];
     const result = await db.query(sql, params);
-    const [products] = result.rows;
+    const [...products] = result.rows;
     if (!products) {
       throw new ClientError(401, 'invalid login');
     }
