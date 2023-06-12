@@ -3,8 +3,16 @@ import { useState, useEffect } from 'react';
 import InfoCard from '../components/InfoCard';
 
 export default function Catalog({ type }: { type: string }): JSX.Element {
+  type ProductsProps = {
+    imageUrl: string;
+    name: string;
+    productId: number;
+    price: number;
+  };
+
   const { getProducts } = Api();
-  const [products, setProducts] = useState<unknown>();
+  const [products, setProducts] = useState<any[]>();
+
   const [error, setError] = useState<unknown>();
 
   useEffect(() => {
@@ -12,7 +20,6 @@ export default function Catalog({ type }: { type: string }): JSX.Element {
       try {
         const productList = await getProducts(type);
         setProducts(productList);
-        console.log(products);
       } catch (err) {
         setError(err);
       }
@@ -20,5 +27,24 @@ export default function Catalog({ type }: { type: string }): JSX.Element {
     if (!products) loadProducts();
   }, [products, type, getProducts]);
 
-  return <></>;
+  if (error) {
+    console.error('Fetch error:', error);
+    return <div>{`Error! ${error}`}</div>;
+  }
+
+  return (
+    <div className="flex container">
+      {products
+        ? products.map((product: ProductsProps) => (
+            <InfoCard
+              key={product.productId}
+              name={product.name}
+              price={product.price}
+              imageUrl={product.imageUrl}
+              productId={product.productId}
+            />
+          ))
+        : null}
+    </div>
+  );
 }

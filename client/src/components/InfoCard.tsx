@@ -1,29 +1,38 @@
-export default function InfoCard() {
+import { Link } from 'react-router-dom';
+
+type Props = {
+  imageUrl: string;
+  name: string;
+  productId: number;
+  price: number;
+};
+
+export default function InfoCard({ imageUrl, name, productId, price }: Props) {
   return (
     <>
-      <div className="w-full max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
-        <a href="/">
-          <img
-            className="p-8 rounded-t-lg"
-            src="/docs/images/products/apple-watch.png"
-            alt="product"
-          />
-        </a>
-        <div className="px-5 pb-5">
-          <a href="/">
-            <h5 className="text-xl font-semibold tracking-tight text-gray-900 dark:text-white">
-              Apple Watch Series 7 GPS, Aluminium Case, Starlight Sport
-            </h5>
-          </a>
-          <div className="flex items-center justify-between">
-            <span className="text-3xl font-bold text-gray-900 dark:text-white">
-              $599
-            </span>
-            <a
-              href="/"
-              className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-              Add to cart
-            </a>
+      <div className="w-3/12 rounded-lg dark:bg-gray-800 dark:border-gray-700 m-4">
+        <div className="w-full flex flex-col">
+          <Link
+            to={`/products/${productId}`}
+            className="w-full flex items-center justify-center">
+            <img className="w-10/12 pt-4" src={imageUrl} alt="product" />
+          </Link>
+          <div className="flex flex-col w-full">
+            <Link to={`/products/${productId}`} className="w-full pt-2">
+              <h5 className="text-l font-semibold dark:text-white w-full">
+                {name}
+              </h5>
+            </Link>
+            <div className="flex w-full pt-2 justify-center items-center">
+              <div className=" font-bold text-gray-900 dark:text-white w-6/12">
+                {`$${price}`}
+              </div>
+              <Link
+                to="/add-to-cart"
+                className="text-white w-6/12 text-xs m-2 p-2 bg-blue-700 hover:bg-blue-800 focus:ring-4 rounded-lg text-center">
+                Add to cart
+              </Link>
+            </div>
           </div>
         </div>
       </div>

@@ -7,6 +7,7 @@ import SignInOrUpForm from './pages/SignInOrUpForm';
 import Admin from './pages/Admin';
 import Catalog from './pages/Catalog';
 import NotFound from './pages/NotFound';
+import ProductDetails from './pages/ProductDetails';
 
 function App() {
   const [user, setUser] = useState({});
@@ -26,6 +27,13 @@ function App() {
             />
             <Route path="/" element={<Admin />} />
             <Route path="catalog/cards" element={<Catalog type="cards" />} />
+            <Route
+              path="catalog/toys-plush"
+              element={<Catalog type="toys-plush" />}
+            />
+            <Route path="catalog/games" element={<Catalog type="game" />} />
+            <Route path="catalog/others" element={<Catalog type="other" />} />
+            <Route path="products/:productId" element={<ProductDetails />} />
             <Route path="*" element={<NotFound />} />
           </Route>
         </Routes>

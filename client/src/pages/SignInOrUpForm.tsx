@@ -12,6 +12,11 @@ export default function SignInOrUpForm({ action, user }: Props) {
   const navigate = useNavigate();
   const [error, setError] = useState<unknown>();
 
+  if (error) {
+    console.error('Fetch error:', error);
+    return <div>{`Error! ${error}`}</div>;
+  }
+
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     const formData = new FormData(event.currentTarget);
@@ -35,7 +40,7 @@ export default function SignInOrUpForm({ action, user }: Props) {
     action === 'sign-up' ? 'Sign in instead' : 'Register now';
   const submitButtonText = action === 'sign-up' ? 'Register' : 'Log In';
   return (
-    <div className="flex w-full justify-center items-center p-10">
+    <div className="container flex w-full justify-center items-center p-10">
       <form className="border-2 p-10 rounded-lg" onSubmit={handleSubmit}>
         <div className="mb-3">
           <label className="form-label">

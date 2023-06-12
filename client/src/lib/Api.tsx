@@ -40,11 +40,11 @@ export function Api() {
    */
   async function getProducts(type: string) {
     const req = {
-      method: 'GET',
+      method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ type }),
+      body: JSON.stringify({ type: type }),
     };
     const res = await fetch('/catalog', req);
     if (!res.ok) throw new Error(`fetch Error ${res.status}`);
@@ -52,8 +52,17 @@ export function Api() {
     return products;
   }
 
+  async function getProduct(productId: string | undefined | number) {
+    productId = Number(productId);
+    const res = await fetch(`/products/${productId}`);
+    if (!res.ok) throw new Error(`fetch Error ${res.status}`);
+    const product = await res.json();
+    return product;
+  }
+
   return {
     signUpOrIn,
     getProducts,
+    getProduct,
   };
 }

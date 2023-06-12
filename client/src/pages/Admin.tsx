@@ -3,6 +3,11 @@ import { FormEvent, useState } from 'react';
 export default function Admin() {
   const [error, setError] = useState<unknown>();
 
+  if (error) {
+    console.error('Fetch error:', error);
+    return <div>{`Error! ${error}`}</div>;
+  }
+
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     const formData = new FormData(event.currentTarget);
@@ -20,7 +25,7 @@ export default function Admin() {
   }
 
   return (
-    <div className="flex w-full justify-center items-center p-10">
+    <div className="container flex w-full justify-center items-center p-10">
       <form className="flex border-2 p-5 rounded-lg" onSubmit={handleSubmit}>
         <div className="flex-col justify-center items-center w-6/12">
           <div className="mb-3">
@@ -78,7 +83,7 @@ export default function Admin() {
                 <option value="card">Card</option>
                 <option value="set">Set</option>
                 <option value="toys-plush">Toys/Plush</option>
-                <option value="games">Games</option>
+                <option value="game">Games</option>
                 <option value="other">Other</option>
               </select>
             </label>

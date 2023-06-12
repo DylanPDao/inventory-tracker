@@ -165,12 +165,12 @@ app.get('/products/:productId', async (req, res, next) => {
 
     const params = [productId];
     const result = await db.query(sql, params);
-    const [products] = result.rows;
+    const [product] = result.rows;
 
-    if (!products) {
+    if (!product) {
       throw new ClientError(401, 'invalid login');
     }
-    res.status(201).json(products);
+    res.status(201).json(product);
   } catch (err) {
     next(err);
   }

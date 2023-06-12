@@ -13,7 +13,7 @@ export default function Header(): JSX.Element {
       <div className="flex items-center border-b-2">
         <div className="flex w-4/12 items-center justify-center">
           <Link to="/" className="w-5/12">
-            <img alt="pikachu logo" src="./images/pikachu-head.svg" />
+            <img alt="pikachu logo" src="/images/pikachu-head.svg" />
           </Link>
           <h1 className="w-6/12">Gimme Pokemon</h1>
         </div>
@@ -29,25 +29,25 @@ export default function Header(): JSX.Element {
       </div>
       <div className="flex border-b-2 p-1">
         <MenuItem
-          src="./images/blank-cards.svg"
+          src="/images/blank-cards.svg"
           alt="blank cards"
           text="Cards"
           link="catalog/cards"
         />
         <MenuItem
-          src="./images/eevee.svg"
+          src="/images/eevee.svg"
           alt="Eevee"
           text="Toys/Plush"
-          link="catalog/toys"
+          link="catalog/toys-plush"
         />
         <MenuItem
-          src="./images/gameboy.svg"
+          src="/images/gameboy.svg"
           alt="Gamboy Color"
           text="Games"
-          link="catalog/games"
+          link="catalog/game"
         />
         <MenuItem
-          src="./images/pokeball.svg"
+          src="/images/pokeball.svg"
           alt="Pokeball"
           text="Other"
           link="catalog/other"
