@@ -26,8 +26,8 @@ export default function SignInOrUpForm({ action, user }: Props) {
       if (action === 'sign-up') {
         navigate('/sign-in');
       } else if (result.user && result.token) {
-        console.log(user);
-        // user.setUser(result)
+        user(result);
+        console.log(result);
         navigate('/');
       }
     } catch (err) {

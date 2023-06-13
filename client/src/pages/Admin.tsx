@@ -25,7 +25,7 @@ export default function Admin() {
   }
 
   return (
-    <div className="container flex w-full justify-center items-center p-10">
+    <div className="lg:container flex justify-center mt-10">
       <form className="flex border-2 p-5 rounded-lg" onSubmit={handleSubmit}>
         <div className="flex-col justify-center items-center w-6/12">
           <div className="mb-3">

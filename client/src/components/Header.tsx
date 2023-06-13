@@ -1,7 +1,8 @@
-import { Link, Outlet } from 'react-router-dom';
 import SearchBar from './SearchBar';
-import { ShoppingCartIcon } from '@heroicons/react/24/outline';
 import MenuItem from './MenuItem';
+import UserMenu from './UserMenu';
+import { Link, Outlet } from 'react-router-dom';
+import { ShoppingCartIcon } from '@heroicons/react/24/outline';
 import { UserContext } from '../lib/UserContext';
 import { useContext } from 'react';
 
@@ -20,11 +21,13 @@ export default function Header(): JSX.Element {
         <div className="w-4/12">
           <SearchBar />
         </div>
-        <div className="flex w-4/12 items-center justify-around">
-          <Link to="sign-in" className="w-6/12">
-            {user ? 'Sign In' : 'Sign Out'}
+        <div className="flex w-4/12 items-center">
+          <Link to={user ? '' : 'sign-in'} className="w-6/12">
+            {user ? <UserMenu /> : 'Sign In'}
           </Link>
-          <ShoppingCartIcon className="h-8 w-8 flex-no-shrink" />
+          <Link to="cart" className="w-6/12">
+            <ShoppingCartIcon className="h-8 w-8 flex-no-shrink mr-auto ml-auto" />
+          </Link>
         </div>
       </div>
       <div className="flex border-b-2 p-1">

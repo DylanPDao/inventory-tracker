@@ -41,7 +41,7 @@ app.post('/sign-up', async (req, res, next) => {
     const hashedPassword = await argon2.hash(password);
     const sql = `
       insert into "users" ("username", "hashedPassword")
-      values ($1, $2)
+      values ($1, $2, $3)
       returning *
     `;
     const params = [username, hashedPassword];
@@ -112,7 +112,7 @@ app.post(
       const result = await db.query(sql, params);
       const [product] = result.rows;
       if (!product) {
-        throw new ClientError(401, 'invalid login');
+        throw new ClientError(401, 'invalid product details');
       }
       res.status(201).json(product);
     } catch (err) {
@@ -125,7 +125,7 @@ app.post('/catalog', async (req, res, next) => {
   try {
     const { type } = req.body;
     if (!type) {
-      throw new ClientError(401, 'invalid login');
+      throw new ClientError(401, 'invalid product type');
     }
     let sql = `
     select *
@@ -143,7 +143,7 @@ app.post('/catalog', async (req, res, next) => {
     const result = await db.query(sql, params);
     const [...products] = result.rows;
     if (!products) {
-      throw new ClientError(401, 'invalid login');
+      throw new ClientError(401, 'invalid product');
     }
     res.status(201).json(products);
   } catch (err) {
@@ -155,7 +155,7 @@ app.get('/products/:productId', async (req, res, next) => {
   try {
     const productId = Number(req.params.productId);
     if (!productId) {
-      throw new ClientError(401, 'invalid login');
+      throw new ClientError(401, 'invalid product ID');
     }
     const sql = `
     select *
@@ -166,9 +166,8 @@ app.get('/products/:productId', async (req, res, next) => {
     const params = [productId];
     const result = await db.query(sql, params);
     const [product] = result.rows;
-
     if (!product) {
-      throw new ClientError(401, 'invalid login');
+      throw new ClientError(401, 'invalid product');
     }
     res.status(201).json(product);
   } catch (err) {
