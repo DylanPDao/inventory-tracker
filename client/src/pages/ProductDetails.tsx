@@ -1,5 +1,5 @@
 import { Api } from '../lib/Api';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import OneProduct from '../components/OneProduct';
 
@@ -16,23 +16,22 @@ export default function ProductDetails() {
   const { getProduct } = Api();
   const { productId } = useParams();
 
-  const [product, setProduct] = useState<any[]>();
+  const [product, setProduct] = useState<any>();
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<unknown>();
 
   useEffect(() => {
-    async function loadProduct(productId: string | undefined) {
+    async function loadProduct() {
       try {
         const product = await getProduct(productId);
         setProduct(product);
-        console.log(product);
       } catch (err) {
         setError(err);
       } finally {
         setIsLoading(false);
       }
     }
-    if (!product) loadProduct(productId);
+    if (!product) loadProduct();
   }, [productId, getProduct, product]);
 
   if (isLoading) return <div> Loading... </div>;
@@ -47,12 +46,12 @@ export default function ProductDetails() {
     <div className="container">
       {product ? (
         <OneProduct
-          name="yes"
-          price={1}
-          imageUrl="yeup"
-          productId={2}
-          longDescription="yes"
-          stock={3}
+          name={product.name}
+          price={product.price}
+          imageUrl={product.imageUrl}
+          productId={product.productId}
+          longDescription={product.longDescription}
+          stock={product.stock}
         />
       ) : null}
     </div>
