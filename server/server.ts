@@ -41,7 +41,7 @@ app.post('/sign-up', async (req, res, next) => {
     const hashedPassword = await argon2.hash(password);
     const sql = `
       insert into "users" ("username", "hashedPassword")
-      values ($1, $2, $3)
+      values ($1, $2)
       returning *
     `;
     const params = [username, hashedPassword];
