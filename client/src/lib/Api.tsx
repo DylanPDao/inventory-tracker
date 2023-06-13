@@ -1,13 +1,13 @@
-export function Api() {
-  type UsersProps = {
-    token: string;
-    user: {
-      userId: number;
-      username: string;
-      admin: string;
-    };
+export type UsersProps = {
+  token: string;
+  user: {
+    userId: number;
+    username: string;
+    admin: boolean;
   };
+};
 
+export function Api() {
   /**
    * Signs up or signs in depending on the action.
    * @param {string} action Action to take, either 'sign-up' or 'sign-in'

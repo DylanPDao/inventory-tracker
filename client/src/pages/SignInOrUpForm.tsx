@@ -1,10 +1,10 @@
 import { FormEvent, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Api } from '../lib/Api';
+import { Api, UsersProps } from '../lib/Api';
 
 type Props = {
   action: string;
-  user: React.Dispatch<React.SetStateAction<{}>>;
+  user: React.Dispatch<React.SetStateAction<UsersProps | undefined>>;
 };
 
 export default function SignInOrUpForm({ action, user }: Props) {

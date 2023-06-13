@@ -9,9 +9,10 @@ import Catalog from './pages/Catalog';
 import NotFound from './pages/NotFound';
 import ProductDetails from './pages/ProductDetails';
 import SignOut from './pages/SignOut';
+import { UsersProps } from './lib/Api';
 
 function App() {
-  const [user, setUser] = useState<{}>();
+  const [user, setUser] = useState<UsersProps>();
 
   return (
     <div className="App">
@@ -19,23 +20,23 @@ function App() {
         <Routes>
           <Route path="/" element={<Header />}>
             <Route
-              path="sign-in"
+              path="/sign-in"
               element={<SignInOrUpForm user={setUser} action="sign-in" />}
             />
             <Route
-              path="sign-up"
+              path="/sign-up"
               element={<SignInOrUpForm user={setUser} action="sign-up" />}
             />
-            <Route path="admin-add" element={<Admin />} />
-            <Route path="catalog/cards" element={<Catalog type="cards" />} />
+            <Route path="/admin-add" element={<Admin />} />
+            <Route path="/catalog/cards" element={<Catalog type="cards" />} />
             <Route
-              path="catalog/toys-plush"
+              path="/catalog/toys-plush"
               element={<Catalog type="toys-plush" />}
             />
-            <Route path="catalog/games" element={<Catalog type="game" />} />
-            <Route path="catalog/others" element={<Catalog type="other" />} />
-            <Route path="products/:productId" element={<ProductDetails />} />
-            <Route path="sign-out" element={<SignOut user={setUser} />} />
+            <Route path="/catalog/games" element={<Catalog type="game" />} />
+            <Route path="/catalog/others" element={<Catalog type="other" />} />
+            <Route path="/products/:productId" element={<ProductDetails />} />
+            <Route path="/sign-out" element={<SignOut user={setUser} />} />
             <Route path="*" element={<NotFound />} />
           </Route>
         </Routes>

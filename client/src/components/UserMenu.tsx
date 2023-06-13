@@ -1,8 +1,8 @@
 import { UserCircleIcon } from '@heroicons/react/24/outline';
-import { Link } from 'react-router-dom';
-import { Menu, Transition } from '@headlessui/react';
-import { useContext, Fragment } from 'react';
+import { Menu } from '@headlessui/react';
+import { useContext } from 'react';
 import { UserContext } from '../lib/UserContext';
+import UserMenuItems from './UserMenuItems';
 
 export default function UserMenu() {
   const user = useContext(UserContext);
@@ -16,39 +16,11 @@ export default function UserMenu() {
       </div>
       <Menu.Items className="absolute right-4 mt-2 w-32 bg-white border-2 rounded-lg">
         <div className="px-1 py-1">
-          <Menu.Item>
-            {({ active }) => (
-              <Link
-                to="/"
-                className={`${
-                  active ? 'bg-primary text-white' : 'text-gray-900'
-                } group flex w-full items-center rounded-md px-2 py-2 text-md text-center`}>
-                Home
-              </Link>
-            )}
-          </Menu.Item>
-          <Menu.Item>
-            {({ active }) => (
-              <Link
-                to="sign-out"
-                className={`${
-                  active ? 'bg-primary text-white' : 'text-gray-900'
-                } group flex w-full items-center rounded-md px-2 py-2 text-md text-center`}>
-                Sign Out
-              </Link>
-            )}
-          </Menu.Item>
-          <Menu.Item>
-            {({ active }) => (
-              <Link
-                to="admin-add"
-                className={`${
-                  active ? 'bg-primary text-white' : 'text-gray-900'
-                } group flex w-full items-center rounded-md px-2 py-2 text-md text-center`}>
-                Add Product
-              </Link>
-            )}
-          </Menu.Item>
+          <UserMenuItems name="Home" url="/" />
+          <UserMenuItems name="Sign Out" url="/sign-out" />
+          {user?.user.admin && (
+            <UserMenuItems name="Add Product" url="/admin-add" />
+          )}
         </div>
       </Menu.Items>
     </Menu>

@@ -1,18 +1,9 @@
 import { Api } from '../lib/Api';
-import { useEffect, useState, useCallback } from 'react';
-import { Link, useParams } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
 import OneProduct from '../components/OneProduct';
 
 export default function ProductDetails() {
-  type ProductProps = {
-    imageUrl: string;
-    name: string;
-    productId: number;
-    price: number;
-    longDescription: string;
-    stock: number;
-  };
-
   const { getProduct } = Api();
   const { productId } = useParams();
 

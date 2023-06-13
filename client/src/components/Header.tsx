@@ -1,16 +1,16 @@
-import SearchBar from './SearchBar';
-import MenuItem from './MenuItem';
-import UserMenu from './UserMenu';
 import { Link, Outlet } from 'react-router-dom';
 import { ShoppingCartIcon } from '@heroicons/react/24/outline';
 import { UserContext } from '../lib/UserContext';
 import { useContext } from 'react';
+import SearchBar from './SearchBar';
+import MenuItem from './MenuItem';
+import UserMenu from './UserMenu';
 
 export default function Header(): JSX.Element {
   const user = useContext(UserContext);
 
   return (
-    <div className="lg:container my-auto mx-auto">
+    <div className="container my-auto mx-auto">
       <div className="flex items-center border-b-2">
         <div className="flex w-4/12 items-center justify-center">
           <Link to="/" className="w-5/12">
