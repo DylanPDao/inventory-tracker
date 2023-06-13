@@ -52,6 +52,11 @@ export function Api() {
     return products;
   }
 
+  /**
+   * gets individual product details specified by product ID
+   * @param productId id of the product being viewed
+   * @returns an object with the data of 1 product
+   */
   async function getProduct(productId: string | undefined | number) {
     productId = Number(productId);
     const res = await fetch(`/products/${productId}`);

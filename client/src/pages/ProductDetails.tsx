@@ -43,7 +43,7 @@ export default function ProductDetails() {
 
   if (!product) return null;
   return (
-    <div className="container">
+    <div className="container ml-auto mr-auto">
       {product ? (
         <OneProduct
           name={product.name}
