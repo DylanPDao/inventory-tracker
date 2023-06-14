@@ -2,6 +2,7 @@ import './App.css';
 import { Routes, Route } from 'react-router-dom';
 import { useState } from 'react';
 import { UserContext } from './lib/UserContext';
+import { UsersProps } from './lib/Api';
 import Header from './components/Header';
 import SignInOrUpForm from './pages/SignInOrUpForm';
 import Admin from './pages/Admin';
@@ -9,7 +10,8 @@ import Catalog from './pages/Catalog';
 import NotFound from './pages/NotFound';
 import ProductDetails from './pages/ProductDetails';
 import SignOut from './pages/SignOut';
-import { UsersProps } from './lib/Api';
+import LoadingPage from './pages/LandingPage';
+import LandingPage from './pages/LandingPage';
 
 function App() {
   const [user, setUser] = useState<UsersProps>();
@@ -19,6 +21,7 @@ function App() {
       <UserContext.Provider value={user}>
         <Routes>
           <Route path="/" element={<Header />}>
+            <Route index element={<LandingPage />} />
             <Route
               path="/sign-in"
               element={<SignInOrUpForm user={setUser} action="sign-in" />}
