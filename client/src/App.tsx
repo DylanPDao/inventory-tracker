@@ -10,7 +10,6 @@ import Catalog from './pages/Catalog';
 import NotFound from './pages/NotFound';
 import ProductDetails from './pages/ProductDetails';
 import SignOut from './pages/SignOut';
-import LoadingPage from './pages/LandingPage';
 import LandingPage from './pages/LandingPage';
 
 function App() {
