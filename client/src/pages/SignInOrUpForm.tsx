@@ -1,3 +1,4 @@
+import { toHaveFormValues } from '@testing-library/jest-dom/matchers';
 import { FormEvent, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Api, UsersProps } from '../lib/Api';
@@ -11,6 +12,10 @@ export default function SignInOrUpForm({ action, user }: Props) {
   const { signUpOrIn } = Api();
   const navigate = useNavigate();
   const [error, setError] = useState<unknown>();
+  const [formValues, setFormValues] = useState({
+    username: '',
+    password: '',
+  });
 
   if (error) {
     console.error('Fetch error:', error);
@@ -25,9 +30,9 @@ export default function SignInOrUpForm({ action, user }: Props) {
       const result = await signUpOrIn(action, username, password);
       if (action === 'sign-up') {
         navigate('/sign-in');
+        setFormValues({ username: '', password: '' });
       } else if (result.user && result.token) {
         user(result);
-        console.log(result);
         navigate('/');
       }
     } catch (err) {
@@ -47,6 +52,10 @@ export default function SignInOrUpForm({ action, user }: Props) {
             Username:
             <input
               required
+              value={formValues.username}
+              onChange={(e) =>
+                setFormValues({ ...formValues, username: e.target.value })
+              }
               autoFocus
               type="text"
               name="username"
@@ -58,6 +67,10 @@ export default function SignInOrUpForm({ action, user }: Props) {
           <label className="form-label">
             Password:
             <input
+              value={formValues.password}
+              onChange={(e) =>
+                setFormValues({ ...formValues, password: e.target.value })
+              }
               required
               type="password"
               name="password"
