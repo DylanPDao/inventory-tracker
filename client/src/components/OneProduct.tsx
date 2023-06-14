@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+import { BtnAddToCart } from '../components';
 import AddOrSubItem from '../components/AddOrSubItem';
 
 type ProductsProps = {
@@ -31,11 +31,10 @@ export default function OneProduct({
         </div>
         <div className="mb-2 flex items-center justify-around">
           <div className="w-2/12 text-blue-900 text-2xl">{`$${price}`}</div>
-          <Link
-            className={`${productId} text-white w-2/12 text-xs m-2 p-2 bg-blue-700 hover:bg-blue-800 focus:ring-4 rounded-lg text-center`}
-            to="/add-to-cart">
-            Add to cart
-          </Link>
+          <BtnAddToCart
+            className="text-white w-2/12 text-xs m-2 p-2 bg-blue-700 hover:bg-blue-800 active:ring-4 rounded-lg text-center"
+            productId={productId}
+          />
         </div>
         <div className="h-56 overflow-auto pr-2 text-left w-11/12 ml-auto mr-auto">
           {longDescription}

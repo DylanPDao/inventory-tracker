@@ -1,9 +1,5 @@
 import { useEffect, useState } from 'react';
-import {
-  ChevronRightIcon,
-  ChevronLeftIcon,
-  CurrencyYenIcon,
-} from '@heroicons/react/24/outline';
+import { CurrencyYenIcon } from '@heroicons/react/24/outline';
 
 type Props = {
   banners: BannerProps[];

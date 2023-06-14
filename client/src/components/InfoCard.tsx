@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom';
+import { BtnAddToCart } from '../components';
 
 type Props = {
   imageUrl: string;
@@ -27,11 +28,10 @@ export default function InfoCard({ imageUrl, name, productId, price }: Props) {
               <div className=" font-bold text-gray-900 dark:text-white w-6/12">
                 {`$${price}`}
               </div>
-              <Link
-                to="/add-to-cart"
-                className="text-white w-6/12 text-xs m-2 p-2 bg-blue-700 hover:bg-blue-800 focus:ring-4 rounded-lg text-center">
-                Add to cart
-              </Link>
+              <BtnAddToCart
+                className="text-white w-6/12 text-xs m-2 p-2 bg-blue-700 hover:bg-blue-800 active:ring-4 rounded-lg text-center"
+                productId={productId}
+              />
             </div>
           </div>
         </div>
