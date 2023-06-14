@@ -27,7 +27,7 @@ export default function OneProduct({
         <p className="mb-4 text-2xl font-bold">{name}</p>
         <div className="mb-2 w-full flex justify-center items-center">
           <p className="w-6/12 text-red-600">{`Only ${stock} left!`}</p>
-          <AddOrSubItem stock={stock} />
+          <AddOrSubItem counts={0} stock={stock} />
         </div>
         <div className="mb-2 flex items-center justify-around">
           <div className="w-2/12 text-blue-900 text-2xl">{`$${price}`}</div>

@@ -1,7 +1,13 @@
 import { PlusIcon, MinusIcon } from '@heroicons/react/24/outline';
 import { useState } from 'react';
 
-export default function AddOrSubItem({ stock }: { stock: number }) {
+export default function AddOrSubItem({
+  stock,
+  counts,
+}: {
+  stock: number;
+  counts: number;
+}) {
   const [count, setCount] = useState(1);
 
   function handlePlus() {
@@ -9,14 +15,14 @@ export default function AddOrSubItem({ stock }: { stock: number }) {
       return;
     } else {
       setCount(count + 1);
+      return (counts = count);
     }
   }
 
   function handleMinus() {
-    if (count === 1) {
-      return;
-    } else {
+    if (count >= 2) {
       setCount(count - 1);
+      return (counts = count);
     }
   }
 
