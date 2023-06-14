@@ -5,7 +5,7 @@ const banners = [
   { bannerUrl: '/images/Banner2.jpeg', id: 2 },
   { bannerUrl: '/images/Banner3.jpeg', id: 3 },
   { bannerUrl: '/images/Banner4.jpeg', id: 4 },
-  { bannerUrl: '/images/Banner5.jpeg', id: 5 },
+  { bannerUrl: '/images/Banner0.jpeg', id: 0 },
 ];
 
 export default function LandingPage() {

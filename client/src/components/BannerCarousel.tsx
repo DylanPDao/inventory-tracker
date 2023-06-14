@@ -27,17 +27,7 @@ export default function BannerCarousel({ banners }: Props) {
   return (
     <div className="container">
       <div className="flex">
-        <ArrowButton
-          right={false}
-          onShow={() =>
-            setActiveIndex((activeIndex - 1 + banners.length) % banners.length)
-          }
-        />
         <Images banners={banners} isActive={activeIndex} />
-        <ArrowButton
-          right={true}
-          onShow={() => setActiveIndex((activeIndex + 1) % banners.length)}
-        />
       </div>
       <Indicators
         banners={banners}
@@ -62,25 +52,7 @@ function Images({ banners, isActive }: imagesProp) {
         key={banner.id}></img>
     );
   });
-  return <div className="flex w-10/12">{bannerArr}</div>;
-}
-
-function ArrowButton({
-  right,
-  onShow,
-}: {
-  right: Boolean;
-  onShow: () => void;
-}) {
-  return (
-    <>
-      {right ? (
-        <ChevronRightIcon onClick={onShow} className="right w-1/12" />
-      ) : (
-        <ChevronLeftIcon onClick={onShow} className="left w-1/12" />
-      )}
-    </>
-  );
+  return <div className="w-full mt-8">{bannerArr}</div>;
 }
 
 type indicatorProps = {
