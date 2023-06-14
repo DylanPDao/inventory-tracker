@@ -6,7 +6,7 @@ type Props = {
   counts: React.Dispatch<React.SetStateAction<number>>;
 };
 
-export default function AddOrSubItem({ stock, counts }: Props) {
+export default function AddOrSubItem({ stock, counts }: Props): JSX.Element {
   const [count, setCount] = useState(1);
 
   function handlePlus() {

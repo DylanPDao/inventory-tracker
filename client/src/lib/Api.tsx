@@ -65,7 +65,7 @@ export function Api() {
     return product;
   }
 
-  async function addToCart(product: object) {
+  async function addToCart(product: object, quantity: number) {
     const req = {
       method: 'POST',
       headers: {
