@@ -11,7 +11,7 @@ type Props = {
 export default function InfoCard({ imageUrl, name, productId, price }: Props) {
   return (
     <>
-      <div className="w-3/12 rounded-lg dark:bg-gray-800 dark:border-gray-700 m-4">
+      <div className="w-3/12 m-4">
         <div className="w-full flex flex-col">
           <Link
             to={`/products/${productId}`}
@@ -29,6 +29,7 @@ export default function InfoCard({ imageUrl, name, productId, price }: Props) {
                 {`$${price}`}
               </div>
               <BtnAddToCart
+                quantity={1}
                 className="text-white w-6/12 text-xs m-2 p-2 bg-blue-700 hover:bg-blue-800 active:ring-4 rounded-lg text-center"
                 productId={productId}
               />

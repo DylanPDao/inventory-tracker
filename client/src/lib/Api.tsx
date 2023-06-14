@@ -65,9 +65,21 @@ export function Api() {
     return product;
   }
 
+  async function addToCart(product: object) {
+    const req = {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(product),
+    };
+    const res = await fetch(`/add-to-cart`, req);
+  }
+
   return {
     signUpOrIn,
     getProducts,
     getProduct,
+    addToCart,
   };
 }

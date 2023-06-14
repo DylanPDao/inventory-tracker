@@ -1,13 +1,12 @@
 import { PlusIcon, MinusIcon } from '@heroicons/react/24/outline';
 import { useState } from 'react';
 
-export default function AddOrSubItem({
-  stock,
-  counts,
-}: {
+type Props = {
   stock: number;
-  counts: number;
-}) {
+  counts: React.Dispatch<React.SetStateAction<number>>;
+};
+
+export default function AddOrSubItem({ stock, counts }: Props) {
   const [count, setCount] = useState(1);
 
   function handlePlus() {
@@ -15,14 +14,14 @@ export default function AddOrSubItem({
       return;
     } else {
       setCount(count + 1);
-      return (counts = count);
+      counts(count + 1);
     }
   }
 
   function handleMinus() {
     if (count >= 2) {
       setCount(count - 1);
-      return (counts = count);
+      counts(count - 1);
     }
   }
 

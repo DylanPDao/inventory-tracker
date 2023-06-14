@@ -1,5 +1,6 @@
 import { BtnAddToCart } from '../components';
 import AddOrSubItem from '../components/AddOrSubItem';
+import { useState } from 'react';
 
 type ProductsProps = {
   imageUrl: string;
@@ -18,6 +19,8 @@ export default function OneProduct({
   longDescription,
   stock,
 }: ProductsProps): JSX.Element {
+  const [quantity, setQuantity] = useState(1);
+
   return (
     <div className="flex justify-center items-center border-2 mt-4">
       <div className="w-6/12 flex">
@@ -27,11 +30,12 @@ export default function OneProduct({
         <p className="mb-4 text-2xl font-bold">{name}</p>
         <div className="mb-2 w-full flex justify-center items-center">
           <p className="w-6/12 text-red-600">{`Only ${stock} left!`}</p>
-          <AddOrSubItem counts={0} stock={stock} />
+          <AddOrSubItem counts={setQuantity} stock={stock} />
         </div>
         <div className="mb-2 flex items-center justify-around">
           <div className="w-2/12 text-blue-900 text-2xl">{`$${price}`}</div>
           <BtnAddToCart
+            quantity={quantity}
             className="text-white w-2/12 text-xs m-2 p-2 bg-blue-700 hover:bg-blue-800 active:ring-4 rounded-lg text-center"
             productId={productId}
           />
