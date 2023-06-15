@@ -1,7 +1,9 @@
 import { FormEvent, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 export default function Admin() {
   const [error, setError] = useState<unknown>();
+  const navigate = useNavigate();
 
   if (error) {
     console.error('Fetch error:', error);
@@ -18,7 +20,10 @@ export default function Admin() {
       };
       const res = await fetch('/upload', req);
       const result = await res.json();
-      console.log(result);
+      if (!result) {
+        return <div className="text-red-900 text-2xl">Item was not added</div>;
+      }
+      navigate(`/products/${result.productId}`);
     } catch (err) {
       setError(err);
     }
