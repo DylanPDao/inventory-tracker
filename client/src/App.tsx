@@ -32,7 +32,7 @@ function App() {
               element={<SignInOrUpForm user={setUser} action="sign-up" />}
             />
             <Route path="/admin-add" element={<Admin />} />
-            <Route path="/catalog/cards" element={<Catalog type="cards" />} />
+            <Route path="/catalog/cards" element={<Catalog type="card" />} />
             <Route
               path="/catalog/toys-plush"
               element={<Catalog type="toys-plush" />}

@@ -12,7 +12,6 @@ export default function Catalog({ type }: { type: string }): JSX.Element {
 
   const { getProducts } = Api();
   const [products, setProducts] = useState<any[]>();
-
   const [error, setError] = useState<unknown>();
 
   useEffect(() => {
