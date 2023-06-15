@@ -22,7 +22,6 @@ export default function BtnAddToCart({
     try {
       const product = await getProduct(productId);
       const cartItem = await addToCart({ product, quantity, user });
-      console.log(user);
     } catch (error) {
       setError(error);
     }

@@ -76,7 +76,7 @@ export function Api() {
       stock: number;
       type: string;
       quantity: number;
-      user: UsersProps | undefined;
+      userId: number | undefined;
     };
     quantity: number;
     user: UsersProps | undefined;
@@ -84,7 +84,7 @@ export function Api() {
   async function addToCart({ product, quantity, user }: Props) {
     const newProduct = product;
     newProduct.quantity = quantity;
-    newProduct.user = user;
+    newProduct.userId = user?.user.userId;
     const req = {
       method: 'POST',
       headers: {
