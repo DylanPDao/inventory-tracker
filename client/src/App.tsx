@@ -12,6 +12,7 @@ import {
   ProductDetails,
   SignOut,
   LandingPage,
+  Cart,
 } from './pages';
 
 function App() {
@@ -41,6 +42,7 @@ function App() {
             <Route path="/catalog/others" element={<Catalog type="other" />} />
             <Route path="/products/:productId" element={<ProductDetails />} />
             <Route path="/sign-out" element={<SignOut user={setUser} />} />
+            <Route path="/cart/:userId" element={<Cart />} />
             <Route path="*" element={<NotFound />} />
           </Route>
         </Routes>

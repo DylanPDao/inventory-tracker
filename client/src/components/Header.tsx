@@ -25,7 +25,9 @@ export default function Header(): JSX.Element {
           <Link to={user ? '' : 'sign-in'} className="w-6/12">
             {user ? <UserMenu /> : 'Sign In'}
           </Link>
-          <Link to="cart" className="w-6/12">
+          <Link
+            to={`cart/${user ? user.user.userId : 'guest'}`}
+            className="w-6/12">
             <ShoppingCartIcon className="h-8 w-8 flex-no-shrink mr-auto ml-auto" />
           </Link>
         </div>

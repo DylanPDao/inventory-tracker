@@ -1,3 +1,5 @@
+import { Params } from 'react-router-dom';
+
 export type UsersProps = {
   token: string;
   user: {
@@ -92,10 +94,17 @@ export function Api() {
       },
       body: JSON.stringify(product),
     };
-    const res = await fetch(`/add-to-cart`, req);
+    const res = await fetch('/add-to-cart', req);
     if (!res.ok) throw new Error(`fetch Error ${res.status}`);
     const cartItem = await res.json();
     return cartItem;
+  }
+
+  async function viewCart(userId: string | undefined) {
+    const res = await fetch(`/cart/${userId}`);
+    if (!res.ok) throw new Error(`Could not find cart`);
+    const cart = await res.json();
+    return cart;
   }
 
   return {
@@ -103,5 +112,6 @@ export function Api() {
     getProducts,
     getProduct,
     addToCart,
+    viewCart,
   };
 }
