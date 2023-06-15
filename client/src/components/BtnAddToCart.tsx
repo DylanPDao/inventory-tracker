@@ -21,7 +21,7 @@ export default function BtnAddToCart({
   async function handleAdd() {
     try {
       const product = await getProduct(productId);
-      const cartItem = await addToCart({ product, quantity, user });
+      await addToCart({ product, quantity, user });
     } catch (error) {
       setError(error);
     }

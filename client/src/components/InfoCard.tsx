@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
 import { BtnAddToCart } from '../components';
+import toDollars from '../lib/toDollar';
 
 type Props = {
   imageUrl: string;
@@ -26,7 +27,7 @@ export default function InfoCard({ imageUrl, name, productId, price }: Props) {
             </Link>
             <div className="flex w-full pt-2 justify-center items-center">
               <div className=" font-bold text-gray-900 dark:text-white w-6/12">
-                {`$${price}`}
+                {toDollars(price)}
               </div>
               <BtnAddToCart
                 quantity={1}
