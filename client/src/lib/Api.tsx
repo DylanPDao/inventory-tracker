@@ -65,7 +65,26 @@ export function Api() {
     return product;
   }
 
-  async function addToCart(product: object, quantity: number) {
+  type Props = {
+    product: {
+      productId: number;
+      name: string;
+      price: number;
+      imageUrl: string;
+      shortDescription: string;
+      longDescription: string;
+      stock: number;
+      type: string;
+      quantity: number;
+      user: UsersProps | undefined;
+    };
+    quantity: number;
+    user: UsersProps | undefined;
+  };
+  async function addToCart({ product, quantity, user }: Props) {
+    const newProduct = product;
+    newProduct.quantity = quantity;
+    newProduct.user = user;
     const req = {
       method: 'POST',
       headers: {
@@ -74,6 +93,9 @@ export function Api() {
       body: JSON.stringify(product),
     };
     const res = await fetch(`/add-to-cart`, req);
+    if (!res.ok) throw new Error(`fetch Error ${res.status}`);
+    const cartItem = await res.json();
+    return cartItem;
   }
 
   return {

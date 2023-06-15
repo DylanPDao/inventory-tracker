@@ -1,5 +1,7 @@
 import { useState } from 'react';
 import { Api } from '../lib/Api';
+import { UserContext } from '../lib/UserContext';
+import { useContext } from 'react';
 
 type Props = {
   productId: string | number;
@@ -14,12 +16,13 @@ export default function BtnAddToCart({
 }: Props) {
   const { getProduct, addToCart } = Api();
   const [error, setError] = useState<unknown>();
+  const user = useContext(UserContext);
 
   async function handleAdd() {
     try {
       const product = await getProduct(productId);
-      console.log(product);
-      console.log(quantity);
+      const cartItem = await addToCart({ product, quantity, user });
+      console.log(user);
     } catch (error) {
       setError(error);
     }
