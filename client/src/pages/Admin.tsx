@@ -30,7 +30,7 @@ export default function Admin() {
   }
 
   return (
-    <div className="lg:container flex justify-center mt-10">
+    <div className="container flex justify-center mt-10">
       <form className="flex border-2 p-5 rounded-lg" onSubmit={handleSubmit}>
         <div className="flex-col justify-center items-center w-6/12">
           <div className="mb-3">
@@ -57,17 +57,7 @@ export default function Admin() {
               />
             </label>
           </div>
-          <div className="mb-3">
-            <label className="form-label flex flex-col">
-              Short Description:
-              <textarea
-                name="shortDescription"
-                className="form-control border-2 rounded-lg ml-1"
-                rows={6}
-              />
-            </label>
-          </div>
-          <div className="mb-3">
+          <div className="mb-3 flex flex-col ">
             <label className="form-label">
               Stock:
               <select
@@ -93,18 +83,6 @@ export default function Admin() {
               </select>
             </label>
           </div>
-        </div>
-        <div className="w-6/12">
-          <div className="mb-3">
-            <label className="form-label flex flex-col">
-              Long Description:
-              <textarea
-                name="longDescription"
-                className="form-control border-2 rounded-lg ml-1"
-                rows={9}
-              />
-            </label>
-          </div>
           <div className="mb-3 w-5/6 ml-auto mr-auto">
             <input
               className="border w-11/12 rounded-sm"
@@ -117,6 +95,18 @@ export default function Admin() {
           <button type="submit" className="border rounded-lg p-2">
             Upload
           </button>
+        </div>
+        <div className="w-10/12">
+          <div className="mb-3">
+            <label className="form-label flex flex-col">
+              Long Description:
+              <textarea
+                name="longDescription"
+                className="form-control border-2 rounded-lg ml-1"
+                rows={10}
+              />
+            </label>
+          </div>
         </div>
       </form>
     </div>

@@ -13,6 +13,7 @@ export default function Cart() {
     async function loadCart() {
       try {
         const cart = await viewCart(user.userId);
+        console.log(cart);
         setCart(cart);
       } catch (err) {
         setError(err);

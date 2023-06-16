@@ -96,26 +96,17 @@ app.post(
   uploadsMiddleware.single('image'),
   async (req, res, next) => {
     try {
-      const { name, price, shortDescription, stock, type, longDescription } =
-        req.body;
+      const { name, price, stock, type, longDescription } = req.body;
       if (!name || !price || !type || !stock) {
         throw new ClientError(401, 'invalid product details');
       }
       const url = `/images/${req.file.filename}`;
       const sql = `
-      insert into "products" ("name", "price", "imageUrl", "shortDescription", "longDescription", "stock", "type")
-      values ($1, $2, $3, $4, $5, $6, $7)
+      insert into "products" ("name", "price", "imageUrl", "longDescription", "stock", "type")
+      values ($1, $2, $3, $4, $5, $6)
       returning *
     `;
-      const params = [
-        name,
-        price,
-        url,
-        shortDescription,
-        longDescription,
-        stock,
-        type,
-      ];
+      const params = [name, price, url, longDescription, stock, type];
       const result = await db.query(sql, params);
       const [product] = result.rows;
       if (!product) {
@@ -189,7 +180,7 @@ app.post('/add-to-cart', async (req, res, next) => {
     }
     if (!userId) {
       const sql = `
-      insert into "cartItems" ("name", "price", "productId", "quantity", imageUrl)
+      insert into "cartItems" ("name", "price", "productId", "quantity", "imageUrl")
       values ($1,$2,$3,$4, $5)
       returning *
       `;
@@ -225,7 +216,7 @@ app.post('/add-to-cart', async (req, res, next) => {
         cartId = newCartId;
       }
       sql = `
-      insert into "cartItems" ("name", "price", "productId", "quantity", "cartId", imageUrl)
+      insert into "cartItems" ("name", "price", "productId", "quantity", "cartId", "imageUrl")
       values ($1, $2, $3, $4, $5, $6)
       returning *
       `;
