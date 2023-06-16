@@ -271,7 +271,7 @@ app.get('/cart/:userId', async (req, res, next) => {
   }
 });
 
-app.post('/cart/update', async (req, res, next) => {
+app.patch('/cart/update', async (req, res, next) => {
   try {
     const { quantity, cartId, cartItemId } = req.body;
     if (!quantity) {
@@ -282,7 +282,6 @@ app.post('/cart/update', async (req, res, next) => {
     set "quantity" = $1
     where "cartId" = $2 and "cartItemId" = $3
     `;
-
     const params = [quantity, cartId, cartItemId];
     const result = await db.query(sql, params);
     const [product] = result.rows;
@@ -290,6 +289,27 @@ app.post('/cart/update', async (req, res, next) => {
       throw new ClientError(401, 'invalid product');
     }
     res.status(201).json(product);
+  } catch (err) {
+    next(err);
+  }
+});
+
+app.post('/cart/delete', async (req, res, next) => {
+  try {
+    const { cartId, cartItemId } = req.body;
+    if (!cartId) {
+      throw new ClientError(401, 'invalid cart item delete');
+    }
+    const sql = `
+  delete
+    from "cartItems"
+    where "cartId" = $1 and "cartItemId" = $2
+    returning *
+  `;
+    const params = [cartId, cartItemId];
+    const result = await db.query(sql, params);
+    if (!result) throw new Error('Delete not completed');
+    res.sendStatus(200);
   } catch (err) {
     next(err);
   }

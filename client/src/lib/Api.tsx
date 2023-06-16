@@ -117,7 +117,7 @@ export function Api() {
       cartItemId: cartItemId,
     };
     const req = {
-      method: 'POST',
+      method: 'PATCH',
       headers: {
         'Content-Type': 'application/json',
       },
@@ -129,6 +129,24 @@ export function Api() {
     return cart;
   }
 
+  type DeleteProps = {
+    cartId: number;
+    cartItemId: number;
+  };
+
+  async function deleteCartItem({ cartId, cartItemId }: DeleteProps) {
+    const req = {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ cartId, cartItemId }),
+    };
+    const res = await fetch('/cart/delete', req);
+    if (!res.ok) throw new Error(`Could not delete cart item`);
+    await res.json();
+  }
+
   return {
     signUpOrIn,
     getProducts,
@@ -136,5 +154,6 @@ export function Api() {
     addToCart,
     viewCart,
     updateCart,
+    deleteCartItem,
   };
 }
