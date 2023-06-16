@@ -26,7 +26,7 @@ export default function AddOrSubItem({ stock, counts }: Props): JSX.Element {
   }
 
   return (
-    <div className="w-6/12 flex  justify-around items-center">
+    <div className="w-full flex  justify-around items-center">
       <button className="flex justify-center w-4/12" onClick={handleMinus}>
         <MinusIcon className="w-6" />
       </button>

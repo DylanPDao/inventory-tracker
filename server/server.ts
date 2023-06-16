@@ -271,6 +271,30 @@ app.get('/cart/:userId', async (req, res, next) => {
   }
 });
 
+app.post('/cart/update', async (req, res, next) => {
+  try {
+    const { quantity, cartId, cartItemId } = req.body;
+    if (!quantity) {
+      throw new ClientError(401, 'invalid cart update');
+    }
+    const sql = `
+    update "cartItems"
+    set "quantity" = $1
+    where "cartId" = $2 and "cartItemId" = $3
+    `;
+
+    const params = [quantity, cartId, cartItemId];
+    const result = await db.query(sql, params);
+    const [product] = result.rows;
+    if (!product) {
+      throw new ClientError(401, 'invalid product');
+    }
+    res.status(201).json(product);
+  } catch (err) {
+    next(err);
+  }
+});
+
 /**
  * Serves React's index.html if no api route matches.
  *

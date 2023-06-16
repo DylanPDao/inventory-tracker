@@ -1,5 +1,3 @@
-import { Params } from 'react-router-dom';
-
 export type UsersProps = {
   token: string;
   user: {
@@ -107,11 +105,36 @@ export function Api() {
     return cart;
   }
 
+  type UpdateProps = {
+    quantity: number;
+    cartId: number;
+    cartItemId: number;
+  };
+  async function updateCart({ quantity, cartId, cartItemId }: UpdateProps) {
+    const product = {
+      quantity: quantity,
+      cartId: cartId,
+      cartItemId: cartItemId,
+    };
+    const req = {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(product),
+    };
+    const res = await fetch('/cart/update', req);
+    if (!res.ok) throw new Error(`Could not update cart`);
+    const cart = await res.json();
+    return cart;
+  }
+
   return {
     signUpOrIn,
     getProducts,
     getProduct,
     addToCart,
     viewCart,
+    updateCart,
   };
 }

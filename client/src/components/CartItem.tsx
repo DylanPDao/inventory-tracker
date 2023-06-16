@@ -8,7 +8,8 @@ type CartProps = {
   name: string;
   price: number;
   productId: number;
-  cartId: null | string;
+  cartId: number;
+  cartItemId: number;
 };
 
 export default function CartItem({
@@ -16,9 +17,8 @@ export default function CartItem({
   name,
   price,
   productId,
-  cartId,
 }: CartProps) {
-  const { getProduct } = Api();
+  const { getProduct, updateCart } = Api();
   const [quantity, setQuantity] = useState(1);
   const [product, setProduct] = useState<any>();
   const [isLoading, setIsLoading] = useState(true);
@@ -47,13 +47,13 @@ export default function CartItem({
 
   return (
     <>
-      <div className="justify-between mb-6 rounded-lg bg-white p-6 shadow-md sm:flex sm:justify-start">
+      <div className="justify-between mb-6 rounded-lg bg-gray-100 p-6 shadow-md sm:flex sm:justify-start">
         <img src={imageUrl} alt={name} className="w-full rounded-lg sm:w-40" />
         <div className="sm:ml-4 sm:flex sm:w-full sm:justify-between">
-          <div className="mt-5 sm:mt-0">
+          <div className="mt-5 sm:mt-0 flex justify-center">
             <h2 className="text-lg font-bold text-gray-900">{name}</h2>
           </div>
-          <div className="mt-4 flex justify-between im sm:space-y-6 sm:mt-0 sm:block sm:space-x-6">
+          <div className="flex flex-col justify-around">
             {<AddOrSubItem stock={product.stock} counts={setQuantity} />}
             <div className="flex items-center space-x-4">
               <p className="text-sm">{toDollar(price)}</p>
