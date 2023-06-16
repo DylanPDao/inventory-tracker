@@ -16,26 +16,11 @@ CREATE TABLE "public"."users" (
   OIDS=FALSE
 );
 
-
-
-CREATE TABLE "public"."cards" (
-	"productId" int NOT NULL,
-	"language" int NOT NULL,
-	"graded" BOOLEAN NOT NULL,
-	"company" VARCHAR(255) NOT NULL,
-	CONSTRAINT "cards_pk" PRIMARY KEY ("productId")
-) WITH (
-  OIDS=FALSE
-);
-
-
-
 CREATE TABLE "public"."products" (
 	"productId" serial NOT NULL,
 	"name" VARCHAR(255) NOT NULL,
 	"price"  DECIMAL NOT  NULL,
 	"imageUrl" VARCHAR(255) NOT NULL,
-	"shortDescription" VARCHAR(255) NOT NULL,
 	"longDescription" VARCHAR(10000) NOT NULL,
 	"stock" int NOT NULL,
 	"type" VARCHAR(255) NOT NULL,
@@ -43,18 +28,6 @@ CREATE TABLE "public"."products" (
 ) WITH (
   OIDS=FALSE
 );
-
-
-
-CREATE TABLE "public"."languages" (
-	"languageId" serial NOT NULL,
-	"language" VARCHAR(255) NOT NULL,
-	CONSTRAINT "languages_pk" PRIMARY KEY ("languageId")
-) WITH (
-  OIDS=FALSE
-);
-
-
 
 CREATE TABLE "public"."carts" (
 	"userId" int NOT NULL,
@@ -64,19 +37,18 @@ CREATE TABLE "public"."carts" (
   OIDS=FALSE
 );
 
-
-
 CREATE TABLE "public"."cartItems" (
 	"cartItemId" serial NOT NULL,
-	"cartId" int NOT NULL,
+	"cartId" int  NULL,
 	"productId" int NOT NULL,
 	"quantity" int NOT NULL,
+  "price"  DECIMAL NOT  NULL,
+	"name" VARCHAR(255) NOT NULL,
+  "imageUrl" VARCHAR(500) NOT NULL,
 	CONSTRAINT "cartItems_pk" PRIMARY KEY ("cartItemId")
 ) WITH (
   OIDS=FALSE
 );
-
-
 
 CREATE TABLE "public"."orders" (
 	"orderId" serial NOT NULL,
@@ -87,18 +59,6 @@ CREATE TABLE "public"."orders" (
 ) WITH (
   OIDS=FALSE
 );
-
-
-
-CREATE TABLE "public"."sets" (
-	"productId" int NOT NULL,
-	"languageId" int NOT NULL,
-	CONSTRAINT "sets_pk" PRIMARY KEY ("productId")
-) WITH (
-  OIDS=FALSE
-);
-
-
 
 CREATE TABLE "public"."orderItems" (
 	"orderId" int NOT NULL,
@@ -116,13 +76,6 @@ CREATE TABLE "public"."orderItems" (
 );
 
 
-
-
-ALTER TABLE "cards" ADD CONSTRAINT "cards_fk0" FOREIGN KEY ("productId") REFERENCES "products"("productId");
-ALTER TABLE "cards" ADD CONSTRAINT "cards_fk1" FOREIGN KEY ("language") REFERENCES "languages"("languageId");
-
-
-
 ALTER TABLE "carts" ADD CONSTRAINT "carts_fk0" FOREIGN KEY ("userId") REFERENCES "users"("userId");
 
 ALTER TABLE "cartItems" ADD CONSTRAINT "cartItems_fk0" FOREIGN KEY ("cartId") REFERENCES "carts"("cartId");
@@ -130,7 +83,5 @@ ALTER TABLE "cartItems" ADD CONSTRAINT "cartItems_fk1" FOREIGN KEY ("productId")
 
 ALTER TABLE "orders" ADD CONSTRAINT "orders_fk0" FOREIGN KEY ("userId") REFERENCES "users"("userId");
 
-ALTER TABLE "sets" ADD CONSTRAINT "sets_fk0" FOREIGN KEY ("productId") REFERENCES "products"("productId");
-ALTER TABLE "sets" ADD CONSTRAINT "sets_fk1" FOREIGN KEY ("languageId") REFERENCES "languages"("languageId");
 
 ALTER TABLE "orderItems" ADD CONSTRAINT "orderItems_fk0" FOREIGN KEY ("orderId") REFERENCES "orders"("orderId");

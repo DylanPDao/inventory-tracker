@@ -45,6 +45,13 @@ app.post('/sign-up', async (req, res, next) => {
       returning *
     `;
     const params = [username, hashedPassword];
+    // const hashedPassword = await argon2.hash(password);
+    // const sql = `
+    //   insert into "users" ("username", "hashedPassword", "admin")
+    //   values ($1, $2, $3)
+    //   returning *
+    // `;
+    // const params = [username, hashedPassword, true];
     const result = await db.query(sql, params);
     const [user] = result.rows;
     res.status(201).json(user);
@@ -132,14 +139,14 @@ app.post('/catalog', async (req, res, next) => {
     from "products"
     where "type" = $1
     `;
-    if (type === 'cards') {
+    if (type === 'card') {
       sql = `
     select *
     from "products"
     where "type" = $1 OR "type" = $2
     `;
     }
-    const params = type === 'cards' ? [type, 'set'] : [type];
+    const params = type === 'card' ? [type, 'set'] : [type];
     const result = await db.query(sql, params);
     const [...products] = result.rows;
     if (!products) {
@@ -162,7 +169,6 @@ app.get('/products/:productId', async (req, res, next) => {
     from "products"
     where "productId" = $1
     `;
-
     const params = [productId];
     const result = await db.query(sql, params);
     const [product] = result.rows;
@@ -170,6 +176,105 @@ app.get('/products/:productId', async (req, res, next) => {
       throw new ClientError(401, 'invalid product');
     }
     res.status(201).json(product);
+  } catch (err) {
+    next(err);
+  }
+});
+
+app.post('/add-to-cart', async (req, res, next) => {
+  try {
+    const { name, price, quantity, productId, userId, imageUrl } = req.body;
+    if (!name) {
+      throw new ClientError(401, 'cart item');
+    }
+    if (!userId) {
+      const sql = `
+      insert into "cartItems" ("name", "price", "productId", "quantity", imageUrl)
+      values ($1,$2,$3,$4, $5)
+      returning *
+      `;
+      const params = [name, price, productId, quantity, imageUrl];
+      const result = await db.query(sql, params);
+      const [cartItem] = result.rows;
+      if (!cartItem) {
+        throw new ClientError(401, 'Did not add to cart');
+      }
+      res.status(201).json(cartItem);
+      return;
+    }
+
+    if (userId) {
+      let sql = `
+      select "cartId"
+      from "carts"
+      where "userId" = $1
+      `;
+      let params = [userId];
+      const cartResult = await db.query(sql, params);
+      let [cartId] = cartResult.rows;
+
+      if (!cartId) {
+        const sql = `
+        insert into "carts" ("userId")
+        values ($1)
+        returning "cartId"
+        `;
+        const params = [userId];
+        const cartResult = await db.query(sql, params);
+        const [newCartId] = cartResult.rows;
+        cartId = newCartId;
+      }
+      sql = `
+      insert into "cartItems" ("name", "price", "productId", "quantity", "cartId", imageUrl)
+      values ($1, $2, $3, $4, $5, $6)
+      returning *
+      `;
+      params = [name, price, productId, quantity, cartId.cartId, imageUrl];
+      const result = await db.query(sql, params);
+      const [cartItem] = result.rows;
+      if (!cartItem) {
+        throw new ClientError(401, 'Did not add to cart');
+      }
+      res.status(201).json(cartItem);
+    }
+  } catch (err) {
+    next(err);
+  }
+});
+
+app.get('/cart/:userId', async (req, res, next) => {
+  const user = req.params;
+  const userId: string = user.userId;
+
+  try {
+    if (userId === 'guest') {
+      const sql = `
+    select *
+    from "cartItems"
+    where "cartId" is null
+    `;
+      const result = await db.query(sql);
+      const [...cart] = result.rows;
+      if (!cart) {
+        throw new ClientError(401, 'Could not find cart');
+      }
+      res.status(201).json(cart);
+    } else {
+      const sql = `
+    select *
+    from "cartItems"
+    join "carts" using ("cartId")
+    where "userId" = $1
+    `;
+      const params = [userId];
+
+      const result = await db.query(sql, params);
+      const [...cart] = result.rows;
+      if (!cart) {
+        throw new ClientError(401, 'Could not find cart');
+      }
+      res.status(201).json(cart);
+    }
   } catch (err) {
     next(err);
   }
