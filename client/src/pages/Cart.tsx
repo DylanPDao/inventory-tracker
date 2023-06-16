@@ -14,7 +14,6 @@ export default function Cart() {
       try {
         const cart = await viewCart(user.userId);
         setCart(cart);
-        console.log(cart);
       } catch (err) {
         setError(err);
       } finally {
