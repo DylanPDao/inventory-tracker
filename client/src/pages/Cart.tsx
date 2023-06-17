@@ -10,6 +10,7 @@ type Props = {
   productId: number;
   cartId: number;
   cartItemId: number;
+  user: string | undefined;
 };
 
 export default function Cart() {
@@ -52,6 +53,8 @@ export default function Cart() {
           {cart &&
             cart.map((cartItem: Props) => (
               <CartItem
+                user={user}
+                setCart={setCart}
                 key={cartItem.productId}
                 name={cartItem.name}
                 price={cartItem.price}

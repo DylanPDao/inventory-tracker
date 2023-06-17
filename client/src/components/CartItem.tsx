@@ -1,6 +1,7 @@
 import AddOrSubItem from './AddOrSubItem';
 import { useState, useEffect } from 'react';
 import { Api, toDollar } from '../lib';
+import { Params } from 'react-router-dom';
 
 type CartProps = {
   imageUrl: string;
@@ -9,6 +10,8 @@ type CartProps = {
   productId: number;
   cartId: number;
   cartItemId: number;
+  setCart: React.Dispatch<React.SetStateAction<[]>>;
+  user: Readonly<Params<string>>;
 };
 
 export default function CartItem({
@@ -18,8 +21,10 @@ export default function CartItem({
   productId,
   cartId,
   cartItemId,
+  setCart,
+  user,
 }: CartProps) {
-  const { getProduct, deleteCartItem } = Api();
+  const { getProduct, deleteCartItem, viewCart } = Api();
   const [quantity, setQuantity] = useState(1);
   const [product, setProduct] = useState<any>();
   const [isLoading, setIsLoading] = useState(true);
@@ -42,6 +47,8 @@ export default function CartItem({
   async function handleClick() {
     try {
       await deleteCartItem({ cartId, cartItemId });
+      const cart = await viewCart(user.userId);
+      setCart(cart);
     } catch (err) {
       setError(err);
     }
