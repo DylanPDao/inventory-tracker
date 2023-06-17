@@ -130,7 +130,7 @@ export function Api() {
   }
 
   type DeleteProps = {
-    cartId: number;
+    cartId: number | null;
     cartItemId: number;
   };
 
@@ -144,7 +144,6 @@ export function Api() {
     };
     const res = await fetch('/cart/delete', req);
     if (!res.ok) throw new Error(`Could not delete cart item`);
-    await res.json();
   }
 
   return {

@@ -1,7 +1,6 @@
 import AddOrSubItem from './AddOrSubItem';
-import toDollar from '../lib/toDollar';
 import { useState, useEffect } from 'react';
-import { Api } from '../lib';
+import { Api, toDollar } from '../lib';
 
 type CartProps = {
   imageUrl: string;
@@ -17,8 +16,10 @@ export default function CartItem({
   name,
   price,
   productId,
+  cartId,
+  cartItemId,
 }: CartProps) {
-  const { getProduct, updateCart } = Api();
+  const { getProduct, deleteCartItem } = Api();
   const [quantity, setQuantity] = useState(1);
   const [product, setProduct] = useState<any>();
   const [isLoading, setIsLoading] = useState(true);
@@ -37,6 +38,14 @@ export default function CartItem({
     }
     if (!product) loadCart();
   }, [getProduct, product, productId]);
+
+  async function handleClick() {
+    try {
+      await deleteCartItem({ cartId, cartItemId });
+    } catch (err) {
+      setError(err);
+    }
+  }
 
   if (isLoading) return <div> Loading... </div>;
 
@@ -58,10 +67,11 @@ export default function CartItem({
             <div className="flex items-center space-x-4">
               <p className="text-sm">{toDollar(price)}</p>
               <svg
+                onClick={handleClick}
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"
                 viewBox="0 0 24 24"
-                stroke-width="1.5"
+                strokeWidth="1.5"
                 stroke="currentColor"
                 className="h-5 w-5 cursor-pointer duration-150 hover:text-red-500">
                 <path

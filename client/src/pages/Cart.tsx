@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Api } from '../lib';
+import { Api, toDollar } from '../lib';
 import { useParams } from 'react-router-dom';
 import CartItem from '../components/CartItem';
 
@@ -18,12 +18,12 @@ export default function Cart() {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<unknown>();
   const user = useParams();
+  let subTotal = 0;
 
   useEffect(() => {
     async function loadCart() {
       try {
         const cart = await viewCart(user.userId);
-        console.log(cart);
         setCart(cart);
       } catch (err) {
         setError(err);
@@ -32,7 +32,11 @@ export default function Cart() {
       }
     }
     if (!cart) loadCart();
-  }, [cart, viewCart, user]);
+  }, [cart, viewCart, user, subTotal]);
+
+  if (cart) {
+    cart.map((cartItem: Props) => (subTotal += Number(cartItem.price)));
+  }
 
   if (isLoading) return <div> Loading... </div>;
 
@@ -48,6 +52,7 @@ export default function Cart() {
           {cart &&
             cart.map((cartItem: Props) => (
               <CartItem
+                key={cartItem.productId}
                 name={cartItem.name}
                 price={cartItem.price}
                 imageUrl={cartItem.imageUrl}
@@ -61,7 +66,7 @@ export default function Cart() {
           <div className="w-full rounded-lg border bg-gray-100 shadow-md p-4">
             <div className="mb-2 flex justify-between">
               <p className="text-gray-700">Subtotal</p>
-              <p className="text-gray-700">$129.99</p>
+              <p className="text-gray-700">{toDollar(subTotal)}</p>
             </div>
             <div className="flex justify-between">
               <p className="text-gray-700">Shipping</p>
@@ -71,7 +76,9 @@ export default function Cart() {
             <div className="flex justify-between">
               <p className="text-lg font-bold">Total</p>
               <div className="">
-                <p className="mb-1 text-lg font-bold">$134.98 USD</p>
+                <p className="mb-1 text-lg font-bold">
+                  {toDollar(subTotal + 4.99)} USD
+                </p>
               </div>
             </div>
             <button className="mt-6 w-full rounded-md bg-blue-500 py-1.5 font-medium text-blue-50 hover:bg-blue-600">
