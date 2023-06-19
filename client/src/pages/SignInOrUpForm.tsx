@@ -45,7 +45,8 @@ export default function SignInOrUpForm({ action, user }: Props) {
   const submitButtonText = action === 'sign-up' ? 'Register' : 'Log In';
   return (
     <div className="container flex w-full justify-center items-center p-10">
-      <form className="border-2 p-10 rounded-lg" onSubmit={handleSubmit}>
+      <form className="border-2 p-6 rounded-lg" onSubmit={handleSubmit}>
+        <p className="mb-4 text-lg">{submitButtonText}</p>
         <div className="mb-3">
           <label className="form-label">
             Username:
