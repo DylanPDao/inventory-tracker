@@ -172,6 +172,15 @@ app.get('/products/:productId', async (req, res, next) => {
   }
 });
 
+type CartProps = {
+  imageUrl: string;
+  name: string;
+  price: number;
+  productId: number;
+  cartId: number;
+  cartItemId: number;
+  quantity: number;
+};
 app.post('/add-to-cart', async (req, res, next) => {
   try {
     const { name, price, quantity, productId, userId, imageUrl } = req.body;
@@ -179,19 +188,44 @@ app.post('/add-to-cart', async (req, res, next) => {
       throw new ClientError(401, 'cart item');
     }
     if (!userId) {
-      const sql = `
-      insert into "cartItems" ("name", "price", "productId", "quantity", "imageUrl")
-      values ($1,$2,$3,$4, $5)
-      returning *
+      let sql = `
+        select *
+          from "cartItems"
+          where "cartId" is null and "productId" = $1
       `;
-      const params = [name, price, productId, quantity, imageUrl];
-      const result = await db.query(sql, params);
-      const [cartItem] = result.rows;
-      if (!cartItem) {
-        throw new ClientError(401, 'Did not add to cart');
+      let params = [productId];
+      let result = await db.query(sql, params);
+      const [cartItemExists] = result.rows;
+      if (cartItemExists) {
+        sql = `
+        update "cartItems"
+          set "quantity" = $1
+          where "cartId" is null and "productId" = $2
+          returning *
+        `;
+        params = [quantity, productId];
+        result = await db.query(sql, params);
+        const [cartItem] = result.rows;
+        if (!cartItem) {
+          throw new ClientError(401, 'Did not add to cart');
+        }
+        res.status(201).json(cartItem);
+        return;
+      } else {
+        sql = `
+        insert into "cartItems" ("name", "price", "productId", "quantity", "imageUrl")
+        values ($1,$2,$3,$4, $5)
+        returning *
+        `;
+        const params = [name, price, productId, quantity, imageUrl];
+        result = await db.query(sql, params);
+        const [cartItem] = result.rows;
+        if (!cartItem) {
+          throw new ClientError(401, 'Did not add to cart');
+        }
+        res.status(201).json(cartItem);
+        return;
       }
-      res.status(201).json(cartItem);
-      return;
     }
 
     if (userId) {
