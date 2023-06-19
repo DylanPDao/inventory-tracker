@@ -23,7 +23,7 @@ export default function Catalog({ type }: { type: string }): JSX.Element {
         setError(err);
       }
     }
-    if (!products) loadProducts();
+    loadProducts();
   }, [products, type, getProducts]);
 
   if (error) {
@@ -32,18 +32,20 @@ export default function Catalog({ type }: { type: string }): JSX.Element {
   }
 
   return (
-    <div className="flex container">
-      {products
-        ? products.map((product: ProductsProps) => (
-            <InfoCard
-              key={product.productId}
-              name={product.name}
-              price={product.price}
-              imageUrl={product.imageUrl}
-              productId={product.productId}
-            />
-          ))
-        : null}
+    <div className="container">
+      <div className="flex flex-wrap justify-center items-center">
+        {products
+          ? products.map((product: ProductsProps) => (
+              <InfoCard
+                key={product.productId}
+                name={product.name}
+                price={product.price}
+                imageUrl={product.imageUrl}
+                productId={product.productId}
+              />
+            ))
+          : null}
+      </div>
     </div>
   );
 }
