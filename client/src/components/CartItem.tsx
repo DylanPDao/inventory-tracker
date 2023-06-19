@@ -12,6 +12,7 @@ type CartProps = {
   cartItemId: number;
   setCart: React.Dispatch<React.SetStateAction<[]>>;
   user: Readonly<Params<string>>;
+  quantityCart: number;
 };
 
 export default function CartItem({
@@ -23,6 +24,7 @@ export default function CartItem({
   cartItemId,
   setCart,
   user,
+  quantityCart,
 }: CartProps) {
   const { getProduct, deleteCartItem, viewCart } = Api();
   const [quantity, setQuantity] = useState(1);
@@ -70,7 +72,13 @@ export default function CartItem({
             <h2 className="text-lg font-bold text-gray-900">{name}</h2>
           </div>
           <div className="flex flex-col justify-around">
-            {<AddOrSubItem stock={product.stock} counts={setQuantity} />}
+            {
+              <AddOrSubItem
+                quantityCart={quantityCart}
+                stock={product.stock}
+                counts={setQuantity}
+              />
+            }
             <div className="flex items-center space-x-4">
               <p className="text-sm">{toDollar(price)}</p>
               <svg

@@ -1,13 +1,24 @@
 import { PlusIcon, MinusIcon } from '@heroicons/react/24/outline';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 type Props = {
   stock: number;
   counts: React.Dispatch<React.SetStateAction<number>>;
+  quantityCart: number;
 };
 
-export default function AddOrSubItem({ stock, counts }: Props): JSX.Element {
+export default function AddOrSubItem({
+  stock,
+  counts,
+  quantityCart,
+}: Props): JSX.Element {
   const [count, setCount] = useState(1);
+
+  useEffect(() => {
+    if (quantityCart) {
+      setCount(quantityCart);
+    }
+  }, [quantityCart]);
 
   function handlePlus() {
     if (count >= stock) {

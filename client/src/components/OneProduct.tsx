@@ -32,7 +32,7 @@ export default function OneProduct({
         <div className="mb-2 w-full flex justify-center items-center">
           <p className="w-6/12 text-red-600">{`Only ${stock} left!`}</p>
           <div className="w-6/12">
-            <AddOrSubItem counts={setQuantity} stock={stock} />
+            <AddOrSubItem quantityCart={1} counts={setQuantity} stock={stock} />
           </div>
         </div>
         <div className="mb-2 flex items-center justify-around">
