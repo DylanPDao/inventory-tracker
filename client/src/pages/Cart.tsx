@@ -26,7 +26,6 @@ export default function Cart() {
     async function loadCart() {
       try {
         const cart = await viewCart(user.userId);
-        console.log(cart);
         setCart(cart);
       } catch (err) {
         setError(err);
@@ -38,7 +37,10 @@ export default function Cart() {
   }, [cart, viewCart, user, subTotal]);
 
   if (cart) {
-    cart.map((cartItem: Props) => (subTotal += Number(cartItem.price)));
+    cart.map(
+      (cartItem: Props) =>
+        (subTotal += Number(cartItem.price) * Number(cartItem.quantity))
+    );
   }
 
   if (isLoading) return <div> Loading... </div>;
