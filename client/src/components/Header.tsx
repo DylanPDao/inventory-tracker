@@ -49,13 +49,13 @@ export default function Header(): JSX.Element {
           src="/images/gameboy.svg"
           alt="Gamboy Color"
           text="Games"
-          link="catalog/game"
+          link="catalog/games"
         />
         <MenuItem
           src="/images/pokeball.svg"
           alt="Pokeball"
           text="Other"
-          link="catalog/other"
+          link="catalog/others"
         />
       </div>
       {<Outlet />}

@@ -137,7 +137,7 @@ app.post('/catalog', async (req, res, next) => {
       where "type" = $1 OR "type" = $2
     `;
     }
-    const params = type === 'card' ? [type, 'set'] : [type];
+    const params = type === 'card' ? [type, 'sets'] : [type];
     const result = await db.query(sql, params);
     const [...products] = result.rows;
     if (!products) {
