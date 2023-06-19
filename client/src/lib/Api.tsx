@@ -107,7 +107,7 @@ export function Api() {
 
   type UpdateProps = {
     quantity: number;
-    cartId: number;
+    cartId: number | null;
     cartItemId: number;
   };
   async function updateCart({ quantity, cartId, cartItemId }: UpdateProps) {
@@ -124,9 +124,8 @@ export function Api() {
       body: JSON.stringify(product),
     };
     const res = await fetch('/cart/update', req);
+    console.log(res);
     if (!res.ok) throw new Error(`Could not update cart`);
-    const cart = await res.json();
-    return cart;
   }
 
   type DeleteProps = {

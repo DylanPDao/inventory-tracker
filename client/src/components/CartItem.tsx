@@ -26,7 +26,7 @@ export default function CartItem({
   user,
   quantityCart,
 }: CartProps) {
-  const { getProduct, deleteCartItem, viewCart } = Api();
+  const { getProduct, deleteCartItem, viewCart, updateCart } = Api();
   const [quantity, setQuantity] = useState(1);
   const [product, setProduct] = useState<any>();
   const [isLoading, setIsLoading] = useState(true);
@@ -56,6 +56,17 @@ export default function CartItem({
     }
   }
 
+  async function handleQuantityChange(quantity: number) {
+    setQuantity(quantity);
+    try {
+      await updateCart({ quantity, cartId, cartItemId });
+      const cart = await viewCart(user.userId);
+      setCart(cart);
+    } catch (err) {
+      setError(err);
+    }
+  }
+
   if (isLoading) return <div> Loading... </div>;
 
   if (error) {
@@ -76,7 +87,7 @@ export default function CartItem({
               <AddOrSubItem
                 quantityCart={quantityCart}
                 stock={product.stock}
-                counts={setQuantity}
+                counts={handleQuantityChange}
               />
             }
             <div className="flex items-center space-x-4">

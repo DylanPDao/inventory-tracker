@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react';
 
 type Props = {
   stock: number;
-  counts: React.Dispatch<React.SetStateAction<number>>;
+  counts: (count: number) => void;
   quantityCart: number;
 };
 

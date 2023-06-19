@@ -334,18 +334,34 @@ app.patch('/cart/update', async (req, res, next) => {
     if (!quantity) {
       throw new ClientError(401, 'invalid cart update');
     }
-    const sql = `
+    if (cartId === null) {
+      const sql = `
     update "cartItems"
       set "quantity" = $1
-      where "cartId" = $2 and "cartItemId" = $3
+      where "cartId" is null and "cartItemId" = $2
     `;
-    const params = [quantity, cartId, cartItemId];
-    const result = await db.query(sql, params);
-    const [product] = result.rows;
-    if (!product) {
-      throw new ClientError(401, 'invalid product');
+      const params = [quantity, cartItemId];
+      const result = await db.query(sql, params);
+      const product = result.rowCount;
+      if (!product) {
+        throw new ClientError(401, 'invalid product');
+      }
+      res.sendStatus(204);
+      return;
+    } else {
+      const sql = `
+      update "cartItems"
+        set "quantity" = $1
+        where "cartId" = $2 and "cartItemId" = $3
+      `;
+      const params = [quantity, cartId, cartItemId];
+      const result = await db.query(sql, params);
+      const [product] = result.rows;
+      if (!product) {
+        throw new ClientError(401, 'invalid product');
+      }
+      res.status(201).json(product);
     }
-    res.status(201).json(product);
   } catch (err) {
     next(err);
   }

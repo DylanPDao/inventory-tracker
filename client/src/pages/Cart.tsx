@@ -70,7 +70,7 @@ export default function Cart() {
               />
             ))}
         </div>
-        <div className="w-4/12 flex justify-center pt-4">
+        <div className="w-4/12 flex justify-center p-4">
           <div className="w-full rounded-lg border bg-gray-100 shadow-md p-4">
             <div className="mb-2 flex justify-between">
               <p className="text-gray-700">Subtotal</p>
