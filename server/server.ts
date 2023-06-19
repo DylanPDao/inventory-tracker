@@ -41,8 +41,8 @@ app.post('/sign-up', async (req, res, next) => {
     const hashedPassword = await argon2.hash(password);
     const sql = `
       insert into "users" ("username", "hashedPassword")
-      values ($1, $2)
-      returning *
+        values ($1, $2)
+        returning *
     `;
     const params = [username, hashedPassword];
     // const hashedPassword = await argon2.hash(password);
@@ -103,8 +103,8 @@ app.post(
       const url = `/images/${req.file.filename}`;
       const sql = `
       insert into "products" ("name", "price", "imageUrl", "longDescription", "stock", "type")
-      values ($1, $2, $3, $4, $5, $6)
-      returning *
+        values ($1, $2, $3, $4, $5, $6)
+        returning *
     `;
       const params = [name, price, url, longDescription, stock, type];
       const result = await db.query(sql, params);
@@ -127,14 +127,14 @@ app.post('/catalog', async (req, res, next) => {
     }
     let sql = `
     select *
-    from "products"
-    where "type" = $1
+      from "products"
+      where "type" = $1
     `;
     if (type === 'card') {
       sql = `
     select *
-    from "products"
-    where "type" = $1 OR "type" = $2
+      from "products"
+      where "type" = $1 OR "type" = $2
     `;
     }
     const params = type === 'card' ? [type, 'set'] : [type];
@@ -157,8 +157,8 @@ app.get('/products/:productId', async (req, res, next) => {
     }
     const sql = `
     select *
-    from "products"
-    where "productId" = $1
+      from "products"
+      where "productId" = $1
     `;
     const params = [productId];
     const result = await db.query(sql, params);
@@ -172,15 +172,6 @@ app.get('/products/:productId', async (req, res, next) => {
   }
 });
 
-type CartProps = {
-  imageUrl: string;
-  name: string;
-  price: number;
-  productId: number;
-  cartId: number;
-  cartItemId: number;
-  quantity: number;
-};
 app.post('/add-to-cart', async (req, res, next) => {
   try {
     const { name, price, quantity, productId, userId, imageUrl } = req.body;
@@ -214,8 +205,8 @@ app.post('/add-to-cart', async (req, res, next) => {
       } else {
         sql = `
         insert into "cartItems" ("name", "price", "productId", "quantity", "imageUrl")
-        values ($1,$2,$3,$4, $5)
-        returning *
+          values ($1,$2,$3,$4, $5)
+          returning *
         `;
         const params = [name, price, productId, quantity, imageUrl];
         result = await db.query(sql, params);
@@ -231,18 +222,17 @@ app.post('/add-to-cart', async (req, res, next) => {
     if (userId) {
       let sql = `
       select "cartId"
-      from "carts"
-      where "userId" = $1
+        from "carts"
+        where "userId" = $1
       `;
       let params = [userId];
       const cartResult = await db.query(sql, params);
       let [cartId] = cartResult.rows;
-
       if (!cartId) {
         const sql = `
         insert into "carts" ("userId")
-        values ($1)
-        returning "cartId"
+          values ($1)
+          returning "cartId"
         `;
         const params = [userId];
         const cartResult = await db.query(sql, params);
@@ -250,17 +240,50 @@ app.post('/add-to-cart', async (req, res, next) => {
         cartId = newCartId;
       }
       sql = `
-      insert into "cartItems" ("name", "price", "productId", "quantity", "cartId", "imageUrl")
-      values ($1, $2, $3, $4, $5, $6)
-      returning *
+        select *
+          from "cartItems"
+          join "carts" using ("cartId")
+          where "productId" = $1 and "userId" = $2
       `;
-      params = [name, price, productId, quantity, cartId.cartId, imageUrl];
+      params = [productId, userId];
       const result = await db.query(sql, params);
-      const [cartItem] = result.rows;
-      if (!cartItem) {
-        throw new ClientError(401, 'Did not add to cart');
+      const [cartItemExists] = result.rows;
+      if (cartItemExists) {
+        const sql = `
+        update "cartItems"
+          set "quantity" = $1
+          where "productId" = $2 and "cartId" = $3
+          returning *
+        `;
+        const params = [quantity, productId, cartId.cartId];
+        const result = await db.query(sql, params);
+        const [cartItem] = result.rows;
+        if (!cartItem) {
+          throw new ClientError(401, 'Did not add to cart');
+        }
+        res.status(201).json(cartItem);
+        return;
+      } else {
+        sql = `
+        insert into "cartItems" ("name", "price", "productId", "quantity", "cartId", "imageUrl")
+          values ($1, $2, $3, $4, $5, $6)
+          returning *
+        `;
+        const params = [
+          name,
+          price,
+          productId,
+          quantity,
+          cartId.cartId,
+          imageUrl,
+        ];
+        const result = await db.query(sql, params);
+        const [cartItem] = result.rows;
+        if (!cartItem) {
+          throw new ClientError(401, 'Did not add to cart');
+        }
+        res.status(201).json(cartItem);
       }
-      res.status(201).json(cartItem);
     }
   } catch (err) {
     next(err);
@@ -275,8 +298,8 @@ app.get('/cart/:userId', async (req, res, next) => {
     if (userId === 'guest') {
       const sql = `
     select *
-    from "cartItems"
-    where "cartId" is null
+      from "cartItems"
+      where "cartId" is null
     `;
       const result = await db.query(sql);
       const [...cart] = result.rows;
@@ -287,9 +310,9 @@ app.get('/cart/:userId', async (req, res, next) => {
     } else {
       const sql = `
     select *
-    from "cartItems"
-    join "carts" using ("cartId")
-    where "userId" = $1
+      from "cartItems"
+      join "carts" using ("cartId")
+      where "userId" = $1
     `;
       const params = [userId];
 
@@ -313,8 +336,8 @@ app.patch('/cart/update', async (req, res, next) => {
     }
     const sql = `
     update "cartItems"
-    set "quantity" = $1
-    where "cartId" = $2 and "cartItemId" = $3
+      set "quantity" = $1
+      where "cartId" = $2 and "cartItemId" = $3
     `;
     const params = [quantity, cartId, cartItemId];
     const result = await db.query(sql, params);
