@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Api, toDollar } from '../lib';
+import { Api, toDollar, sortCart } from '../lib';
 import { useParams } from 'react-router-dom';
 import CartItem from '../components/CartItem';
 
@@ -26,17 +26,7 @@ export default function Cart() {
     async function loadCart() {
       try {
         let cart = await viewCart(user.userId);
-        cart.sort((a: Props, b: Props) => {
-          const nameA = a.name.toUpperCase();
-          const nameB = b.name.toUpperCase();
-          if (nameA < nameB) {
-            return -1;
-          }
-          if (nameA > nameB) {
-            return 1;
-          }
-          return 0;
-        });
+        cart = sortCart(cart);
         setCart(cart);
       } catch (err) {
         setError(err);

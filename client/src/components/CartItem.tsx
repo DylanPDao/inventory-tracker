@@ -1,6 +1,6 @@
 import AddOrSubItem from './AddOrSubItem';
 import { useState, useEffect } from 'react';
-import { Api, toDollar } from '../lib';
+import { Api, toDollar, sortCart } from '../lib';
 import { Params } from 'react-router-dom';
 
 type CartProps = {
@@ -58,7 +58,8 @@ export default function CartItem({
   async function handleQuantityChange(quantity: number) {
     try {
       await updateCart({ quantity, cartId, cartItemId });
-      const cart = await viewCart(user.userId);
+      let cart = await viewCart(user.userId);
+      cart = sortCart(cart);
       setCart(cart);
     } catch (err) {
       setError(err);
