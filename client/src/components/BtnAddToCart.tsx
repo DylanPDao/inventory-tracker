@@ -17,9 +17,11 @@ export default function BtnAddToCart({
   const { getProduct, addToCart } = Api();
   const [error, setError] = useState<unknown>();
   const user = useContext(UserContext);
+  const [effect, setEffect] = useState(false);
 
   async function handleAdd() {
     try {
+      setEffect(true);
       const product = await getProduct(productId);
       await addToCart({ product, quantity, user });
     } catch (error) {
@@ -33,7 +35,10 @@ export default function BtnAddToCart({
   }
 
   return (
-    <button className={className} onClick={handleAdd}>
+    <button
+      className={`${className} ${effect && 'animate-wiggle'}`}
+      onClick={handleAdd}
+      onAnimationEnd={() => setEffect(false)}>
       Add to cart
     </button>
   );
