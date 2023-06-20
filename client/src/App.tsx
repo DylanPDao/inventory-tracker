@@ -14,15 +14,17 @@ import {
   LandingPage,
   Cart,
 } from './pages';
+import { ProductProps } from './components/SearchBar';
 
 function App() {
   const [user, setUser] = useState<UsersProps>();
+  const [filteredProducts, setFiltered] = useState<ProductProps[]>();
 
   return (
     <div className="App">
       <UserContext.Provider value={user}>
         <Routes>
-          <Route path="/" element={<Header />}>
+          <Route path="/" element={<Header setFiltered={setFiltered} />}>
             <Route index element={<LandingPage />} />
             <Route
               path="/sign-in"
@@ -40,6 +42,10 @@ function App() {
             />
             <Route path="/catalog/games" element={<Catalog type="game" />} />
             <Route path="/catalog/others" element={<Catalog type="other" />} />
+            <Route
+              path="/catalog/search"
+              element={<Catalog type="search" filtered={filteredProducts} />}
+            />
             <Route path="/products/:productId" element={<ProductDetails />} />
             <Route path="/sign-out" element={<SignOut user={setUser} />} />
             <Route path="/cart/:userId" element={<Cart />} />

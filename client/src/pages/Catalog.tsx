@@ -1,15 +1,24 @@
 import { Api } from '../lib/Api';
 import { useState, useEffect } from 'react';
 import InfoCard from '../components/InfoCard';
+import { ProductProps } from '../components/SearchBar';
 
-export default function Catalog({ type }: { type: string }): JSX.Element {
-  type ProductsProps = {
-    imageUrl: string;
-    name: string;
-    productId: number;
-    price: number;
-  };
+type ProductsProps = {
+  imageUrl: string;
+  name: string;
+  productId: number;
+  price: number;
+};
 
+type Props = {
+  type: string;
+  filtered?: ProductProps[];
+};
+
+export default function Catalog({
+  type,
+  filtered = undefined,
+}: Props): JSX.Element {
   const { getProducts } = Api();
   const [products, setProducts] = useState<any[]>();
   const [error, setError] = useState<unknown>();
@@ -33,7 +42,7 @@ export default function Catalog({ type }: { type: string }): JSX.Element {
 
   return (
     <div className="container">
-      <div className="flex flex-wrap justify-center items-center">
+      <div className="flex flex-wrap justify-center items-end">
         {products
           ? products.map((product: ProductsProps) => (
               <InfoCard

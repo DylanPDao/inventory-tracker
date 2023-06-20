@@ -21,13 +21,13 @@ export default function BannerCarousel({ banners }: Props) {
   }, [banners.length, activeIndex]);
 
   return (
-    <div className="container px-8">
+    <div className="container px-8 mt-4">
+      <Images banners={banners} isActive={activeIndex} />
       <Indicators
         banners={banners}
         onSelect={(e) => setActiveIndex(e)}
         isActive={activeIndex}
       />
-      <Images banners={banners} isActive={activeIndex} />
     </div>
   );
 }
@@ -42,7 +42,7 @@ function Images({ banners, isActive }: imagesProp) {
       <img
         src={banner.bannerUrl}
         alt="pokemon"
-        className={isActive === banner.id ? 'w-full' : 'hidden'}
+        className={isActive === banner.id ? 'w-full rounded-xl' : 'hidden'}
         key={banner.id}></img>
     );
   });
@@ -69,6 +69,6 @@ function Indicators({ banners, onSelect, isActive }: indicatorProps) {
   });
 
   return (
-    <div className="relative flex h-6 justify-center top-8">{buttons}</div>
+    <div className="relative flex h-6 justify-center bottom-12">{buttons}</div>
   );
 }

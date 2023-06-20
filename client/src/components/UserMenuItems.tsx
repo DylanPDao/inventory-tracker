@@ -12,6 +12,7 @@ export default function UserMenuItems({ name, url }: Props) {
       <Menu.Item>
         {({ active }) => (
           <Link
+            key={url}
             to={url}
             className={`${
               active ? 'bg-primary text-white' : 'text-gray-900'

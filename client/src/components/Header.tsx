@@ -2,16 +2,21 @@ import { Link, Outlet } from 'react-router-dom';
 import { ShoppingCartIcon } from '@heroicons/react/24/outline';
 import { UserContext } from '../lib/UserContext';
 import { useContext } from 'react';
+import { ProductProps } from './SearchBar';
 import SearchBar from './SearchBar';
 import MenuItem from './MenuItem';
 import UserMenu from './UserMenu';
 
-export default function Header(): JSX.Element {
+export default function Header({
+  setFiltered,
+}: {
+  setFiltered: React.Dispatch<React.SetStateAction<ProductProps[] | undefined>>;
+}): JSX.Element {
   const user = useContext(UserContext);
 
   return (
     <div className="container my-auto mx-auto">
-      <div className="flex items-center border-b-2">
+      <div className="flex items-center justify-center border-b-2">
         <div className="flex w-4/12 items-center justify-center">
           <Link to="/" className="w-5/12">
             <img alt="pikachu logo" src="/images/pikachu-head.svg" />
@@ -19,7 +24,7 @@ export default function Header(): JSX.Element {
           <h1 className="w-6/12">Gimme Pokemon</h1>
         </div>
         <div className="w-4/12">
-          <SearchBar />
+          <SearchBar filtered={setFiltered} />
         </div>
         <div className="flex w-4/12 items-center">
           <Link to={user ? '' : 'sign-in'} className="w-6/12">

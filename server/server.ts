@@ -138,8 +138,15 @@ app.post('/catalog', async (req, res, next) => {
       where "type" = $1 OR "type" = $2
     `;
     }
+    if (type === 'all') {
+      sql = `
+      select *
+        from "products"
+      `;
+    }
     const params = type === 'card' ? [type, 'sets'] : [type];
-    const result = await db.query(sql, params);
+    const result =
+      type === 'all' ? await db.query(sql) : await db.query(sql, params);
     const [...products] = result.rows;
     if (!products) {
       throw new ClientError(401, 'invalid product');
