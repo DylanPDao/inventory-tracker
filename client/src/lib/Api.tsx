@@ -124,7 +124,6 @@ export function Api() {
       body: JSON.stringify(product),
     };
     const res = await fetch('/cart/update', req);
-    console.log(res);
     if (!res.ok) throw new Error(`Could not update cart`);
   }
 

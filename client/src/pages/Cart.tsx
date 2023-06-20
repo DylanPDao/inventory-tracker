@@ -25,7 +25,18 @@ export default function Cart() {
   useEffect(() => {
     async function loadCart() {
       try {
-        const cart = await viewCart(user.userId);
+        let cart = await viewCart(user.userId);
+        cart.sort((a: Props, b: Props) => {
+          const nameA = a.name.toUpperCase();
+          const nameB = b.name.toUpperCase();
+          if (nameA < nameB) {
+            return -1;
+          }
+          if (nameA > nameB) {
+            return 1;
+          }
+          return 0;
+        });
         setCart(cart);
       } catch (err) {
         setError(err);
