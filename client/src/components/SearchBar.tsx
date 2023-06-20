@@ -123,6 +123,9 @@ export default function SearchBar({ filtered }: Props) {
           filteredProducts &&
           filteredProducts.map((product) => (
             <Link
+              onClick={() =>
+                (window.location.href = `/products/${product.productId}`)
+              }
               key={product.productId}
               to={`/products/${product.productId}`}
               className="text-gray-900">

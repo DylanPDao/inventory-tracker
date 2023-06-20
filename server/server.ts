@@ -45,13 +45,6 @@ app.post('/sign-up', async (req, res, next) => {
         returning *
     `;
     const params = [username, hashedPassword];
-    // const hashedPassword = await argon2.hash(password);
-    // const sql = `
-    //   insert into "users" ("username", "hashedPassword", "admin")
-    //   values ($1, $2, $3)
-    //   returning *
-    // `;
-    // const params = [username, hashedPassword, true];
     const result = await db.query(sql, params);
     const [user] = result.rows;
     res.status(201).json(user);

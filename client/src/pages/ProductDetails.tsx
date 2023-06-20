@@ -6,7 +6,6 @@ import OneProduct from '../components/OneProduct';
 export default function ProductDetails() {
   const { getProduct } = Api();
   const { productId } = useParams();
-
   const [product, setProduct] = useState<any>();
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<unknown>();
