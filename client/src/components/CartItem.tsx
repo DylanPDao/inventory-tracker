@@ -27,7 +27,6 @@ export default function CartItem({
   quantityCart,
 }: CartProps) {
   const { getProduct, deleteCartItem, viewCart, updateCart } = Api();
-  const [quantity, setQuantity] = useState(1);
   const [product, setProduct] = useState<any>();
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<unknown>();
@@ -57,7 +56,6 @@ export default function CartItem({
   }
 
   async function handleQuantityChange(quantity: number) {
-    setQuantity(quantity);
     try {
       await updateCart({ quantity, cartId, cartItemId });
       const cart = await viewCart(user.userId);

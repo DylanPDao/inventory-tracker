@@ -356,11 +356,11 @@ app.patch('/cart/update', async (req, res, next) => {
       `;
       const params = [quantity, cartId, cartItemId];
       const result = await db.query(sql, params);
-      const [product] = result.rows;
+      const product = result.rowCount;
       if (!product) {
         throw new ClientError(401, 'invalid product');
       }
-      res.status(201).json(product);
+      res.sendStatus(204);
     }
   } catch (err) {
     next(err);
