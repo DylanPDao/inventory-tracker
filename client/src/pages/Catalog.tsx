@@ -1,7 +1,6 @@
 import { Api } from '../lib/Api';
 import { useState, useEffect } from 'react';
 import InfoCard from '../components/InfoCard';
-import { ProductProps } from '../components/SearchBar';
 
 type ProductsProps = {
   imageUrl: string;
@@ -12,28 +11,32 @@ type ProductsProps = {
 
 type Props = {
   type: string;
-  filtered?: ProductProps[];
+  searchString?: string | undefined;
 };
 
 export default function Catalog({
   type,
-  filtered = undefined,
+  searchString = undefined,
 }: Props): JSX.Element {
   const { getProducts } = Api();
   const [products, setProducts] = useState<any[]>();
   const [error, setError] = useState<unknown>();
 
+  if (searchString) {
+    searchString = searchString.toLowerCase();
+  }
+
   useEffect(() => {
     async function loadProducts() {
       try {
-        const productList = await getProducts(type);
+        const productList = await getProducts({ type, searchString });
         setProducts(productList);
       } catch (err) {
         setError(err);
       }
     }
     loadProducts();
-  }, [products, type, getProducts]);
+  }, [products, type, getProducts, searchString]);
 
   if (error) {
     console.error('Fetch error:', error);

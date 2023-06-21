@@ -1,3 +1,6 @@
+import { useState } from 'react';
+import { CartProps } from '../pages/Cart';
+
 export type UsersProps = {
   token: string;
   user: {
@@ -8,6 +11,8 @@ export type UsersProps = {
 };
 
 export function Api() {
+  const [error, setError] = useState<unknown>();
+  const [isLoading, setLoading] = useState(true);
   /**
    * Signs up or signs in depending on the action.
    * @param {string} action Action to take, either 'sign-up' or 'sign-in'
@@ -38,13 +43,17 @@ export function Api() {
    * @param type string representing what type of item to get
    * @returns an object with all product data
    */
-  async function getProducts(type: string) {
+  type ProductProps = {
+    type: string;
+    searchString?: string | undefined;
+  };
+  async function getProducts({ type, searchString }: ProductProps) {
     const req = {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ type: type }),
+      body: JSON.stringify({ type, searchString }),
     };
     const res = await fetch('/catalog', req);
     if (!res.ok) throw new Error(`fetch Error ${res.status}`);
@@ -144,7 +153,22 @@ export function Api() {
     if (!res.ok) throw new Error(`Could not delete cart item`);
   }
 
+  async function checkout(cart: CartProps[]) {
+    const req = {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ cart }),
+    };
+    console.log(cart);
+    const res = await fetch('/checkout', req);
+    if (!res.ok) throw new Error(`Could not checkout`);
+  }
+
   return {
+    error,
+    isLoading,
     signUpOrIn,
     getProducts,
     getProduct,
@@ -152,5 +176,6 @@ export function Api() {
     viewCart,
     updateCart,
     deleteCartItem,
+    checkout,
   };
 }

@@ -3,19 +3,20 @@ import { Api, toDollar, sortCart } from '../lib';
 import { useParams } from 'react-router-dom';
 import CartItem from '../components/CartItem';
 
-type Props = {
+export type CartProps = {
   imageUrl: string;
   name: string;
   price: number;
   productId: number;
   cartId: number;
   cartItemId: number;
-  user: string | undefined;
+  user?: string | undefined;
   quantity: number;
+  priceId?: string;
 };
 
 export default function Cart() {
-  const { viewCart } = Api();
+  const { viewCart, checkout } = Api();
   const [cart, setCart] = useState<any>();
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<unknown>();
@@ -39,9 +40,13 @@ export default function Cart() {
 
   if (cart) {
     cart.map(
-      (cartItem: Props) =>
+      (cartItem: CartProps) =>
         (subTotal += Number(cartItem.price) * Number(cartItem.quantity))
     );
+  }
+
+  async function handleCheckout() {
+    await checkout(cart);
   }
 
   if (isLoading) return <div> Loading... </div>;
@@ -56,7 +61,7 @@ export default function Cart() {
       <div className="flex items-start">
         <div className="w-8/12 p-4">
           {cart &&
-            cart.map((cartItem: Props) => (
+            cart.map((cartItem: CartProps) => (
               <CartItem
                 user={user}
                 setCart={setCart}
@@ -90,7 +95,9 @@ export default function Cart() {
                 </p>
               </div>
             </div>
-            <button className="mt-6 w-full rounded-md bg-blue-500 py-1.5 font-medium text-blue-50 hover:bg-blue-600">
+            <button
+              onClick={handleCheckout}
+              className="mt-6 w-full rounded-md bg-blue-500 py-1.5 font-medium text-blue-50 hover:bg-blue-600">
               Check out
             </button>
           </div>

@@ -13,10 +13,10 @@ export type ProductProps = {
 };
 
 export type Props = {
-  filtered: React.Dispatch<React.SetStateAction<ProductProps[] | undefined>>;
+  searchString: React.Dispatch<React.SetStateAction<string | undefined>>;
 };
 
-export default function SearchBar({ filtered }: Props) {
+export default function SearchBar({ searchString }: Props) {
   const [effect, setEffect] = useState(false);
   const [inputValue, setInputValue] = useState('');
   const [products, setProducts] = useState<any[]>();
@@ -63,7 +63,7 @@ export default function SearchBar({ filtered }: Props) {
 
   function handleSubmit() {
     navigate('/catalog/search');
-    filtered(filteredProducts);
+    searchString(inputValue);
   }
 
   if (error) {

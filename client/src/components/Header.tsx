@@ -2,15 +2,14 @@ import { Link, Outlet } from 'react-router-dom';
 import { ShoppingCartIcon } from '@heroicons/react/24/outline';
 import { UserContext } from '../lib/UserContext';
 import { useContext } from 'react';
-import { ProductProps } from './SearchBar';
 import SearchBar from './SearchBar';
 import MenuItem from './MenuItem';
 import UserMenu from './UserMenu';
 
 export default function Header({
-  setFiltered,
+  searchString,
 }: {
-  setFiltered: React.Dispatch<React.SetStateAction<ProductProps[] | undefined>>;
+  searchString: React.Dispatch<React.SetStateAction<string | undefined>>;
 }): JSX.Element {
   const user = useContext(UserContext);
 
@@ -24,7 +23,7 @@ export default function Header({
           <h1 className="w-6/12">Gimme Pokemon</h1>
         </div>
         <div className="w-4/12">
-          <SearchBar filtered={setFiltered} />
+          <SearchBar searchString={searchString} />
         </div>
         <div className="flex w-4/12 items-center">
           <Link to={user ? '' : 'sign-in'} className="w-6/12">
