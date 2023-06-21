@@ -13,6 +13,7 @@ import {
   SignOut,
   LandingPage,
   Cart,
+  Success,
 } from './pages';
 function App() {
   const [user, setUser] = useState<UsersProps>();
@@ -47,6 +48,7 @@ function App() {
             <Route path="/products/:productId" element={<ProductDetails />} />
             <Route path="/sign-out" element={<SignOut user={setUser} />} />
             <Route path="/cart/:userId" element={<Cart />} />
+            <Route path="/success" element={<Success />} />
             <Route path="*" element={<NotFound />} />
           </Route>
         </Routes>

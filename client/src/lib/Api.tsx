@@ -107,7 +107,7 @@ export function Api() {
     return cartItem;
   }
 
-  async function viewCart(userId: string | undefined) {
+  async function viewCart(userId: string | number | undefined) {
     const res = await fetch(`/cart/${userId}`);
     if (!res.ok) throw new Error(`Could not find cart`);
     const cart = await res.json();
