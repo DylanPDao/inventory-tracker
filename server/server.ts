@@ -8,6 +8,13 @@ import {
 import pg from 'pg';
 import argon2 from 'argon2';
 import jwt from 'jsonwebtoken';
+import Stripe from 'stripe';
+const stripe = new Stripe(
+  'sk_test_51NLH2vCzE081s9wVhRmiywNcgnqJLTUDxzKnl3zCGhle7NI3ZoN0RDcMuktqEVKwzaEpLqUqrDrZtrJJqrb21PHN00E5zv2n3R',
+  {
+    apiVersion: '2022-11-15',
+  }
+);
 
 const tokenSecret = process.env.TOKEN_SECRET;
 if (!tokenSecret) throw new Error('token secret not defined');
@@ -115,20 +122,20 @@ app.post(
 
 app.post('/catalog', async (req, res, next) => {
   try {
-    const { type } = req.body;
+    const { type, searchString } = req.body;
     if (!type) {
       throw new ClientError(401, 'invalid product type');
     }
     let sql = `
-    select *
-      from "products"
-      where "type" = $1
+      select *
+        from "products"
+        where "type" = $1
     `;
     if (type === 'card') {
       sql = `
-    select *
-      from "products"
-      where "type" = $1 OR "type" = $2
+      select *
+        from "products"
+        where "type" = $1 OR "type" = $2
     `;
     }
     if (type === 'all') {
@@ -137,7 +144,15 @@ app.post('/catalog', async (req, res, next) => {
         from "products"
       `;
     }
-    const params = type === 'card' ? [type, 'sets'] : [type];
+    if (type === 'search') {
+      sql = `
+      select *
+        from "products"
+        where lower("name") like $1
+      `;
+    }
+    let params = type === 'card' ? [type, 'sets'] : [type];
+    params = type === 'search' ? [`%${searchString}%`] : params;
     const result =
       type === 'all' ? await db.query(sql) : await db.query(sql, params);
     const [...products] = result.rows;
@@ -400,6 +415,18 @@ app.post('/cart/delete', async (req, res, next) => {
   } catch (err) {
     next(err);
   }
+});
+
+app.post('/checkout', async (req, res, next) => {
+  const { cart } = req.body;
+  console.log(cart);
+  // const session = await stripe.checkout.sessions.create({
+  //   line_items: [
+  //     {
+
+  //     }
+  //   ]
+  // })
 });
 
 /**
