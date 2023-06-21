@@ -80,10 +80,10 @@ export function Api() {
       name: string;
       price: number;
       imageUrl: string;
-      shortDescription: string;
       longDescription: string;
       stock: number;
       type: string;
+      priceId: string;
       quantity: number;
       userId: number | undefined;
     };
@@ -162,7 +162,9 @@ export function Api() {
       body: JSON.stringify({ cart }),
     };
     const res = await fetch('/checkout', req);
-    if (!res.ok) throw new Error(`Could not checkout`);
+    if (!res.url) throw new Error(`Could not checkout`);
+    const url = await res.json();
+    return url;
   }
 
   return {

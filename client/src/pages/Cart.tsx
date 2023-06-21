@@ -46,7 +46,8 @@ export default function Cart() {
   }
 
   async function handleCheckout() {
-    await checkout(cart);
+    const url = await checkout(cart);
+    window.location.href = url;
   }
 
   if (isLoading) return <div> Loading... </div>;

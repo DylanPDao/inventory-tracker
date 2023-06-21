@@ -7,7 +7,6 @@ type User = {
 
 export default function SignOut({ user }: User) {
   const navigate = useNavigate();
-
   user(undefined);
   navigate('/');
   return <></>;

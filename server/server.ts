@@ -191,7 +191,8 @@ app.get('/products/:productId', async (req, res, next) => {
 
 app.post('/add-to-cart', async (req, res, next) => {
   try {
-    const { name, price, quantity, productId, userId, imageUrl } = req.body;
+    const { name, price, quantity, productId, userId, imageUrl, priceId } =
+      req.body;
     if (!name) {
       throw new ClientError(401, 'cart item');
     }
@@ -221,11 +222,11 @@ app.post('/add-to-cart', async (req, res, next) => {
         return;
       } else {
         sql = `
-        insert into "cartItems" ("name", "price", "productId", "quantity", "imageUrl")
-          values ($1,$2,$3,$4, $5)
+        insert into "cartItems" ("name", "price", "productId", "quantity", "imageUrl", "priceId")
+          values ($1,$2,$3,$4, $5, $6)
           returning *
         `;
-        const params = [name, price, productId, quantity, imageUrl];
+        const params = [name, price, productId, quantity, imageUrl, priceId];
         result = await db.query(sql, params);
         const [cartItem] = result.rows;
         if (!cartItem) {
@@ -282,8 +283,8 @@ app.post('/add-to-cart', async (req, res, next) => {
         return;
       } else {
         sql = `
-        insert into "cartItems" ("name", "price", "productId", "quantity", "cartId", "imageUrl")
-          values ($1, $2, $3, $4, $5, $6)
+        insert into "cartItems" ("name", "price", "productId", "quantity", "cartId", "imageUrl", "priceId")
+          values ($1, $2, $3, $4, $5, $6, $7)
           returning *
         `;
         const params = [
@@ -293,6 +294,7 @@ app.post('/add-to-cart', async (req, res, next) => {
           quantity,
           cartId.cartId,
           imageUrl,
+          priceId,
         ];
         const result = await db.query(sql, params);
         const [cartItem] = result.rows;
@@ -332,9 +334,9 @@ app.get('/cart/:userId', async (req, res, next) => {
       where "userId" = $1
     `;
       const params = [userId];
-
       const result = await db.query(sql, params);
       const [...cart] = result.rows;
+      console.log(cart);
       if (!cart) {
         throw new ClientError(401, 'Could not find cart');
       }
@@ -417,15 +419,41 @@ app.post('/cart/delete', async (req, res, next) => {
     next(err);
   }
 });
-
+type CheckoutProps = {
+  cartItemId: number;
+  cartId: number | null;
+  productId: number;
+  quantity: number;
+  price: string;
+  name: string;
+  imageUrl: string;
+  priceId: string;
+};
+type LineItemProps = {
+  price: string;
+  quantity: number;
+};
 app.post('/checkout', async (req, res, next) => {
   const { cart } = req.body;
-  // cart.map((item)=> (
-  //   item.
-  // ))
-  // const session = await stripe.checkout.sessions.create({
-  //   line_items:
-  // })
+  try {
+    const priceCart: LineItemProps[] = [];
+    cart.forEach((item: CheckoutProps) =>
+      priceCart.push({
+        price: item.priceId,
+        quantity: item.quantity,
+      })
+    );
+    const session = await stripe.checkout.sessions.create({
+      line_items: priceCart,
+      mode: 'payment',
+      success_url: `http://localhost:3000`,
+      cancel_url: `http://localhost:3000`,
+      automatic_tax: { enabled: true },
+    });
+    res.status(303).json(session.url);
+  } catch (err) {
+    next(err);
+  }
 });
 
 /**

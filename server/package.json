@@ -25,5 +25,6 @@
     "execMap": {
       "ts": "ts-node-esm"
     }
-  }
+  },
+  "proxy": "<http://localhost:4242>"
 }

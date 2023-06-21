@@ -46,6 +46,7 @@ CREATE TABLE "public"."cartItems" (
   "price"  DECIMAL NOT  NULL,
 	"name" VARCHAR(255) NOT NULL,
   "imageUrl" VARCHAR(500) NOT NULL,
+  "priceId" VARCHAR(255) NULL,
 	CONSTRAINT "cartItems_pk" PRIMARY KEY ("cartItemId")
 ) WITH (
   OIDS=FALSE
