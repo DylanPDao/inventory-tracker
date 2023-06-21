@@ -24,7 +24,7 @@ CREATE TABLE "public"."products" (
 	"longDescription" VARCHAR(10000) NOT NULL,
 	"stock" int NOT NULL,
 	"type" VARCHAR(255) NOT NULL,
-  "priceId" VARCHAR(255) NOT NULL,
+  "priceId" VARCHAR(255) NULL,
 	CONSTRAINT "products_pk" PRIMARY KEY ("productId")
 ) WITH (
   OIDS=FALSE
