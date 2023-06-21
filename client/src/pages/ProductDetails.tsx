@@ -21,8 +21,8 @@ export default function ProductDetails() {
         setIsLoading(false);
       }
     }
-    if (!product) loadProduct();
-  }, [productId, getProduct, product]);
+    loadProduct();
+  }, [productId, getProduct]);
 
   if (isLoading) return <div> Loading... </div>;
 

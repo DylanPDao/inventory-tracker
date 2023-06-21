@@ -25,26 +25,26 @@ export default function SearchBar({ searchString }: Props) {
   const [isActive, setActive] = useState(false);
   const navigate = useNavigate();
 
-  // useEffect(() => {
-  //   async function loadProducts() {
-  //     try {
-  //       const req = {
-  //         method: 'POST',
-  //         headers: {
-  //           'Content-Type': 'application/json',
-  //         },
-  //         body: JSON.stringify({ type: 'all' }),
-  //       };
-  //       const res = await fetch('/catalog', req);
-  //       if (!res.ok) throw new Error(`fetch Error ${res.status}`);
-  //       const product = await res.json();
-  //       setProducts(product);
-  //     } catch (err) {
-  //       setError(err);
-  //     }
-  //   }
-  //   loadProducts();
-  // },[]);
+  useEffect(() => {
+    async function loadProducts() {
+      try {
+        const req = {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ type: 'all' }),
+        };
+        const res = await fetch('/catalog', req);
+        if (!res.ok) throw new Error(`fetch Error ${res.status}`);
+        const product = await res.json();
+        setProducts(product);
+      } catch (err) {
+        setError(err);
+      }
+    }
+    loadProducts();
+  }, []);
 
   function handleChange(e: ChangeEvent<HTMLInputElement>) {
     setInputValue(e.target.value.toLowerCase());
@@ -65,6 +65,7 @@ export default function SearchBar({ searchString }: Props) {
     e.preventDefault();
     searchString(inputValue);
     navigate('/catalog/search');
+    setInputValue('');
   }
 
   if (error) {
