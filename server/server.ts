@@ -148,14 +148,19 @@ app.post('/catalog', async (req, res, next) => {
       sql = `
       select *
         from "products"
-        where lower("name") like concat('%',$1,'%')
+        where "name" ilike '%${searchString}%'
       `;
     }
-    let params = type === 'card' ? [type, 'sets'] : [type];
-    params = type === 'search' ? [searchString] : params;
+
+    // console.log(sql)
+    const params = type === 'card' ? [type, 'sets'] : [type];
     const result =
-      type === 'all' ? await db.query(sql) : await db.query(sql, params);
+      type === 'all' || type === 'search'
+        ? await db.query(sql)
+        : await db.query(sql, params);
     const [...products] = result.rows;
+
+    // console.log(products);
     if (!products) {
       throw new ClientError(401, 'invalid product');
     }
@@ -419,13 +424,11 @@ app.post('/cart/delete', async (req, res, next) => {
 
 app.post('/checkout', async (req, res, next) => {
   const { cart } = req.body;
-  console.log(req.body);
+  // cart.map((item)=> (
+  //   item.
+  // ))
   // const session = await stripe.checkout.sessions.create({
-  //   line_items: [
-  //     {
-
-  //     }
-  //   ]
+  //   line_items:
   // })
 });
 

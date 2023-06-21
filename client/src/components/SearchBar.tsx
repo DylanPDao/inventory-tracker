@@ -1,4 +1,4 @@
-import { ChangeEvent, useEffect, useState } from 'react';
+import React, { ChangeEvent, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 
@@ -25,26 +25,26 @@ export default function SearchBar({ searchString }: Props) {
   const [isActive, setActive] = useState(false);
   const navigate = useNavigate();
 
-  useEffect(() => {
-    async function loadProducts() {
-      try {
-        const req = {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({ type: 'all' }),
-        };
-        const res = await fetch('/catalog', req);
-        if (!res.ok) throw new Error(`fetch Error ${res.status}`);
-        const product = await res.json();
-        setProducts(product);
-      } catch (err) {
-        setError(err);
-      }
-    }
-    if (!products) loadProducts();
-  });
+  // useEffect(() => {
+  //   async function loadProducts() {
+  //     try {
+  //       const req = {
+  //         method: 'POST',
+  //         headers: {
+  //           'Content-Type': 'application/json',
+  //         },
+  //         body: JSON.stringify({ type: 'all' }),
+  //       };
+  //       const res = await fetch('/catalog', req);
+  //       if (!res.ok) throw new Error(`fetch Error ${res.status}`);
+  //       const product = await res.json();
+  //       setProducts(product);
+  //     } catch (err) {
+  //       setError(err);
+  //     }
+  //   }
+  //   loadProducts();
+  // },[]);
 
   function handleChange(e: ChangeEvent<HTMLInputElement>) {
     setInputValue(e.target.value.toLowerCase());
@@ -61,9 +61,10 @@ export default function SearchBar({ searchString }: Props) {
     setTimeout(() => setActive(false), 500);
   }
 
-  function handleSubmit() {
-    navigate('/catalog/search');
+  function handleSubmit(e: React.FormEvent) {
+    e.preventDefault();
     searchString(inputValue);
+    navigate('/catalog/search');
   }
 
   if (error) {
@@ -123,9 +124,6 @@ export default function SearchBar({ searchString }: Props) {
           filteredProducts &&
           filteredProducts.map((product) => (
             <Link
-              onClick={() =>
-                (window.location.href = `/products/${product.productId}`)
-              }
               key={product.productId}
               to={`/products/${product.productId}`}
               className="text-gray-900">

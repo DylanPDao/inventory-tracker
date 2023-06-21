@@ -14,7 +14,6 @@ import {
   LandingPage,
   Cart,
 } from './pages';
-
 function App() {
   const [user, setUser] = useState<UsersProps>();
   const [searchString, setSearchString] = useState<string | undefined>();

@@ -1,4 +1,4 @@
-import { Api } from '../lib/Api';
+import { getProducts } from '../lib/Api';
 import { useState, useEffect } from 'react';
 import InfoCard from '../components/InfoCard';
 
@@ -14,18 +14,10 @@ type Props = {
   searchString?: string | undefined;
 };
 
-export default function Catalog({
-  type,
-  searchString = undefined,
-}: Props): JSX.Element {
-  const { getProducts } = Api();
+export default function Catalog({ type, searchString }: Props): JSX.Element {
   const [products, setProducts] = useState<any[]>();
   const [error, setError] = useState<unknown>();
-
-  if (searchString) {
-    searchString = searchString.toLowerCase();
-  }
-
+  console.log('catalog', type, searchString);
   useEffect(() => {
     async function loadProducts() {
       try {
@@ -36,7 +28,9 @@ export default function Catalog({
       }
     }
     loadProducts();
-  }, [products, type, getProducts, searchString]);
+    console.log('called', type, searchString);
+    debugger;
+  }, [type, searchString]);
 
   if (error) {
     console.error('Fetch error:', error);

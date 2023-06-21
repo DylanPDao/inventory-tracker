@@ -161,7 +161,6 @@ export function Api() {
       },
       body: JSON.stringify({ cart }),
     };
-    console.log(cart);
     const res = await fetch('/checkout', req);
     if (!res.ok) throw new Error(`Could not checkout`);
   }
@@ -170,7 +169,6 @@ export function Api() {
     error,
     isLoading,
     signUpOrIn,
-    getProducts,
     getProduct,
     addToCart,
     viewCart,
@@ -178,4 +176,27 @@ export function Api() {
     deleteCartItem,
     checkout,
   };
+}
+
+/**
+ * Grabs products according to type of product
+ * @param type string representing what type of item to get
+ * @returns an object with all product data
+ */
+type ProductProps = {
+  type: string;
+  searchString?: string | undefined;
+};
+export async function getProducts({ type, searchString }: ProductProps) {
+  const req = {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ type, searchString }),
+  };
+  const res = await fetch('/catalog', req);
+  if (!res.ok) throw new Error(`fetch Error ${res.status}`);
+  const products = await res.json();
+  return products;
 }
