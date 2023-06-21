@@ -24,8 +24,8 @@ export default function OneProduct({
 
   return (
     <div className="flex justify-center items-center border-2 mt-4">
-      <div className="w-6/12 flex">
-        <img className="w-full" alt={name} src={imageUrl} />
+      <div className="w-6/12 flex justify-center">
+        <img className="w-10/12 lg:w-6/12" alt={name} src={imageUrl} />
       </div>
       <div className="w-6/12">
         <p className="mb-4 text-2xl font-bold">{name}</p>
