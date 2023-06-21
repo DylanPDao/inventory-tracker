@@ -151,16 +151,12 @@ app.post('/catalog', async (req, res, next) => {
         where "name" ilike '%${searchString}%'
       `;
     }
-
-    // console.log(sql)
     const params = type === 'card' ? [type, 'sets'] : [type];
     const result =
       type === 'all' || type === 'search'
         ? await db.query(sql)
         : await db.query(sql, params);
     const [...products] = result.rows;
-
-    // console.log(products);
     if (!products) {
       throw new ClientError(401, 'invalid product');
     }

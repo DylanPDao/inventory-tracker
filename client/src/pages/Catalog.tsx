@@ -17,7 +17,6 @@ type Props = {
 export default function Catalog({ type, searchString }: Props): JSX.Element {
   const [products, setProducts] = useState<any[]>();
   const [error, setError] = useState<unknown>();
-  console.log('catalog', type, searchString);
   useEffect(() => {
     async function loadProducts() {
       try {
@@ -28,8 +27,6 @@ export default function Catalog({ type, searchString }: Props): JSX.Element {
       }
     }
     loadProducts();
-    console.log('called', type, searchString);
-    debugger;
   }, [type, searchString]);
 
   if (error) {
