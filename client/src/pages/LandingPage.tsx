@@ -8,6 +8,19 @@ const banners = [
   { bannerUrl: '/images/Banner0.jpeg', id: 0 },
 ];
 
+const mobileBanners = banners.map((banner) => (
+  <li className="sm:hidden p-2">
+    <img alt="banner" src={banner.bannerUrl} key={banner.bannerUrl} />
+  </li>
+));
+
 export default function LandingPage() {
-  return <BannerCarousel banners={banners} />;
+  return (
+    <div className="container">
+      <div className="hidden sm:block">
+        <BannerCarousel banners={banners} />
+      </div>
+      <ul>{mobileBanners}</ul>
+    </div>
+  );
 }

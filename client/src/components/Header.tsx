@@ -20,12 +20,12 @@ export default function Header({
           <Link to="/" className="w-5/12">
             <img alt="pikachu logo" src="/images/pikachu-head.svg" />
           </Link>
-          <h1 className="w-6/12">Gimme Pokemon</h1>
+          <h1 className="hidden sm:block w-6/12">Gimme Pokemon</h1>
         </div>
         <div className="w-4/12">
           <SearchBar searchString={searchString} />
         </div>
-        <div className="flex w-4/12 items-center">
+        <div className="sm:flex sm:w-4/12 sm:items-center hidden">
           <Link to={user ? '' : 'sign-in'} className="w-6/12">
             {user ? <UserMenu /> : 'Sign In'}
           </Link>
@@ -36,7 +36,7 @@ export default function Header({
           </Link>
         </div>
       </div>
-      <div className="flex border-b-2 p-1">
+      <div className="sm:flex sm:border-b-2 sm:p-1 hidden">
         <MenuItem
           src="/images/blank-cards.svg"
           alt="blank cards"
