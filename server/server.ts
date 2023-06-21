@@ -148,11 +148,11 @@ app.post('/catalog', async (req, res, next) => {
       sql = `
       select *
         from "products"
-        where lower("name") like $1
+        where lower("name") like concat('%',$1,'%')
       `;
     }
     let params = type === 'card' ? [type, 'sets'] : [type];
-    params = type === 'search' ? [`%${searchString}%`] : params;
+    params = type === 'search' ? [searchString] : params;
     const result =
       type === 'all' ? await db.query(sql) : await db.query(sql, params);
     const [...products] = result.rows;
@@ -419,7 +419,7 @@ app.post('/cart/delete', async (req, res, next) => {
 
 app.post('/checkout', async (req, res, next) => {
   const { cart } = req.body;
-  console.log(cart);
+  console.log(req.body);
   // const session = await stripe.checkout.sessions.create({
   //   line_items: [
   //     {
