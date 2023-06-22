@@ -5,11 +5,6 @@ export default function Admin() {
   const [error, setError] = useState<unknown>();
   const navigate = useNavigate();
 
-  if (error) {
-    console.error('Fetch error:', error);
-    return <div>{`Error! ${error}`}</div>;
-  }
-
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     const formData = new FormData(event.currentTarget);
@@ -27,6 +22,11 @@ export default function Admin() {
     } catch (err) {
       setError(err);
     }
+  }
+
+  if (error) {
+    console.error('Fetch error:', error);
+    return <div>{`Error! ${error}`}</div>;
   }
 
   return (

@@ -9,8 +9,8 @@ const banners = [
 ];
 
 const mobileBanners = banners.map((banner) => (
-  <li className="sm:hidden p-2">
-    <img alt="banner" src={banner.bannerUrl} key={banner.bannerUrl} />
+  <li className="sm:hidden p-2" key={banner.bannerUrl}>
+    <img alt="banner" src={banner.bannerUrl} />
   </li>
 ));
 
