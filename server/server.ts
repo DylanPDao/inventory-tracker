@@ -97,11 +97,10 @@ app.post(
   async (req, res, next) => {
     try {
       const { name, price, stock, type, longDescription } = req.body;
-      if (!name || !price || !type || !stock) {
+      if (!name || !price || !type || !stock || !req.file) {
         throw new ClientError(401, 'invalid product details');
       }
       const url = `/images/${req.file.filename}`;
-      console.log(url);
       const sql = `
       insert into "products" ("name", "price", "imageUrl", "longDescription", "stock", "type")
         values ($1, $2, $3, $4, $5, $6)
