@@ -9,7 +9,12 @@
   ],
   "customizations": {
     "vscode": {
-      "extensions": ["thebearingedge.lfz-code", "esbenp.prettier-vscode"]
+      "extensions": [
+        "thebearingedge.lfz-code",
+        "esbenp.prettier-vscode",
+        "ms-azuretools.vscode-azureappservice",
+        "ms-azuretools.vscode-cosmosdb"
+      ]
     }
   },
   "postCreateCommand": "[ ! -f package-lock.json ] || npm ci; sudo chown -R dev:dev ~/.ssh && chmod 700 ~/.ssh && chmod 600 ~/.ssh/* && chmod 644 ~/.ssh/*.pub",
