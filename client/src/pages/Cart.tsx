@@ -44,7 +44,6 @@ export default function Cart() {
         (subTotal += Number(cartItem.price) * Number(cartItem.quantity))
     );
   }
-
   async function handleCheckout() {
     const url = await checkout(cart);
     window.location.href = url;
