@@ -37,5 +37,5 @@ insert into "products"
     ('price_1NLYlICzE081s9wVnr3e95je','Pikachu Fidget', 9.99, '/images/fidget.jpeg', 5, 'other', 'Pokemon Go Pikachu Running Fidget Spinner Spinner Turn Anti-Stress Toy Dynamic Relief Toy'),
     ('price_1NLYkrCzE081s9wVdcBLsmUb','Gengar (H9) - Skyridge (SK)', 332.66, '/images/gengar1.jpeg', 5, 'card', 'Skyridge Gengar'),
     ('price_1NLYkJCzE081s9wVbI2vpIgj','Dark Gengar - Neo Destiny (N4)', 122.00, '/images/gengar2.jpeg', 5, 'card', 'Neo Destiny Gengar'),
-    ('price_1NLYjgCzE081s9wVqaPLnwZe','Gengar & Mimikyu GX', 300, '/images/gengar3.jpeg', 5, 'card', '(Alternate Full Art) - SM - Team Up (SM9)');
+    ('price_1NLYjgCzE081s9wVqaPLnwZe','Gengar & Mimikyu GX', 300, '/images/gengar3.jpeg', 5, 'card', '(Alternate Full Art) - SM - Team Up (SM9)'),
     ('price_1NLYn1CzE081s9wV4lPVgCI2','Pokemon Rescue Mystery Dungeon', 59.99, '/images/rescue.jpeg', 5, 'game', 'Rescue the little ones!!');
