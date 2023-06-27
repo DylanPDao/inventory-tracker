@@ -27,5 +27,5 @@
       "ts": "ts-node-esm"
     }
   },
-  "proxy": "<http://localhost:4242>"
+  "proxy": "http://localhost:8080"
 }
