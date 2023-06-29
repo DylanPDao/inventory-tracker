@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Api, toDollar, sortCart } from '../lib';
 import { useParams } from 'react-router-dom';
-import CartItem from '../components/CartItem';
+import { LoadingSpinner, CartItem } from '../components';
 
 export type CartProps = {
   imageUrl: string;
@@ -49,7 +49,7 @@ export default function Cart() {
     window.location.href = url;
   }
 
-  if (isLoading) return <div> Loading... </div>;
+  if (isLoading) return <LoadingSpinner />;
 
   if (error) {
     console.error('Fetch error:', error);

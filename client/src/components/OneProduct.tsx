@@ -1,7 +1,6 @@
-import { BtnAddToCart } from '../components';
+import { BtnAddToCart, AddOrSubItem } from '../components';
 import { useState } from 'react';
-import AddOrSubItem from '../components/AddOrSubItem';
-import toDollars from '../lib/toDollar';
+import { toDollar } from '../lib';
 
 type ProductsProps = {
   imageUrl: string;
@@ -36,9 +35,7 @@ export default function OneProduct({
           </div>
         </div>
         <div className="mb-2 flex items-center justify-around">
-          <div className="w-2/12 text-blue-900 text-2xl">
-            {toDollars(price)}
-          </div>
+          <div className="w-2/12 text-blue-900 text-2xl">{toDollar(price)}</div>
           <BtnAddToCart
             quantity={quantity}
             className="text-white w-2/12 text-xs m-2 p-2 bg-blue-700 hover:bg-blue-800 active:ring-4 rounded-lg text-center"

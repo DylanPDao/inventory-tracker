@@ -1,7 +1,7 @@
 import { UserCircleIcon } from '@heroicons/react/24/outline';
 import { Menu } from '@headlessui/react';
 import { useContext } from 'react';
-import { UserContext } from '../lib/UserContext';
+import { UserContext } from '../lib';
 import UserMenuItems from './UserMenuItems';
 
 export default function UserMenu() {

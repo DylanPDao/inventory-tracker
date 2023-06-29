@@ -1,7 +1,6 @@
-import { useState } from 'react';
+import { useState, useContext } from 'react';
 import { Api } from '../lib/Api';
 import { UserContext } from '../lib/UserContext';
-import { useContext } from 'react';
 
 type Props = {
   productId: string | number;

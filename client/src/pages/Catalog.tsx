@@ -1,6 +1,6 @@
 import { getProducts } from '../lib/Api';
 import { useState, useEffect } from 'react';
-import InfoCard from '../components/InfoCard';
+import { LoadingSpinner, InfoCard } from '../components';
 
 type ProductsProps = {
   imageUrl: string;
@@ -17,6 +17,8 @@ type Props = {
 export default function Catalog({ type, searchString }: Props): JSX.Element {
   const [products, setProducts] = useState<any[]>();
   const [error, setError] = useState<unknown>();
+  const [isLoading, setLoading] = useState(true);
+
   useEffect(() => {
     async function loadProducts() {
       try {
@@ -24,10 +26,14 @@ export default function Catalog({ type, searchString }: Props): JSX.Element {
         setProducts(productList);
       } catch (err) {
         setError(err);
+      } finally {
+        setLoading(false);
       }
     }
     loadProducts();
   }, [type, searchString]);
+
+  if (isLoading) return <LoadingSpinner />;
 
   if (error) {
     console.error('Fetch error:', error);

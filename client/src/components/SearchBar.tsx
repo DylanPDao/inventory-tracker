@@ -1,6 +1,5 @@
 import React, { ChangeEvent, useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 export type ProductProps = {
   imageUrl: string;
@@ -58,7 +57,8 @@ export default function SearchBar({ searchString }: Props) {
   }
 
   function handleBlur() {
-    setTimeout(() => setActive(false), 500);
+    setTimeout(() => setActive(false), 250);
+    setInputValue('');
   }
 
   function handleSubmit(e: React.FormEvent) {
