@@ -79,7 +79,7 @@ export default function CartItem({
         <img src={imageUrl} alt={name} className="w-full rounded-lg md:w-40" />
         <div className="md:ml-4 md:flex md:w-full md:justify-between">
           <div className="mt-5 md:mt-0 flex justify-center">
-            <h2 className="text-lg font-bold text-gray-900">{name}</h2>
+            <h2 className="mb-2 text-lg font-bold text-gray-900">{name}</h2>
           </div>
           <div className="flex flex-col justify-around">
             {
@@ -89,8 +89,8 @@ export default function CartItem({
                 counts={handleQuantityChange}
               />
             }
-            <div className="flex items-center space-x-4">
-              <p className="text-sm">{toDollar(price)}</p>
+            <div className="mt-2 flex justify-center items-center space-x-4">
+              <p className="text-md">{toDollar(price)}</p>
               <svg
                 onClick={handleClick}
                 xmlns="http://www.w3.org/2000/svg"

@@ -58,8 +58,8 @@ export default function Cart() {
   return (
     <div className="container">
       <h1 className="mt-4 mb-4 text-center text-2xl font-bold">Cart Items</h1>
-      <div className="flex items-start">
-        <div className="w-8/12 p-4">
+      <div className="flex md:items-start flex-col md:flex-row items-center">
+        <div className="w-full md:w-8/12 p-4">
           {cart &&
             cart.map((cartItem: CartProps) => (
               <CartItem
@@ -76,7 +76,7 @@ export default function Cart() {
               />
             ))}
         </div>
-        <div className="w-4/12 flex justify-center p-4">
+        <div className="w-full md:w-4/12 flex justify-center p-4">
           <div className="w-full rounded-lg border bg-gray-100 shadow-md p-4">
             <div className="mb-2 flex justify-between">
               <p className="text-gray-700">Subtotal</p>
