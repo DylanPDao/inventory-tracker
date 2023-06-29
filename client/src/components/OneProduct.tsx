@@ -22,11 +22,11 @@ export default function OneProduct({
   const [quantity, setQuantity] = useState(1);
 
   return (
-    <div className="flex justify-center items-center border-2 mt-4">
+    <div className="flex flex-col sm:flex-row justify-center items-center border-2 mt-4">
       <div className="w-6/12 flex justify-center">
         <img className="w-10/12 lg:w-6/12" alt={name} src={imageUrl} />
       </div>
-      <div className="w-6/12">
+      <div className="sm:w-6/12 w-full">
         <p className="mb-4 text-2xl font-bold">{name}</p>
         <div className="mb-2 w-full flex justify-center items-center">
           <p className="w-6/12 text-red-600">{`Only ${stock} left!`}</p>
