@@ -15,6 +15,7 @@ export default function Success() {
         const cart = user
           ? await viewCart(user.user.userId)
           : await viewCart('guest');
+        setCart(cart);
         cart.forEach(
           async (item: CartProps) =>
             await deleteCartItem({

@@ -13,7 +13,8 @@
         "thebearingedge.lfz-code",
         "esbenp.prettier-vscode",
         "ms-azuretools.vscode-azureappservice",
-        "ms-azuretools.vscode-cosmosdb"
+        "ms-azuretools.vscode-cosmosdb",
+        "bradlc.vscode-tailwindcss"
       ]
     }
   },

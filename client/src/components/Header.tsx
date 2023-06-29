@@ -14,7 +14,7 @@ export default function Header({
   const user = useContext(UserContext);
 
   return (
-    <div className="container my-auto mx-auto">
+    <div className="container h-screen my-auto mx-auto">
       <div className="flex items-center justify-center border-b-2">
         <div className="flex w-4/12 items-center justify-center">
           <Link to="/" className="w-5/12">

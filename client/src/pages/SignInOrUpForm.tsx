@@ -1,6 +1,7 @@
 import { FormEvent, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Api, UsersProps } from '../lib/Api';
+import LoadingSpinner from '../components/LoadingSpinner';
 
 type Props = {
   action: string;
@@ -11,6 +12,7 @@ export default function SignInOrUpForm({ action, user }: Props) {
   const { signUpOrIn } = Api();
   const navigate = useNavigate();
   const [error, setError] = useState<unknown>();
+  const [isLoading, setLoading] = useState(false);
   const [formValues, setFormValues] = useState({
     username: '',
     password: '',
@@ -21,11 +23,14 @@ export default function SignInOrUpForm({ action, user }: Props) {
     return <div>{`Error! ${error}`}</div>;
   }
 
+  if (isLoading) return <LoadingSpinner />;
+
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     const formData = new FormData(event.currentTarget);
     let { username, password } = Object.fromEntries(formData.entries());
     try {
+      setLoading(true);
       const result = await signUpOrIn(action, username, password);
       if (action === 'sign-up') {
         navigate('/sign-in');
@@ -36,6 +41,8 @@ export default function SignInOrUpForm({ action, user }: Props) {
       }
     } catch (err) {
       setError(err);
+    } finally {
+      setLoading(false);
     }
   }
 
