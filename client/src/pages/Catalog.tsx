@@ -42,7 +42,7 @@ export default function Catalog({ type, searchString }: Props): JSX.Element {
 
   return (
     <div className="container">
-      <div className="flex flex-wrap justify-center items-end">
+      <div className="flex sm:flex-wrap flex-col sm:flex-row justify-center items-end">
         {products
           ? products.map((product: ProductsProps) => (
               <InfoCard

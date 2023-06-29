@@ -12,7 +12,7 @@ type Props = {
 export default function InfoCard({ imageUrl, name, productId, price }: Props) {
   return (
     <>
-      <div className="w-3/12 m-4">
+      <div className="sm:w-3/12 m-4 w-full">
         <div className="w-full flex flex-col">
           <Link
             to={`/products/${productId}`}
