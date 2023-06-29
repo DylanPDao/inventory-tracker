@@ -75,10 +75,10 @@ export default function CartItem({
 
   return (
     <>
-      <div className="justify-between mb-6 rounded-lg bg-gray-100 p-6 shadow-md sm:flex sm:justify-start">
-        <img src={imageUrl} alt={name} className="w-full rounded-lg sm:w-40" />
-        <div className="sm:ml-4 sm:flex sm:w-full sm:justify-between">
-          <div className="mt-5 sm:mt-0 flex justify-center">
+      <div className="justify-between mb-6 rounded-lg bg-gray-100 p-6 shadow-md md:flex md:justify-start">
+        <img src={imageUrl} alt={name} className="w-full rounded-lg md:w-40" />
+        <div className="md:ml-4 md:flex md:w-full md:justify-between">
+          <div className="mt-5 md:mt-0 flex justify-center">
             <h2 className="text-lg font-bold text-gray-900">{name}</h2>
           </div>
           <div className="flex flex-col justify-around">

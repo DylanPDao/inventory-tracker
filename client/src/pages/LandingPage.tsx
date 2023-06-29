@@ -9,7 +9,7 @@ const banners = [
 ];
 
 const mobileBanners = banners.map((banner) => (
-  <li className="sm:hidden p-2" key={banner.bannerUrl}>
+  <li className="md:hidden p-2" key={banner.bannerUrl}>
     <img alt="banner" src={banner.bannerUrl} />
   </li>
 ));
@@ -17,7 +17,7 @@ const mobileBanners = banners.map((banner) => (
 export default function LandingPage() {
   return (
     <div className="container">
-      <div className="hidden sm:block">
+      <div className="hidden md:block">
         <BannerCarousel banners={banners} />
       </div>
       <ul>{mobileBanners}</ul>

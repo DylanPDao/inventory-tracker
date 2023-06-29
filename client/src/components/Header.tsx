@@ -14,13 +14,13 @@ export default function Header({
 
   return (
     <div className="container h-screen my-auto mx-auto">
-      <div className="flex items-center justify-center border-b-2 flex-col sm:flex-row">
-        <div className="flex w-full sm:w-4/12 items-center justify-around">
-          <Link to="/" className="sm:w-5/12 w-4/12">
+      <div className="flex items-center justify-center border-b-2 flex-col md:flex-row">
+        <div className="flex w-full md:w-4/12 items-center justify-around">
+          <Link to="/" className="md:w-5/12 w-4/12">
             <img alt="pikachu logo" src="/images/pikachu-head.svg" />
           </Link>
-          <h1 className="sm:block sm:w-6/12 w-4/12">Gimme Pokemon</h1>
-          <Menu as="div" className="sm:hidden w-4/12 relative">
+          <h1 className="md:block md:w-6/12 w-4/12">Gimme Pokemon</h1>
+          <Menu as="div" className="md:hidden w-4/12 relative">
             <div>
               <Menu.Button className="inline-flex w-full justify-end pr-4">
                 <Bars3Icon className="h-8 w-8" />
@@ -47,10 +47,10 @@ export default function Header({
             </Menu.Items>
           </Menu>
         </div>
-        <div className="sm:block w-6/12 hidden">
+        <div className="md:block w-6/12 hidden">
           <SearchBar searchString={searchString} />
         </div>
-        <div className="sm:flex sm:w-4/12 sm:items-center hidden">
+        <div className="md:flex md:w-4/12 md:items-center hidden">
           <Link to={user ? '' : 'sign-in'} className="w-6/12">
             {user ? <UserMenu /> : 'Sign In'}
           </Link>
@@ -60,11 +60,11 @@ export default function Header({
             <ShoppingCartIcon className="h-8 w-8 flex-no-shrink mr-auto ml-auto" />
           </Link>
         </div>
-        <div className="sm:hidden w-full flex z-0">
+        <div className="md:hidden w-full flex z-0">
           <SearchBar searchString={searchString} />
         </div>
       </div>
-      <div className="sm:flex sm:border-b-2 sm:p-1 hidden">
+      <div className="md:flex md:border-b-2 md:p-1 hidden">
         <MenuItem
           src="/images/blank-cards.svg"
           alt="blank cards"
