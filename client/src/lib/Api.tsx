@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import { CartProps } from '../pages/Cart';
 
 export type UsersProps = {
@@ -11,8 +10,6 @@ export type UsersProps = {
 };
 
 export function Api() {
-  const [error, setError] = useState<unknown>();
-  const [isLoading, setLoading] = useState(true);
   /**
    * Signs up or signs in depending on the action.
    * @param {string} action Action to take, either 'sign-up' or 'sign-in'
@@ -33,32 +30,9 @@ export function Api() {
       body: JSON.stringify({ username, password }),
     };
     const res = await fetch(`/${action}`, req);
-    if (!res.ok) throw new Error(`fetch Error ${res.status}`);
+    if (!res.ok) throw new Error(`Sign In or Sign Up error ${res.status}`);
     const user: UsersProps = await res.json();
     return user;
-  }
-
-  /**
-   * Grabs products according to type of product
-   * @param type string representing what type of item to get
-   * @returns an object with all product data
-   */
-  type ProductProps = {
-    type: string;
-    searchString?: string | undefined;
-  };
-  async function getProducts({ type, searchString }: ProductProps) {
-    const req = {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ type, searchString }),
-    };
-    const res = await fetch('/catalog', req);
-    if (!res.ok) throw new Error(`fetch Error ${res.status}`);
-    const products = await res.json();
-    return products;
   }
 
   /**
@@ -90,6 +64,11 @@ export function Api() {
     quantity: number;
     user: UsersProps | undefined;
   };
+  /**
+   * adds item to cart
+   * @param param0 product object, quantity to be added, and user to be associated to cart
+   * @returns product
+   */
   async function addToCart({ product, quantity, user }: Props) {
     const newProduct = product;
     newProduct.quantity = quantity;
@@ -107,6 +86,11 @@ export function Api() {
     return cartItem;
   }
 
+  /**
+   *
+   * @param userId id of user
+   * @returns array of cart item objects
+   */
   async function viewCart(userId: string | number | undefined) {
     const res = await fetch(`/cart/${userId}`);
     if (!res.ok) throw new Error(`Could not find cart`);
@@ -119,6 +103,10 @@ export function Api() {
     cartId: number | null;
     cartItemId: number;
   };
+  /**
+   *
+   * @param param0 new quantity of cart item, id of cart item, and id of cart to be updated
+   */
   async function updateCart({ quantity, cartId, cartItemId }: UpdateProps) {
     const product = {
       quantity: quantity,
@@ -140,7 +128,10 @@ export function Api() {
     cartId: number | null;
     cartItemId: number;
   };
-
+  /**
+   *
+   * @param param0 cart id and id of cart item
+   */
   async function deleteCartItem({ cartId, cartItemId }: DeleteProps) {
     const req = {
       method: 'POST',
@@ -153,6 +144,11 @@ export function Api() {
     if (!res.ok) throw new Error(`Could not delete cart item`);
   }
 
+  /**
+   *
+   * @param cart array of priceid and quantity
+   * @returns url to be redirected to for stripe
+   */
   async function checkout(cart: CartProps[]) {
     const req = {
       method: 'POST',
@@ -168,8 +164,6 @@ export function Api() {
   }
 
   return {
-    error,
-    isLoading,
     signUpOrIn,
     getProduct,
     addToCart,

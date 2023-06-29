@@ -39,6 +39,7 @@ app.use(express.static(uploadsStaticDir));
 app.use(express.static('public'));
 app.use(express.json());
 
+// User registers for new username/hashedpasswords
 app.post('/sign-up', async (req, res, next) => {
   try {
     const { username, password } = req.body;
@@ -60,6 +61,7 @@ app.post('/sign-up', async (req, res, next) => {
   }
 });
 
+// verify user exists on database
 app.post('/sign-in', async (req, res, next) => {
   try {
     const { username, password } = req.body;
@@ -91,6 +93,7 @@ app.post('/sign-in', async (req, res, next) => {
   }
 });
 
+// Take information from form to add into products
 app.post(
   '/upload',
   uploadsMiddleware.single('image'),
@@ -119,6 +122,7 @@ app.post(
   }
 );
 
+// pulls all the products by type of product
 app.post('/catalog', async (req, res, next) => {
   try {
     const { type, searchString } = req.body;
@@ -188,6 +192,7 @@ app.get('/products/:productId', async (req, res, next) => {
   }
 });
 
+// adds item to cart
 app.post('/add-to-cart', async (req, res, next) => {
   try {
     const { name, price, quantity, productId, userId, imageUrl, priceId } =
@@ -308,6 +313,7 @@ app.post('/add-to-cart', async (req, res, next) => {
   }
 });
 
+// pulls cart by user
 app.get('/cart/:userId', async (req, res, next) => {
   const user = req.params;
   const userId: string = user.userId;
@@ -346,6 +352,7 @@ app.get('/cart/:userId', async (req, res, next) => {
   }
 });
 
+// updates cart with new quanitity of item
 app.patch('/cart/update', async (req, res, next) => {
   try {
     const { quantity, cartId, cartItemId } = req.body;
@@ -385,6 +392,7 @@ app.patch('/cart/update', async (req, res, next) => {
   }
 });
 
+// removes cart item
 app.post('/cart/delete', async (req, res, next) => {
   try {
     const { cartId, cartItemId } = req.body;
@@ -418,6 +426,8 @@ app.post('/cart/delete', async (req, res, next) => {
     next(err);
   }
 });
+
+// handles stripe redirection and adds item from cart
 type CheckoutProps = {
   cartItemId: number;
   cartId: number | null;
