@@ -1,8 +1,9 @@
 import { Link, Outlet } from 'react-router-dom';
-import { ShoppingCartIcon } from '@heroicons/react/24/outline';
+import { ShoppingCartIcon, Bars3Icon } from '@heroicons/react/24/outline';
 import { UserContext } from '../lib';
 import { useContext } from 'react';
-import { SearchBar, MenuItem, UserMenu } from './';
+import { SearchBar, MenuItem, UserMenu, UserMenuItems } from './';
+import { Menu } from '@headlessui/react';
 
 export default function Header({
   searchString,
@@ -13,14 +14,40 @@ export default function Header({
 
   return (
     <div className="container h-screen my-auto mx-auto">
-      <div className="flex items-center justify-center border-b-2">
-        <div className="flex w-4/12 items-center justify-center">
-          <Link to="/" className="w-5/12">
+      <div className="flex items-center justify-center border-b-2 flex-col sm:flex-row">
+        <div className="flex w-full sm:w-4/12 items-center justify-around">
+          <Link to="/" className="sm:w-5/12 w-4/12">
             <img alt="pikachu logo" src="/images/pikachu-head.svg" />
           </Link>
-          <h1 className="hidden sm:block w-6/12">Gimme Pokemon</h1>
+          <h1 className="sm:block sm:w-6/12 w-4/12">Gimme Pokemon</h1>
+          <Menu as="div" className="sm:hidden w-4/12 relative">
+            <div>
+              <Menu.Button className="inline-flex w-full justify-end pr-4">
+                <Bars3Icon className="h-8 w-8" />
+              </Menu.Button>
+            </div>
+            <Menu.Items className="absolute mt-2 right-4 w-48 bg-white border-2 rounded-lg z-10">
+              <div className="px-1 py-1 text-2xl">
+                <UserMenuItems name="Cards" url="catalog/cards" />
+                <UserMenuItems name="Toys/Plush" url="catalog/toys-plush" />
+                <UserMenuItems name="Games" url="catalog/games" />
+                <UserMenuItems name="Other" url="catalog/other" />
+                <UserMenuItems
+                  name={user ? 'Sign Out' : 'Sign In'}
+                  url={user ? 'sign-out' : 'sign-in'}
+                />
+                <UserMenuItems
+                  name="Cart"
+                  url={`cart/${user ? user.user.userId : 'guest'}`}
+                />
+                {user?.user.admin && (
+                  <UserMenuItems name="Add Product" url="/admin-add" />
+                )}
+              </div>
+            </Menu.Items>
+          </Menu>
         </div>
-        <div className="w-4/12">
+        <div className="sm:block w-6/12 hidden">
           <SearchBar searchString={searchString} />
         </div>
         <div className="sm:flex sm:w-4/12 sm:items-center hidden">
@@ -32,6 +59,9 @@ export default function Header({
             className="w-6/12">
             <ShoppingCartIcon className="h-8 w-8 flex-no-shrink mr-auto ml-auto" />
           </Link>
+        </div>
+        <div className="sm:hidden w-full flex z-0">
+          <SearchBar searchString={searchString} />
         </div>
       </div>
       <div className="sm:flex sm:border-b-2 sm:p-1 hidden">
