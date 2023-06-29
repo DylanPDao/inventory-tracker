@@ -1,1 +1,11 @@
 export { default as BtnAddToCart } from './BtnAddToCart';
+export { default as AddOrSubItem } from './AddOrSubItem';
+export { default as BannerCarousel } from './BannerCarousel';
+export { default as CartItem } from './CartItem';
+export { default as InfoCard } from './InfoCard';
+export { default as LoadingSpinner } from './LoadingSpinner';
+export { default as MenuItem } from './MenuItem';
+export { default as OneProduct } from './OneProduct';
+export { default as SearchBar } from './SearchBar';
+export { default as UserMenu } from './UserMenu';
+export { default as UserMenuItems } from './UserMenuItems';

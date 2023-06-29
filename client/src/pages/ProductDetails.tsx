@@ -1,13 +1,13 @@
 import { Api } from '../lib/Api';
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import OneProduct from '../components/OneProduct';
+import { OneProduct, LoadingSpinner } from '../components';
 
 export default function ProductDetails() {
   const { getProduct } = Api();
   const { productId } = useParams();
   const [product, setProduct] = useState<any>();
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setLoading] = useState(true);
   const [error, setError] = useState<unknown>();
 
   useEffect(() => {
@@ -18,13 +18,13 @@ export default function ProductDetails() {
       } catch (err) {
         setError(err);
       } finally {
-        setIsLoading(false);
+        setLoading(false);
       }
     }
     loadProduct();
   }, [productId, getProduct]);
 
-  if (isLoading) return <div> Loading... </div>;
+  if (isLoading) return <LoadingSpinner />;
 
   if (error) {
     console.error('Fetch error:', error);
