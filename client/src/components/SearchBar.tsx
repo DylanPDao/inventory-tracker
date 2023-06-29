@@ -74,7 +74,7 @@ export default function SearchBar({ searchString }: Props) {
   }
 
   return (
-    <div className="w-full flex justify-center items-center flex-col">
+    <div className="w-full flex justify-center items-center flex-col relative">
       <form className="w-full" onSubmit={handleSubmit}>
         <label
           htmlFor="default-search"
@@ -120,7 +120,7 @@ export default function SearchBar({ searchString }: Props) {
       <div
         className={`${
           isActive || 'hidden'
-        } top-20 absolute flex flex-col bg-white border-2 border-gray-200 rounded-lg w-4/12`}>
+        } top-14 absolute flex flex-col bg-white border-2 border-gray-200 rounded-lg w-full`}>
         {isActive &&
           filteredProducts &&
           filteredProducts.map((product) => (
