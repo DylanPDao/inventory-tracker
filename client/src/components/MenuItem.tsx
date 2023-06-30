@@ -10,9 +10,7 @@ export default function MenuItem({ src, alt, text, link }: Props): JSX.Element {
   return (
     <>
       <Link to={link} className="w-1/4 flex items-center justify-center">
-        <div className="mr-2">
-          <img className="h-10" alt={alt} src={src} />
-        </div>
+        <img className="h-10" alt={alt} src={src} />
         <h1 className="">{text}</h1>
       </Link>
     </>

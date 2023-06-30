@@ -341,6 +341,7 @@ app.get('/cart/:userId', async (req, res, next) => {
       const params = [userId];
       const result = await db.query(sql, params);
       const [...cart] = result.rows;
+      console.log(cart);
       if (!cart) {
         throw new ClientError(401, 'Could not find cart');
       }
