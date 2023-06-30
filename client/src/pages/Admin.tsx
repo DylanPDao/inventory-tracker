@@ -1,11 +1,14 @@
 import { FormEvent, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { LoadingSpinner } from '../components';
 
 export default function Admin() {
   const [error, setError] = useState<unknown>();
+  const [isLoading, setLoading] = useState(false);
   const navigate = useNavigate();
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
+    setLoading(true);
     event.preventDefault();
     const formData = new FormData(event.currentTarget);
     try {
@@ -18,11 +21,14 @@ export default function Admin() {
       if (!result) {
         return <div className="text-red-900 text-2xl">Item was not added</div>;
       }
+      setLoading(false);
       navigate(`/products/${result.productId}`);
     } catch (err) {
       setError(err);
     }
   }
+
+  if (isLoading) return <LoadingSpinner />;
 
   if (error) {
     console.error('Fetch error:', error);

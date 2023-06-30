@@ -103,7 +103,7 @@ app.post(
       if (!name || !price || !type || !stock || !req.file) {
         throw new ClientError(401, 'invalid product details');
       }
-      const url = `/images/${req.file.filename}`;
+      const url = `${req.file.location}`;
       const sql = `
       insert into "products" ("name", "price", "imageUrl", "longDescription", "stock", "type")
         values ($1, $2, $3, $4, $5, $6)
