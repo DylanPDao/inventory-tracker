@@ -9,12 +9,9 @@ import pg from 'pg';
 import argon2 from 'argon2';
 import jwt from 'jsonwebtoken';
 import Stripe from 'stripe';
-const stripe = new Stripe(
-  'sk_test_51NLH2vCzE081s9wVhRmiywNcgnqJLTUDxzKnl3zCGhle7NI3ZoN0RDcMuktqEVKwzaEpLqUqrDrZtrJJqrb21PHN00E5zv2n3R',
-  {
-    apiVersion: '2022-11-15',
-  }
-);
+const stripe = new Stripe(`${process.env.STRIPE_KEY}`, {
+  apiVersion: '2022-11-15',
+});
 
 const tokenSecret = process.env.TOKEN_SECRET;
 if (!tokenSecret) throw new Error('token secret not defined');
