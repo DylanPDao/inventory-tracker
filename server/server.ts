@@ -9,6 +9,7 @@ import pg from 'pg';
 import argon2 from 'argon2';
 import jwt from 'jsonwebtoken';
 import Stripe from 'stripe';
+import path from 'path';
 const stripe = new Stripe(`${process.env.STRIPE_KEY}`, {
   apiVersion: '2022-11-15',
 });
@@ -473,6 +474,18 @@ app.post('/checkout', async (req, res, next) => {
  * React Router to manage the routing.
  */
 app.get('*', (req, res) => res.sendFile(`${reactStaticDir}/index.html`));
+
+app.use('/api', (req, res) => {
+  res.status(404).json({ error: `cannot ${req.method} ${req.url}` });
+});
+
+app.use((req, res) => {
+  res.sendFile('/index.html', {
+    // you'll need to require the built-in path module
+    // into your server code if you haven't already
+    root: path.join(__dirname, 'public'),
+  });
+});
 
 app.use(errorMiddleware);
 
