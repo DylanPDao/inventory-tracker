@@ -5,8 +5,8 @@
   "description": "A full stack JavaScript solo project.",
   "type": "module",
   "scripts": {
-    "start": "node server/server.ts",
-    "build": "rimraf ./build && tsc",
+    "start": "ts-node server/server.ts",
+    "build": "tsc",
     "db:import": "sh database/import.sh",
     "dev:db": "pgweb --db=`awk 'BEGIN { FS = \"/\" } ; /DATABASE_URL=/ {print $NF}' server/.env`",
     "dev:client": "npm run start --prefix client",
@@ -17,8 +17,7 @@
     "install:env": "test -f server/.env || cp server/.env.example server/.env",
     "postinstall": "run-s install:*",
     "prepare": "husky install",
-    "prod:db:import": "sh database/prod-import.sh",
-    "tsc": "./node_modules/typescript/bin/tsc"
+    "prod:db:import": "sh database/prod-import.sh"
   },
   "devDependencies": {
     "@types/express": "^4.17.17",
