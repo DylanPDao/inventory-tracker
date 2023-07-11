@@ -55,7 +55,7 @@ export default function SignInOrUpForm({ action, user }: Props) {
       <form className="border-2 p-6 rounded-lg" onSubmit={handleSubmit}>
         <p className="mb-4 text-lg">{submitButtonText}</p>
         <div className="mb-3">
-          <label className="form-label">
+          <label className="form-label flex">
             Username:
             <input
               required
@@ -71,7 +71,7 @@ export default function SignInOrUpForm({ action, user }: Props) {
           </label>
         </div>
         <div className="mb-3">
-          <label className="form-label">
+          <label className="form-label flex">
             Password:
             <input
               value={formValues.password}
