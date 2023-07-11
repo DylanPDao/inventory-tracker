@@ -53,8 +53,8 @@ As a Pokemon enthusiast and Pokemon reseller I wanted to create a clean website 
 
 #### Web View
 
-![Pokemon-Ecommerce-overview-web](/client/public/webview.gif)
+![Pokemon-Ecommerce-overview-web gif 1](/client/public/webview.gif)
 
 #### Mobile View
 
-![Pokemon-Ecommerce-overview-web](/client/public/mobileview.gif)
+![Pokemon-Ecommerce-overview-web gif 2](/client/public/mobileview.gif)
