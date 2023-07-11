@@ -5,8 +5,8 @@
   "description": "A full stack JavaScript solo project.",
   "type": "module",
   "scripts": {
-    "start": "ts-node-esm server/server.ts",
-    "build": "npm run build --prefix client",
+    "start": "node server/server.ts",
+    "build": "rimraf ./build && tsc",
     "db:import": "sh database/import.sh",
     "dev:db": "pgweb --db=`awk 'BEGIN { FS = \"/\" } ; /DATABASE_URL=/ {print $NF}' server/.env`",
     "dev:client": "npm run start --prefix client",
@@ -44,10 +44,10 @@
     "stylelint": "^15.4.0",
     "stylelint-config-recommended": "^11.0.0",
     "stylelint-config-standard": "^32.0.0",
-    "tailwindcss": "^3.3.2"
+    "tailwindcss": "^3.3.2",
+    "typescript": "^5.1.6"
   },
   "dependencies": {
-    "stripe": "^12.9.0",
-    "typescript": "^5.1.6"
+    "stripe": "^12.9.0"
   }
 }
