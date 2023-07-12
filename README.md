@@ -4,7 +4,9 @@
 
 As a Pokemon enthusiast and Pokemon reseller I wanted to create a clean website that was all about the Pokemon goods!
 
-### Link to myPets
+### Link to Pokemon Shop
+
+https://gimmepokemon.dylandao.dev/
 
 ### 📚 Tech Stack
 
