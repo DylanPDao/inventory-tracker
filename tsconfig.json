@@ -16,5 +16,8 @@
     "noEmit": true,
     "jsx": "react-jsx"
   },
-  "include": ["src", ".", "server", "./src/**/*"]
+  "include": ["."],
+  "ts-node": {
+    "transpileOnly": true
+  }
 }
