@@ -92,7 +92,7 @@ export function Api() {
    * @returns array of cart item objects
    */
   async function viewCart(userId: string | number | undefined) {
-    const res = await fetch(`api/cart/${userId}`);
+    const res = await fetch(`/api/cart/${userId}`);
     if (!res.ok) throw new Error(`Could not find cart`);
     const cart = await res.json();
     return cart;

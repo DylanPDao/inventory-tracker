@@ -9,7 +9,6 @@ import pg from 'pg';
 import argon2 from 'argon2';
 import jwt from 'jsonwebtoken';
 import Stripe from 'stripe';
-import path from 'path';
 const stripe = new Stripe(`${process.env.STRIPE_KEY}`, {
   apiVersion: '2022-11-15',
 });
