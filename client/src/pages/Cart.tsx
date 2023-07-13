@@ -27,7 +27,6 @@ export default function Cart() {
     async function loadCart() {
       try {
         let cart = await viewCart(user.userId);
-        console.log(cart);
         cart = sortCart(cart);
         setCart(cart);
       } catch (err) {

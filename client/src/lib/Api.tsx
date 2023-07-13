@@ -155,10 +155,10 @@ export function Api() {
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ cart }),
+      body: JSON.stringify({ cart: cart }),
     };
-    const res = await fetch('/api/checkout:', req);
-    if (!res.url) throw new Error(`Could not checkout`);
+    const res = await fetch('/api/checkout', req);
+    // if (!res.url) throw new Error(`Could not checkout`);
     const url = await res.json();
     return url;
   }
