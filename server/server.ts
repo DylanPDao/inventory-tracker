@@ -167,7 +167,7 @@ app.post('/catalog', async (req, res, next) => {
   }
 });
 
-app.get('/products/:productId', async (req, res, next) => {
+app.get('/api/products/:productId', async (req, res, next) => {
   try {
     const productId = Number(req.params.productId);
     if (!productId) {
@@ -312,7 +312,7 @@ app.post('/add-to-cart', async (req, res, next) => {
 });
 
 // pulls cart by user
-app.get('/cart/:userId', async (req, res, next) => {
+app.get('/api/cart/:userId', async (req, res, next) => {
   const user = req.params;
   const userId = user.userId;
 
@@ -350,7 +350,7 @@ app.get('/cart/:userId', async (req, res, next) => {
 });
 
 // updates cart with new quanitity of item
-app.patch('/cart/update', async (req, res, next) => {
+app.patch('/api/cart/update', async (req, res, next) => {
   try {
     const { quantity, cartId, cartItemId } = req.body;
     if (!quantity) {
@@ -390,7 +390,7 @@ app.patch('/cart/update', async (req, res, next) => {
 });
 
 // removes cart item
-app.post('/cart/delete', async (req, res, next) => {
+app.post('/api/cart/delete', async (req, res, next) => {
   try {
     const { cartId, cartItemId } = req.body;
     if (cartId === null) {
@@ -439,7 +439,7 @@ type LineItemProps = {
   price: string;
   quantity: number;
 };
-app.post('/checkout', async (req, res, next) => {
+app.post('/api/checkout', async (req, res, next) => {
   const { cart } = req.body;
   try {
     const priceCart: LineItemProps[] = [];

@@ -42,7 +42,7 @@ export function Api() {
    */
   async function getProduct(productId: string | undefined | number) {
     productId = Number(productId);
-    const res = await fetch(`/products/${productId}`);
+    const res = await fetch(`/api/products/${productId}`);
     if (!res.ok) throw new Error(`fetch Error ${res.status}`);
     const product = await res.json();
     return product;
@@ -92,7 +92,7 @@ export function Api() {
    * @returns array of cart item objects
    */
   async function viewCart(userId: string | number | undefined) {
-    const res = await fetch(`/cart/${userId}`);
+    const res = await fetch(`api/cart/${userId}`);
     if (!res.ok) throw new Error(`Could not find cart`);
     const cart = await res.json();
     return cart;
@@ -120,7 +120,7 @@ export function Api() {
       },
       body: JSON.stringify(product),
     };
-    const res = await fetch('/cart/update', req);
+    const res = await fetch('/api/cart/update', req);
     if (!res.ok) throw new Error(`Could not update cart`);
   }
 
@@ -140,7 +140,7 @@ export function Api() {
       },
       body: JSON.stringify({ cartId, cartItemId }),
     };
-    const res = await fetch('/cart/delete', req);
+    const res = await fetch('/api/cart/delete', req);
     if (!res.ok) throw new Error(`Could not delete cart item`);
   }
 
@@ -157,7 +157,7 @@ export function Api() {
       },
       body: JSON.stringify({ cart }),
     };
-    const res = await fetch('/checkout', req);
+    const res = await fetch('/api/checkout:', req);
     if (!res.url) throw new Error(`Could not checkout`);
     const url = await res.json();
     return url;
