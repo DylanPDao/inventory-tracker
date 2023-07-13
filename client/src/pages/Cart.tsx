@@ -45,8 +45,10 @@ export default function Cart() {
     );
   }
   async function handleCheckout() {
+    setIsLoading(true);
     const url = await checkout(cart);
     window.location.href = url;
+    setIsLoading(false);
   }
 
   if (isLoading) return <LoadingSpinner />;

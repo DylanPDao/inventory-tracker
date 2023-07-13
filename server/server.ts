@@ -473,21 +473,14 @@ app.post('/checkout', async (req, res, next) => {
  * Catching everything that doesn't match a route and serving index.html allows
  * React Router to manage the routing.
  */
-app.get('*', (req, res) => res.sendFile(`${reactStaticDir}/index.html`));
 
 app.use('/api', (req, res) => {
   res.status(404).json({ error: `cannot ${req.method} ${req.url}` });
 });
 
-app.use((req, res) => {
-  res.sendFile('/index.html', {
-    // you'll need to require the built-in path module
-    // into your server code if you haven't already
-    root: path.join(__dirname, 'public'),
-  });
-});
-
 app.use(errorMiddleware);
+
+app.get('*', (req, res) => res.sendFile(`${reactStaticDir}/index.html`));
 
 app.listen(process.env.PORT, () => {
   process.stdout.write(`\n\napp listening on port ${process.env.PORT}\n\n`);
