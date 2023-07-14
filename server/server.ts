@@ -1,9 +1,5 @@
 import express from 'express';
-import {
-  ClientError,
-  errorMiddleware,
-  uploadsMiddleware,
-} from './lib/index.js';
+import { ClientError, errorMiddleware } from './lib/index.js';
 import pg from 'pg';
 import argon2 from 'argon2';
 import jwt from 'jsonwebtoken';
