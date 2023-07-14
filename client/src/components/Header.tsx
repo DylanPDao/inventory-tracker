@@ -2,14 +2,10 @@ import { Link, Outlet } from 'react-router-dom';
 import { ShoppingCartIcon, Bars3Icon } from '@heroicons/react/24/outline';
 import { UserContext } from '../lib';
 import { useContext } from 'react';
-import { SearchBar, MenuItem, UserMenu, UserMenuItems } from './';
+import { MenuItem, UserMenu, UserMenuItems } from './';
 import { Menu } from '@headlessui/react';
 
-export default function Header({
-  searchString,
-}: {
-  searchString: React.Dispatch<React.SetStateAction<string | undefined>>;
-}): JSX.Element {
+export default function Header(): JSX.Element {
   const user = useContext(UserContext);
 
   return (
@@ -47,9 +43,7 @@ export default function Header({
             </Menu.Items>
           </Menu>
         </div>
-        <div className="md:block w-6/12 hidden">
-          <SearchBar searchString={searchString} />
-        </div>
+        <div className="md:block w-6/12 hidden"></div>
         <div className="md:flex md:w-4/12 md:items-center hidden">
           <Link to={user ? '' : 'sign-in'} className="w-6/12">
             {user ? <UserMenu /> : 'Sign In'}
@@ -60,9 +54,7 @@ export default function Header({
             <ShoppingCartIcon className="h-8 w-8 flex-no-shrink mr-auto ml-auto" />
           </Link>
         </div>
-        <div className="md:hidden w-full flex z-0">
-          <SearchBar searchString={searchString} />
-        </div>
+        <div className="md:hidden w-full flex z-0"></div>
       </div>
       <div className="md:flex md:border-b-2 md:p-1 hidden">
         <MenuItem
