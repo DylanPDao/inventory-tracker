@@ -37,7 +37,7 @@ export default function SignInOrUpForm({ action, user }: Props) {
         setFormValues({ username: '', password: '' });
       } else if (result.user && result.token) {
         user(result);
-        navigate('/');
+        navigate('/inventory');
       }
     } catch (err) {
       setError(err);

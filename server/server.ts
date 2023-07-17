@@ -1,3 +1,4 @@
+import 'dotenv/config';
 import express from 'express';
 import { ClientError, errorMiddleware } from './lib/index.js';
 import pg from 'pg';
@@ -43,6 +44,7 @@ app.post('/sign-up', async (req, res, next) => {
     const params = [username, hashedPassword];
     const result = await db.query(sql, params);
     const [user] = result.rows;
+    console.log(user);
     res.status(201).json(user);
   } catch (err) {
     next(err);

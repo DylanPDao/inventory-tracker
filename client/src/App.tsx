@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { UserContext } from './lib/UserContext';
 import { UsersProps } from './lib/Api';
 import Header from './components/Header';
-import { SignInOrUpForm, NotFound, SignOut } from './pages';
+import { SignInOrUpForm, NotFound, SignOut, Inventory } from './pages';
 function App() {
   const [user, setUser] = useState<UsersProps>();
 
@@ -22,6 +22,7 @@ function App() {
               element={<SignInOrUpForm user={setUser} action="sign-up" />}
             />
             <Route path="/sign-out" element={<SignOut user={setUser} />} />
+            <Route path="/inventory" element={<Inventory />} />
             <Route path="*" element={<NotFound />} />
           </Route>
         </Routes>
