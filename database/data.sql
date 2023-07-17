@@ -14,7 +14,7 @@ insert into "users"
   ("username", "hashedPassword", "admin")
   VALUES
     ('admin','$argon2id$v=19$m=4096,t=3,p=1$micmMoz/wknJ0Epl/BXvwQ$6C8JUC18zXaLGo5Sx8962ybgE8Ci1n5ig8496xrvTcc', true),
-    ('user', '$argon2id$v=19$m=4096,t=3,p=1$7h1MBcpDDg+OqJVRhZEjqg$lsnIyc/SYcvqbc7KlDWYCKv5ZlXgjsoQTmb5PcLD2G0', null);
+    ('htown1', '$argon2id$v=19$m=4096,t=3,p=1$7h1MBcpDDg+OqJVRhZEjqg$lsnIyc/SYcvqbc7KlDWYCKv5ZlXgjsoQTmb5PcLD2G0', null);
 
 insert into "products"
   ("priceId","name", "price", "imageUrl", "stock", "type", "longDescription")

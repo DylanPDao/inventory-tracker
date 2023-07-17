@@ -8,9 +8,9 @@ create schema "public";
 
 CREATE TABLE "public.items" (
 	"itemId" serial NOT NULL UNIQUE,
-	"inventoryId" integer NOT NULL,
 	"par" integer NOT NULL,
 	"item" VARCHAR(255) NOT NULL,
+	"categoryId" VARCHAR(255) NOT NULL,
 	CONSTRAINT "items_pk" PRIMARY KEY ("itemId")
 ) WITH (
   OIDS=FALSE
@@ -63,7 +63,18 @@ CREATE TABLE "public.orderItem" (
 
 
 
-ALTER TABLE "items" ADD CONSTRAINT "items_fk0" FOREIGN KEY ("inventoryId") REFERENCES "inventorys"("inventoryId");
+CREATE TABLE "public.category" (
+	"inventoryId" integer NOT NULL,
+	"categoryId" serial NOT NULL UNIQUE,
+	"categoryName" VARCHAR(255) NOT NULL,
+	CONSTRAINT "category_pk" PRIMARY KEY ("categoryId")
+) WITH (
+  OIDS=FALSE
+);
+
+
+
+ALTER TABLE "items" ADD CONSTRAINT "items_fk0" FOREIGN KEY ("categoryId") REFERENCES "category"("categoryId");
 
 ALTER TABLE "inventorys" ADD CONSTRAINT "inventorys_fk0" FOREIGN KEY ("storeId") REFERENCES "stores"("storeId");
 
@@ -71,3 +82,5 @@ ALTER TABLE "inventorys" ADD CONSTRAINT "inventorys_fk0" FOREIGN KEY ("storeId")
 ALTER TABLE "orders" ADD CONSTRAINT "orders_fk0" FOREIGN KEY ("storeId") REFERENCES "stores"("storeId");
 
 ALTER TABLE "orderItem" ADD CONSTRAINT "orderItem_fk0" FOREIGN KEY ("orderId") REFERENCES "orders"("orderId");
+
+ALTER TABLE "category" ADD CONSTRAINT "category_fk0" FOREIGN KEY ("inventoryId") REFERENCES "inventorys"("inventoryId");
