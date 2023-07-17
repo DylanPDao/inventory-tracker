@@ -1,5 +1,3 @@
-import { CartProps } from '../pages/Cart';
-
 export type UsersProps = {
   token: string;
   user: {
@@ -144,25 +142,6 @@ export function Api() {
     if (!res.ok) throw new Error(`Could not delete cart item`);
   }
 
-  /**
-   *
-   * @param cart array of priceid and quantity
-   * @returns url to be redirected to for stripe
-   */
-  async function checkout(cart: CartProps[]) {
-    const req = {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ cart: cart }),
-    };
-    const res = await fetch('/api/checkout', req);
-    // if (!res.url) throw new Error(`Could not checkout`);
-    const url = await res.json();
-    return url;
-  }
-
   return {
     signUpOrIn,
     getProduct,
@@ -170,7 +149,6 @@ export function Api() {
     viewCart,
     updateCart,
     deleteCartItem,
-    checkout,
   };
 }
 
