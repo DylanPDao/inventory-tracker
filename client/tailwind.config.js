@@ -6,7 +6,7 @@ module.exports = withMT({
   theme: {
     extend: {
       colors: {
-        primary: '#B4B4B4',
+        gold: '#ca8a04',
       },
       keyframes: {
         wiggle: {

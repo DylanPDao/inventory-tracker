@@ -14,7 +14,7 @@ function App() {
         <Routes>
           <Route path="/" element={<Header />}>
             <Route
-              path="/sign-in"
+              path="/"
               element={<SignInOrUpForm user={setUser} action="sign-in" />}
             />
             <Route

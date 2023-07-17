@@ -46,7 +46,7 @@ export default function SignInOrUpForm({ action, user }: Props) {
     }
   }
 
-  const alternateActionTo = action === 'sign-up' ? '/sign-in' : '/sign-up';
+  const alternateActionTo = action === 'sign-up' ? '/' : '/sign-up';
   const alternateActionText =
     action === 'sign-up' ? 'Sign in instead' : 'Register now';
   const submitButtonText = action === 'sign-up' ? 'Register' : 'Log In';
