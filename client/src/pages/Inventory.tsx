@@ -1,11 +1,11 @@
 import { useContext, useEffect, useState } from 'react';
-import { LoadingSpinner } from '../components';
+import { LoadingSpinner, TableRowType } from '../components';
 import { UserContext, Api } from '../lib';
 
 export default function Inventory() {
   const user = useContext(UserContext);
   const { getInventory } = Api();
-  const [inventory, setInventory] = useState<any>();
+  const [inventory, setInventory] = useState<TableRowType[]>();
   const [error, setError] = useState<unknown>();
   const [isLoading, setLoading] = useState(true);
 
@@ -14,7 +14,6 @@ export default function Inventory() {
       try {
         const inv = await getInventory(user?.user.userId);
         setInventory(inv);
-        console.log(inv);
       } catch (err) {
         setError(err);
       } finally {
@@ -31,5 +30,22 @@ export default function Inventory() {
     return <div>{`Error! ${error}`}</div>;
   }
 
-  return <div></div>;
+  type Map = {
+    [key: string]: TableRowType[] | never;
+  };
+  const map: Map = {};
+  if (inventory) {
+    inventory.forEach((item: TableRowType | never) => {
+      const name = item.categoryName;
+      if (!map[name]) map[name] = [];
+      map[name].push(item);
+    });
+  }
+  console.log(Object.values(map));
+  console.log(Object.keys(map));
+  return (
+    <div className="container flex justify-center mt-10">
+      <form></form>
+    </div>
+  );
 }
