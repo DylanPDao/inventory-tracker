@@ -22,7 +22,7 @@ function App() {
               element={<SignInOrUpForm user={setUser} action="sign-up" />}
             />
             <Route path="/sign-out" element={<SignOut user={setUser} />} />
-            <Route path="/inventory" element={<Inventory />} />
+            <Route path="/inventory/:userId" element={<Inventory />} />
             <Route path="*" element={<NotFound />} />
           </Route>
         </Routes>

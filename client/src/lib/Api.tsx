@@ -34,143 +34,19 @@ export function Api() {
   }
 
   /**
-   * gets individual product details specified by product ID
-   * @param productId id of the product being viewed
-   * @returns an object with the data of 1 product
+   * gets inventory
+   * @param userId id of the inventory sheet returned
+   * @returns an object with the data of all items
    */
-  async function getProduct(productId: string | undefined | number) {
-    productId = Number(productId);
-    const res = await fetch(`/api/products/${productId}`);
+  async function getInventory(userId: number | undefined) {
+    const res = await fetch(`/api/inventory/${userId}`);
     if (!res.ok) throw new Error(`fetch Error ${res.status}`);
-    const product = await res.json();
-    return product;
-  }
-
-  type Props = {
-    product: {
-      productId: number;
-      name: string;
-      price: number;
-      imageUrl: string;
-      longDescription: string;
-      stock: number;
-      type: string;
-      priceId: string;
-      quantity: number;
-      userId: number | undefined;
-    };
-    quantity: number;
-    user: UsersProps | undefined;
-  };
-  /**
-   * adds item to cart
-   * @param param0 product object, quantity to be added, and user to be associated to cart
-   * @returns product
-   */
-  async function addToCart({ product, quantity, user }: Props) {
-    const newProduct = product;
-    newProduct.quantity = quantity;
-    newProduct.userId = user?.user.userId;
-    const req = {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(product),
-    };
-    const res = await fetch('/add-to-cart', req);
-    if (!res.ok) throw new Error(`fetch Error ${res.status}`);
-    const cartItem = await res.json();
-    return cartItem;
-  }
-
-  /**
-   *
-   * @param userId id of user
-   * @returns array of cart item objects
-   */
-  async function viewCart(userId: string | number | undefined) {
-    const res = await fetch(`/api/cart/${userId}`);
-    if (!res.ok) throw new Error(`Could not find cart`);
-    const cart = await res.json();
-    return cart;
-  }
-
-  type UpdateProps = {
-    quantity: number;
-    cartId: number | null;
-    cartItemId: number;
-  };
-  /**
-   *
-   * @param param0 new quantity of cart item, id of cart item, and id of cart to be updated
-   */
-  async function updateCart({ quantity, cartId, cartItemId }: UpdateProps) {
-    const product = {
-      quantity: quantity,
-      cartId: cartId,
-      cartItemId: cartItemId,
-    };
-    const req = {
-      method: 'PATCH',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(product),
-    };
-    const res = await fetch('/api/cart/update', req);
-    if (!res.ok) throw new Error(`Could not update cart`);
-  }
-
-  type DeleteProps = {
-    cartId: number | null;
-    cartItemId: number;
-  };
-  /**
-   *
-   * @param param0 cart id and id of cart item
-   */
-  async function deleteCartItem({ cartId, cartItemId }: DeleteProps) {
-    const req = {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ cartId, cartItemId }),
-    };
-    const res = await fetch('/api/cart/delete', req);
-    if (!res.ok) throw new Error(`Could not delete cart item`);
+    const inventory = await res.json();
+    return inventory;
   }
 
   return {
     signUpOrIn,
-    getProduct,
-    addToCart,
-    viewCart,
-    updateCart,
-    deleteCartItem,
+    getInventory,
   };
-}
-
-/**
- * Grabs products according to type of product
- * @param type string representing what type of item to get
- * @returns an object with all product data
- */
-type ProductProps = {
-  type: string;
-  searchString?: string | undefined;
-};
-export async function getProducts({ type, searchString }: ProductProps) {
-  const req = {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({ type, searchString }),
-  };
-  const res = await fetch('/catalog', req);
-  if (!res.ok) throw new Error(`fetch Error ${res.status}`);
-  const products = await res.json();
-  return products;
 }

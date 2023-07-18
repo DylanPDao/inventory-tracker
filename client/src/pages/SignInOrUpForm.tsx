@@ -14,8 +14,8 @@ export default function SignInOrUpForm({ action, user }: Props) {
   const [error, setError] = useState<unknown>();
   const [isLoading, setLoading] = useState(false);
   const [formValues, setFormValues] = useState({
-    username: 'admin',
-    password: 'admin',
+    username: 'user',
+    password: 'user',
   });
 
   if (error) {
@@ -33,11 +33,11 @@ export default function SignInOrUpForm({ action, user }: Props) {
       setLoading(true);
       const result = await signUpOrIn(action, username, password);
       if (action === 'sign-up') {
-        navigate('/sign-in');
+        navigate('/');
         setFormValues({ username: '', password: '' });
       } else if (result.user && result.token) {
         user(result);
-        navigate('/inventory');
+        navigate(`/inventory/${result?.user.userId}`);
       }
     } catch (err) {
       setError(err);

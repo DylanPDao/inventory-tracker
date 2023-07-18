@@ -83,6 +83,29 @@ app.post('/sign-in', async (req, res, next) => {
   }
 });
 
+// get inventory from db
+app.get('/api/inventory/:userId', async (req, res, next) => {
+  try {
+    const userId = Number(req.params.userId);
+    if (!userId) {
+      throw new ClientError(401, 'invalid user ID');
+    }
+    const sql = `
+      select *
+        from "items"
+        join "category" using ("categoryId")
+        where "userId" = $1
+    `;
+    const params = [userId];
+    const result = await db.query(sql, params);
+    const inventory = result.rows;
+    if (!inventory) throw new ClientError(401, 'Did not find Inventory');
+    res.status(201).json(inventory);
+  } catch (err) {
+    next(err);
+  }
+});
+
 /**
  * Serves React's index.html if no api route matches.
  *
