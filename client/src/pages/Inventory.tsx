@@ -1,5 +1,10 @@
 import { useContext, useEffect, useState } from 'react';
-import { LoadingSpinner, TableRowType } from '../components';
+import {
+  LoadingSpinner,
+  TableRow,
+  TableRowType,
+  TableHeader,
+} from '../components';
 import { UserContext, Api } from '../lib';
 
 export default function Inventory() {
@@ -41,11 +46,26 @@ export default function Inventory() {
       map[name].push(item);
     });
   }
-  console.log(Object.values(map));
-  console.log(Object.keys(map));
+
+  const mapValues = Object.values(map);
+  const mapKeys = Object.keys(map);
+
+  const vals = mapValues.map((value) =>
+    value.map((val) => (
+      <TableRow
+        categoryId={val.categoryId}
+        categoryName={val.categoryName}
+        item={val.item}
+        itemId={val.itemId}
+        par={val.par}
+        userId={val.userId}
+      />
+    ))
+  );
+
   return (
     <div className="container flex justify-center mt-10">
-      <form></form>
+      <form className="flex flex-wrap">{vals}</form>
     </div>
   );
 }
