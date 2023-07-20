@@ -15,7 +15,7 @@ export default function TableRow({
   userId,
 }: TableRowType) {
   return (
-    <div className="flex p-1">
+    <label className="flex p-1">
       <div className="w-6/12 flex align-start">
         <p className="text-md">{item}</p>
       </div>
@@ -52,6 +52,11 @@ export default function TableRow({
           <option value={10}>10</option>
         </select>
       </div>
-    </div>
+      <button
+        type="submit"
+        className="mt-2 border rounded-lg p-1 border-gold text-gold mr-1 ml-1">
+        Submit
+      </button>
+    </label>
   );
 }

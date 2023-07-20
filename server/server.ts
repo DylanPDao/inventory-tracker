@@ -106,6 +106,18 @@ app.get('/api/inventory/:userId', async (req, res, next) => {
   }
 });
 
+app.post('/api/create-order', async (req, res, next) => {
+  try {
+    const body = req.body;
+    console.log(body);
+    if (!body) {
+      throw new ClientError(401, 'invalid user ID');
+    }
+  } catch (err) {
+    next(err);
+  }
+});
+
 /**
  * Serves React's index.html if no api route matches.
  *

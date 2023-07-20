@@ -19,7 +19,7 @@ export default function TableHeader({ category, items }: TableHeaderType) {
   ));
 
   return (
-    <div className="w-6/12 p-1 border-b-2 border-gold pt-4 pb-4">
+    <div className="rounded-lg w-6/12 p-1 border-2 border-gold pt-4 pb-4">
       <div className="w-full flex justify-start">
         <div className="w-6/12 font-bold text-lg">{category}</div>
         <div className="w-6/12 flex justify-between">
