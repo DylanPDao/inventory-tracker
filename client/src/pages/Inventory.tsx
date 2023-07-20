@@ -1,10 +1,5 @@
-import { useContext, useEffect, useState } from 'react';
-import {
-  LoadingSpinner,
-  TableRow,
-  TableRowType,
-  TableHeader,
-} from '../components';
+import { FormEvent, useContext, useEffect, useState } from 'react';
+import { LoadingSpinner, TableRowType, TableHeader } from '../components';
 import { UserContext, Api } from '../lib';
 
 export default function Inventory() {
@@ -47,25 +42,39 @@ export default function Inventory() {
     });
   }
 
-  const mapValues = Object.values(map);
-  const mapKeys = Object.keys(map);
+  const inventorySheet = Object.entries(map).map(([category, items]) => (
+    <TableHeader category={category} items={items} />
+  ));
 
-  const vals = mapValues.map((value) =>
-    value.map((val) => (
-      <TableRow
-        categoryId={val.categoryId}
-        categoryName={val.categoryName}
-        item={val.item}
-        itemId={val.itemId}
-        par={val.par}
-        userId={val.userId}
-      />
-    ))
-  );
+  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
+    //  setLoading(true);
+    event.preventDefault();
+    const formData = new FormData(event.currentTarget);
+    console.log(event.currentTarget);
+  }
 
   return (
-    <div className="container flex justify-center mt-10">
-      <form className="flex flex-wrap">{vals}</form>
+    <div className="container flex justify-center">
+      <form onSubmit={handleSubmit}>
+        <div className="w-full flex justify-end">
+          <button
+            type="button"
+            className="mt-2 border rounded-lg p-1 border-gold text-gold mr-1 ml-1">
+            Add Category
+          </button>
+          <button
+            type="button"
+            className="mt-2 border rounded-lg p-1 border-gold text-gold mr-1 ml-1">
+            Add Item
+          </button>
+          <button
+            type="submit"
+            className="mt-2 border rounded-lg p-1 border-gold text-gold mr-1 ml-1">
+            Submit
+          </button>
+        </div>
+        <div className="flex flex-wrap">{inventorySheet}</div>
+      </form>
     </div>
   );
 }
