@@ -1,6 +1,15 @@
 import { FormEvent, useContext, useEffect, useState } from 'react';
-import { LoadingSpinner, TableRowType, TableHeader } from '../components';
+import { LoadingSpinner } from '../components';
 import { UserContext, Api } from '../lib';
+
+type TableRowType = {
+  categoryId: number;
+  categoryName: string;
+  item: string;
+  itemId: number;
+  par: number;
+  userId: number;
+};
 
 export default function Inventory() {
   const user = useContext(UserContext);
@@ -43,14 +52,62 @@ export default function Inventory() {
   }
 
   const inventorySheet = Object.entries(map).map(([category, items]) => (
-    <TableHeader category={category} items={items} key={category} />
+    <div className="rounded-lg w-6/12 p-1 border-2 border-gold pt-4 pb-4">
+      <div className="w-full flex justify-start">
+        <div className="w-6/12 font-bold text-lg">{category}</div>
+        <div className="w-6/12 flex justify-between">
+          <div className="w-6/12">Par</div>
+          <div className="w-6/12">In Stock</div>
+        </div>
+      </div>
+      {items.map((item) => (
+        <label className="flex p-1">
+          <div className="w-6/12 flex align-start">
+            <p className="text-md">{item.item}</p>
+          </div>
+          <div className="flex w-6/12 justify-between">
+            <select
+              defaultValue={`${item.par}`}
+              name={`${item.itemId} par`}
+              className="form-control border-2 rounded-lg ml-1 w-6/12">
+              <option value={1}>1</option>
+              <option value={2}>2</option>
+              <option value={3}>3</option>
+              <option value={4}>4</option>
+              <option value={5}>5</option>
+              <option value={6}>6</option>
+              <option value={7}>7</option>
+              <option value={8}>8</option>
+              <option value={9}>9</option>
+              <option value={10}>10</option>
+            </select>
+            <select
+              defaultValue={0}
+              name={`${item.itemId} stock`}
+              className="form-control border-2 rounded-lg ml-1 w-6/12">
+              <option value={0}>0</option>
+              <option value={1}>1</option>
+              <option value={2}>2</option>
+              <option value={3}>3</option>
+              <option value={4}>4</option>
+              <option value={5}>5</option>
+              <option value={6}>6</option>
+              <option value={7}>7</option>
+              <option value={8}>8</option>
+              <option value={9}>9</option>
+              <option value={10}>10</option>
+            </select>
+          </div>
+        </label>
+      ))}
+    </div>
   ));
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     //  setLoading(true);
     event.preventDefault();
     const formData = new FormData(event.currentTarget);
-    console.log(event.currentTarget);
+    console.log(formData);
     // try {
     //   const req = {
     //     method: 'POST',
