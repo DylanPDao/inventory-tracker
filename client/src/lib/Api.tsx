@@ -74,9 +74,7 @@ export function Api() {
       body: jsonData,
     };
     const res = await fetch('/api/inventory/add', req);
-    const result = await res.json();
-    // if (!result.ok) throw new Error(`Could not add selected`);
-    return result;
+    if (!res.ok) throw new Error(`Could not add selected`);
   }
 
   return {

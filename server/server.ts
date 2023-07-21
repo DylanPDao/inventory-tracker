@@ -184,8 +184,33 @@ app.post('/api/inventory/add', async (req, res, next) => {
     const params = !item ? [category, userId] : [0, item, itemCategory];
     const result = await db.query(sql, params);
     if (!result) throw new Error('add not completed');
-    res.status(201).json(result);
+    const [addedItem] = result.rows;
+    res.status(201).json(addedItem);
     return;
+  } catch (err) {
+    next(err);
+  }
+});
+
+// create new order sheet
+app.post('/api/inventory/add', async (req, res, next) => {
+  try {
+    const { reqData } = req.body;
+    if (!reqData) {
+      throw new ClientError(401, 'invalid input');
+    }
+    //   const sql = `
+    // insert into  ${
+    //     !item ? `("categoryName", "userId")` : `("par", "item", "categoryId")`
+    //   }
+    //   values ${!item ? `($1, $2)` : `($1, $2, $3)`}
+    //   returning *
+    // `;
+    //   const params = !item ? [category, userId] : [0, item, itemCategory];
+    //   const result = await db.query(sql, params);
+    //   if (!result) throw new Error('add not completed');
+    //   res.status(201).json(result);
+    //   return;
   } catch (err) {
     next(err);
   }
