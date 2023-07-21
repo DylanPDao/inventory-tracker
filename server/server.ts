@@ -118,6 +118,40 @@ app.post('/api/create-order', async (req, res, next) => {
   }
 });
 
+app.post('/api/cart/delete', async (req, res, next) => {
+  try {
+    const { cartId, cartItemId } = req.body;
+    if (cartId === null) {
+      const sql = `
+  delete
+    from "cartItems"
+    where "cartId" is null and "cartItemId" = $1
+    returning *
+  `;
+      const params = [cartItemId];
+      const result = await db.query(sql, params);
+      if (!result) throw new Error('Delete not completed');
+      res.sendStatus(200);
+      return;
+    }
+    if (!cartId) {
+      throw new ClientError(401, 'invalid cart item delete');
+    }
+    const sql = `
+  delete
+    from "cartItems"
+    where "cartId" = $1 and "cartItemId" = $2
+    returning *
+  `;
+    const params = [cartId, cartItemId];
+    const result = await db.query(sql, params);
+    if (!result) throw new Error('Delete not completed');
+    res.sendStatus(200);
+  } catch (err) {
+    next(err);
+  }
+});
+
 /**
  * Serves React's index.html if no api route matches.
  *

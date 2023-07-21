@@ -45,8 +45,21 @@ export function Api() {
     return inventory;
   }
 
+  async function deleteItem({ itemId }: { itemId: number }) {
+    const req = {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ itemId }),
+    };
+    const res = await fetch('/api/inventory/delete', req);
+    if (!res.ok) throw new Error(`Could not delete cart item`);
+  }
+
   return {
     signUpOrIn,
     getInventory,
+    deleteItem,
   };
 }
