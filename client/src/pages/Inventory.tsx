@@ -54,8 +54,43 @@ export default function Inventory() {
     });
   }
 
+  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
+    //  setLoading(true);
+    event.preventDefault();
+    const formData = new FormData(event.currentTarget);
+    console.log(formData);
+    // try {
+    //   const req = {
+    //     method: 'POST',
+    //     body: formData,
+    //   };
+    //   const res = await fetch('/api/create-order', req);
+    //   const result = await res.json();
+    //   if (!result) {
+    //     return <div className="text-red-900 text-2xl">Order not created</div>;
+    //   }
+    //   setLoading(false);
+    // } catch (err) {
+    //   setError(err);
+    // }
+  }
+
+  async function handleDelete(itemId: number) {
+    try {
+      setLoading(true);
+      await deleteItem({ itemId });
+      const inv = await getInventory(user?.user.userId);
+      setInventory(inv);
+      setLoading(false);
+    } catch (err) {
+      setError(err);
+    }
+  }
+
   const inventorySheet = Object.entries(map).map(([category, items]) => (
-    <div className="rounded-lg w-6/12 p-1 border-2 border-gold pt-4 pb-4">
+    <div
+      key={category}
+      className="rounded-lg w-6/12 p-1 border-2 border-gold pt-4 pb-4">
       <div className="w-full flex justify-start">
         <div className="w-6/12 font-bold text-lg">{category}</div>
         <div className="w-6/12 flex justify-between">
@@ -64,7 +99,7 @@ export default function Inventory() {
         </div>
       </div>
       {items.map((item) => (
-        <label className="form-label flex p-1">
+        <label key={item.itemId} className="form-label flex p-1">
           <button
             type="button"
             className="text-red-500 mr-4 w-1/12"
@@ -111,37 +146,6 @@ export default function Inventory() {
       ))}
     </div>
   ));
-
-  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
-    //  setLoading(true);
-    event.preventDefault();
-    const formData = new FormData(event.currentTarget);
-    console.log(formData);
-    // try {
-    //   const req = {
-    //     method: 'POST',
-    //     body: formData,
-    //   };
-    //   const res = await fetch('/api/create-order', req);
-    //   const result = await res.json();
-    //   if (!result) {
-    //     return <div className="text-red-900 text-2xl">Order not created</div>;
-    //   }
-    //   setLoading(false);
-    // } catch (err) {
-    //   setError(err);
-    // }
-  }
-
-  async function handleDelete(itemId: number) {
-    try {
-      await deleteItem({ itemId });
-      const inv = await getInventory(user?.user.userId);
-      setInventory(inv);
-    } catch (err) {
-      setError(err);
-    }
-  }
 
   return (
     <div className="container flex justify-center">

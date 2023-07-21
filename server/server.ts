@@ -118,35 +118,20 @@ app.post('/api/create-order', async (req, res, next) => {
   }
 });
 
-app.post('/api/cart/delete', async (req, res, next) => {
+app.post('/api/inventory/delete', async (req, res, next) => {
   try {
-    const { cartId, cartItemId } = req.body;
-    if (cartId === null) {
-      const sql = `
-  delete
-    from "cartItems"
-    where "cartId" is null and "cartItemId" = $1
-    returning *
-  `;
-      const params = [cartItemId];
-      const result = await db.query(sql, params);
-      if (!result) throw new Error('Delete not completed');
-      res.sendStatus(200);
-      return;
-    }
-    if (!cartId) {
-      throw new ClientError(401, 'invalid cart item delete');
-    }
+    const { itemId } = req.body;
     const sql = `
   delete
-    from "cartItems"
-    where "cartId" = $1 and "cartItemId" = $2
+    from "items"
+    where "itemId" = $1
     returning *
   `;
-    const params = [cartId, cartItemId];
+    const params = [itemId];
     const result = await db.query(sql, params);
     if (!result) throw new Error('Delete not completed');
     res.sendStatus(200);
+    return;
   } catch (err) {
     next(err);
   }
