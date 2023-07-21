@@ -106,6 +106,29 @@ app.get('/api/inventory/:userId', async (req, res, next) => {
   }
 });
 
+// get all the categories
+app.get('/api/category/:userId', async (req, res, next) => {
+  try {
+    const userId = Number(req.params.userId);
+    if (!userId) {
+      throw new ClientError(401, 'invalid user ID');
+    }
+    const sql = `
+      select *
+        from "category"
+        where "userId" = $1
+    `;
+    const params = [userId];
+    const result = await db.query(sql, params);
+    const categories = result.rows;
+    if (!categories) throw new ClientError(401, 'Did not find categories');
+    res.status(201).json(categories);
+  } catch (err) {
+    next(err);
+  }
+});
+
+// create new order
 app.post('/api/create-order', async (req, res, next) => {
   try {
     const body = req.body;
@@ -118,19 +141,50 @@ app.post('/api/create-order', async (req, res, next) => {
   }
 });
 
+// delete item from db
 app.post('/api/inventory/delete', async (req, res, next) => {
   try {
     const { itemId } = req.body;
+    if (!itemId) {
+      throw new ClientError(401, 'invalid item');
+    }
     const sql = `
-  delete
-    from "items"
-    where "itemId" = $1
+    delete
+    from ${itemId === String ? 'category' : 'items'}
+    where ${itemId === String ? 'categoryName' : `"items"."itemId"`} = $1
     returning *
-  `;
+    `;
     const params = [itemId];
     const result = await db.query(sql, params);
     if (!result) throw new Error('Delete not completed');
     res.sendStatus(200);
+    return;
+  } catch (err) {
+    next(err);
+  }
+});
+
+// add item/category to db
+app.post('/api/inventory/add', async (req, res, next) => {
+  try {
+    const { formData, userId } = req.body;
+    const category = formData.category;
+    const item = formData.item;
+    const itemCategory = formData.itemCategory;
+    if ((!category && !item && !userId) || !userId || (category && item)) {
+      throw new ClientError(401, 'invalid input');
+    }
+    const sql = `
+  insert into ${!item ? 'category' : 'items'} ${
+      !item ? `("categoryName", "userId")` : `("par", "item", "categoryId")`
+    }
+    values ${!item ? `($1, $2)` : `($1, $2, $3)`}
+    returning *
+  `;
+    const params = !item ? [category, userId] : [0, item, itemCategory];
+    const result = await db.query(sql, params);
+    if (!result) throw new Error('add not completed');
+    res.status(201).json(result);
     return;
   } catch (err) {
     next(err);

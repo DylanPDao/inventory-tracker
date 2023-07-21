@@ -45,7 +45,7 @@ export function Api() {
     return inventory;
   }
 
-  async function deleteItem({ itemId }: { itemId: number }) {
+  async function deleteItem({ itemId }: { itemId: number | string }) {
     const req = {
       method: 'POST',
       headers: {
@@ -57,9 +57,33 @@ export function Api() {
     if (!res.ok) throw new Error(`Could not delete cart item`);
   }
 
+  async function getCategory(userId: number | undefined) {
+    const res = await fetch(`/api/category/${userId}`);
+    if (!res.ok) throw new Error(`fetch Error ${res.status}`);
+    const category = await res.json();
+    return category;
+  }
+
+  async function addItem(data: any) {
+    const jsonData = JSON.stringify(data);
+    const req = {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: jsonData,
+    };
+    const res = await fetch('/api/inventory/add', req);
+    const result = await res.json();
+    // if (!result.ok) throw new Error(`Could not add selected`);
+    return result;
+  }
+
   return {
     signUpOrIn,
     getInventory,
     deleteItem,
+    addItem,
+    getCategory,
   };
 }

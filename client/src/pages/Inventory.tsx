@@ -2,7 +2,7 @@ import { FormEvent, useContext, useEffect, useState } from 'react';
 import { LoadingSpinner, Modal } from '../components';
 import { UserContext, Api } from '../lib';
 
-type TableRowType = {
+export type TableRowType = {
   categoryId: number;
   categoryName: string;
   item: string;
@@ -35,7 +35,7 @@ export default function Inventory() {
 
   if (isLoading) return <LoadingSpinner />;
 
-  if (isModal) return <Modal setModal={setModal} />;
+  if (isModal) return <Modal setModal={setModal} setInventory={setInventory} />;
 
   if (error) {
     console.error('Fetch error:', error);
@@ -58,7 +58,8 @@ export default function Inventory() {
     //  setLoading(true);
     event.preventDefault();
     const formData = new FormData(event.currentTarget);
-    console.log(formData);
+    const data = Object.fromEntries(formData);
+    console.log(data);
     // try {
     //   const req = {
     //     method: 'POST',
@@ -75,7 +76,7 @@ export default function Inventory() {
     // }
   }
 
-  async function handleDelete(itemId: number) {
+  async function handleDelete(itemId: number | string) {
     try {
       setLoading(true);
       await deleteItem({ itemId });
@@ -92,14 +93,20 @@ export default function Inventory() {
       key={category}
       className="rounded-lg w-6/12 p-1 border-2 border-gold pt-4 pb-4">
       <div className="w-full flex justify-start">
-        <div className="w-6/12 font-bold text-lg">{category}</div>
+        <button
+          type="button"
+          className="text-red-500 mr-4 w-1/12"
+          onClick={() => handleDelete(category)}>
+          x
+        </button>
+        <div className="w-5/12 font-bold text-lg">{category}</div>
         <div className="w-6/12 flex justify-between">
           <div className="w-6/12">Par</div>
           <div className="w-6/12">In Stock</div>
         </div>
       </div>
       {items.map((item) => (
-        <label key={item.itemId} className="form-label flex p-1">
+        <label key={item.itemId} className="form-label flex">
           <button
             type="button"
             className="text-red-500 mr-4 w-1/12"
