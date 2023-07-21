@@ -76,7 +76,7 @@ export default function Inventory() {
     // }
   }
 
-  async function handleDelete(itemId: number | string) {
+  async function handleDelete(itemId: number) {
     try {
       setLoading(true);
       await deleteItem({ itemId });
@@ -93,12 +93,6 @@ export default function Inventory() {
       key={category}
       className="rounded-lg w-6/12 p-1 border-2 border-gold pt-4 pb-4">
       <div className="w-full flex justify-start">
-        <button
-          type="button"
-          className="text-red-500 mr-4 w-1/12"
-          onClick={() => handleDelete(category)}>
-          x
-        </button>
         <div className="w-5/12 font-bold text-lg">{category}</div>
         <div className="w-6/12 flex justify-between">
           <div className="w-6/12">Par</div>

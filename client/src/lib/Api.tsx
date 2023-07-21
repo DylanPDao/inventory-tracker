@@ -45,7 +45,7 @@ export function Api() {
     return inventory;
   }
 
-  async function deleteItem({ itemId }: { itemId: number | string }) {
+  async function deleteItem({ itemId }: { itemId: number }) {
     const req = {
       method: 'POST',
       headers: {

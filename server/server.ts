@@ -150,8 +150,8 @@ app.post('/api/inventory/delete', async (req, res, next) => {
     }
     const sql = `
     delete
-    from ${itemId === String ? 'category' : 'items'}
-    where ${itemId === String ? 'categoryName' : `"items"."itemId"`} = $1
+    from "items"
+    where "itemId" = $1
     returning *
     `;
     const params = [itemId];
