@@ -59,21 +59,27 @@ export default function Inventory() {
     event.preventDefault();
     const formData = new FormData(event.currentTarget);
     const data = Object.fromEntries(formData);
-    console.log(data);
-    // try {
-    //   const req = {
-    //     method: 'POST',
-    //     body: formData,
-    //   };
-    //   const res = await fetch('/api/create-order', req);
-    //   const result = await res.json();
-    //   if (!result) {
-    //     return <div className="text-red-900 text-2xl">Order not created</div>;
-    //   }
-    //   setLoading(false);
-    // } catch (err) {
-    //   setError(err);
-    // }
+    const reqData = JSON.stringify({
+      formData: data,
+      userId: user?.user.userId,
+    });
+    try {
+      const req = {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: reqData,
+      };
+      const res = await fetch('/api/createorder', req);
+      const result = await res.json();
+      // if (!result) {
+      //   return <div className="text-red-900 text-2xl">Order not created</div>;
+      // }
+      setLoading(false);
+    } catch (err) {
+      setError(err);
+    }
   }
 
   async function handleDelete(itemId: number) {
@@ -93,21 +99,21 @@ export default function Inventory() {
       key={category}
       className="rounded-lg w-6/12 p-1 border-2 border-gold pt-4 pb-4">
       <div className="w-full flex justify-start">
-        <div className="w-5/12 font-bold text-lg">{category}</div>
+        <div className="w-6/12 font-bold text-lg">{category}</div>
         <div className="w-6/12 flex justify-between">
           <div className="w-6/12">Par</div>
           <div className="w-6/12">In Stock</div>
         </div>
       </div>
       {items.map((item) => (
-        <label key={item.itemId} className="form-label flex">
+        <label key={item.itemId} className="form-label flex items-center">
           <button
             type="button"
             className="text-red-500 mr-4 w-1/12"
             onClick={() => handleDelete(item.itemId)}>
             x
           </button>
-          <div className="w-5/12 flex align-start">
+          <div className="w-5/12 flex text-start">
             <p className="text-md">{item.item}</p>
           </div>
           <div className="flex w-6/12 justify-between">
@@ -164,7 +170,7 @@ export default function Inventory() {
             Submit
           </button>
         </div>
-        <div className="flex flex-wrap">{inventorySheet}</div>
+        <div className="flex flex-wrap justify-between">{inventorySheet}</div>
       </form>
     </div>
   );

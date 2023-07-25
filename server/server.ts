@@ -128,19 +128,6 @@ app.get('/api/category/:userId', async (req, res, next) => {
   }
 });
 
-// create new order
-app.post('/api/create-order', async (req, res, next) => {
-  try {
-    const body = req.body;
-    console.log(body);
-    if (!body) {
-      throw new ClientError(401, 'invalid user ID');
-    }
-  } catch (err) {
-    next(err);
-  }
-});
-
 // delete item from db
 app.post('/api/inventory/delete', async (req, res, next) => {
   try {
@@ -193,23 +180,53 @@ app.post('/api/inventory/add', async (req, res, next) => {
 });
 
 // create new order sheet
-app.post('/api/inventory/add', async (req, res, next) => {
+app.post('/api/createorder', async (req, res, next) => {
   try {
-    const { reqData } = req.body;
-    if (!reqData) {
+    const { formData, userId } = req.body;
+    if (!formData || !userId) {
       throw new ClientError(401, 'invalid input');
     }
+    const entries = Object.entries(formData);
+
+    type Map = {
+      [key: string]: {
+        par: number;
+        stock: number;
+      };
+    };
+    const map: Map = {};
+    for (let i = 0; i < entries.length; i++) {
+      const split = entries[i][0].split(' ');
+      const key = split[0];
+      console.log(key);
+      if (!map[key]) {
+        map[key] = {
+          par: Number(entries[i][1]),
+          stock: Number(entries[i + 1][1]),
+        };
+      }
+    }
+    let sql = `
+      insert into "orders" ("userId", "orderId", "orderedAt")
+      values ($1, $2, $3)
+      returning "orderId"
+    `;
+    let params = [userId, Date.now(), Date()];
+    const order = await db.query(sql, params);
+    if (!order) throw new Error('invalid user');
+    const orderId = order.rows[0].orderId;
+
+    sql = '';
+    params = [''];
     //   const sql = `
-    // insert into  ${
-    //     !item ? `("categoryName", "userId")` : `("par", "item", "categoryId")`
-    //   }
-    //   values ${!item ? `($1, $2)` : `($1, $2, $3)`}
+    // insert into ("categoryName", "userId")
+    //   values ($1, $2)
     //   returning *
-    // `;
+    // // `;
     //   const params = !item ? [category, userId] : [0, item, itemCategory];
     //   const result = await db.query(sql, params);
     //   if (!result) throw new Error('add not completed');
-    //   res.status(201).json(result);
+    res.status(201).json(map);
     //   return;
   } catch (err) {
     next(err);
