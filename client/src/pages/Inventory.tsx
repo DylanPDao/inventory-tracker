@@ -73,6 +73,7 @@ export default function Inventory() {
       };
       const res = await fetch('/api/createorder', req);
       const result = await res.json();
+      console.log(result);
       // if (!result) {
       //   return <div className="text-red-900 text-2xl">Order not created</div>;
       // }
@@ -119,7 +120,7 @@ export default function Inventory() {
           <div className="flex w-6/12 justify-between">
             <select
               defaultValue={`${item.par}`}
-              name={`${item.itemId} par`}
+              name={`${item.item} par`}
               className="form-control border-2 rounded-lg ml-1 w-6/12">
               <option value={1}>1</option>
               <option value={2}>2</option>
@@ -134,7 +135,7 @@ export default function Inventory() {
             </select>
             <select
               defaultValue={0}
-              name={`${item.itemId} stock`}
+              name={`${item.item} stock`}
               className="form-control border-2 rounded-lg ml-1 w-6/12">
               <option value={0}>0</option>
               <option value={1}>1</option>

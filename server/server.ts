@@ -197,8 +197,8 @@ app.post('/api/createorder', async (req, res, next) => {
     const map: Map = {};
     for (let i = 0; i < entries.length; i++) {
       const split = entries[i][0].split(' ');
-      const key = split[0];
-      console.log(key);
+      split.pop();
+      const key = split.join(' ');
       if (!map[key]) {
         map[key] = {
           par: Number(entries[i][1]),
@@ -206,28 +206,43 @@ app.post('/api/createorder', async (req, res, next) => {
         };
       }
     }
+
     let sql = `
       insert into "orders" ("userId", "orderId", "orderedAt")
       values ($1, $2, $3)
       returning "orderId"
     `;
     let params = [userId, Date.now(), Date()];
-    const order = await db.query(sql, params);
-    if (!order) throw new Error('invalid user');
-    const orderId = order.rows[0].orderId;
+    const orderNumber = await db.query(sql, params);
+    if (!orderNumber) throw new Error('invalid user');
+    const orderId = orderNumber.rows[0].orderId;
 
-    sql = '';
-    params = [''];
-    //   const sql = `
-    // insert into ("categoryName", "userId")
-    //   values ($1, $2)
-    //   returning *
-    // // `;
-    //   const params = !item ? [category, userId] : [0, item, itemCategory];
-    //   const result = await db.query(sql, params);
-    //   if (!result) throw new Error('add not completed');
-    res.status(201).json(map);
-    //   return;
+    const orderItems = Object.entries(map);
+    orderItems.forEach(async (item) => {
+      const quantity = item[1].par - item[1].stock;
+      sql = `
+      insert into "orderItem" ("orderId", "item", "quantity")
+        values ($1, $2, $3)
+        returning *
+      `;
+      params = [orderId, item[0], quantity];
+      const orderItem = await db.query(sql, params);
+      if (!orderItem) throw new Error(`Item ${item[0]} could not be added`);
+    });
+
+    sql = `
+      select *
+      from "orderItem"
+      where  "orderId" = $1
+    `;
+    params = [orderId];
+    const orderedItems = await db.query(sql, params);
+    if (!orderedItems)
+      throw new Error(`Could not find ordered items by ${orderId}`);
+    const order = orderedItems.rows;
+    console.log(orderedItems);
+    res.status(201).json(order);
+    return;
   } catch (err) {
     next(err);
   }
