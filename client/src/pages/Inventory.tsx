@@ -1,6 +1,7 @@
 import { FormEvent, useContext, useEffect, useState } from 'react';
 import { LoadingSpinner, Modal } from '../components';
 import { UserContext, Api } from '../lib';
+import { OrderSheetType } from './OrderSheet';
 
 export type TableRowType = {
   categoryId: number;
@@ -11,7 +12,10 @@ export type TableRowType = {
   userId: number;
 };
 
-export default function Inventory() {
+type SetOrderType = {
+  setOrder: React.Dispatch<React.SetStateAction<OrderSheetType | undefined>>;
+};
+export default function Inventory({ setOrder }: SetOrderType) {
   const user = useContext(UserContext);
   const { getInventory, deleteItem, getOrder, setPar } = Api();
   const [inventory, setInventory] = useState<TableRowType[]>();
@@ -74,6 +78,7 @@ export default function Inventory() {
       const order = await fetch('/api/createorder', req);
       const orderId = await order.json();
       const orderItems = await getOrder(orderId);
+      console.log(orderItems);
       setLoading(false);
     } catch (err) {
       setError(err);
@@ -84,19 +89,6 @@ export default function Inventory() {
     try {
       setLoading(true);
       await deleteItem({ itemId });
-      const inv = await getInventory(user?.user.userId);
-      setInventory(inv);
-      setLoading(false);
-    } catch (err) {
-      setError(err);
-    }
-  }
-
-  async function handlePar(event: FormEvent<HTMLFormElement>) {
-    try {
-      console.log(event);
-      // setLoading(true)
-      // await setPar()
       const inv = await getInventory(user?.user.userId);
       setInventory(inv);
       setLoading(false);
@@ -129,7 +121,6 @@ export default function Inventory() {
           </div>
           <div className="flex w-6/12 justify-between">
             <select
-              onChange={() => handlePar()}
               defaultValue={`${item.par}`}
               name={`${item.item} par`}
               className="form-control border-2 rounded-lg ml-1 w-6/12">
