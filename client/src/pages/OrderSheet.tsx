@@ -3,8 +3,12 @@ export type OrderSheetType = {
   orderId: string;
   orderItemId: number;
   quantity: number;
-}[];
+};
 
-export default function OrderSheet() {
+type Order = {
+  order: OrderSheetType | undefined;
+};
+
+export default function OrderSheet({ order }: Order) {
   return <div></div>;
 }

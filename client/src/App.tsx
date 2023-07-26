@@ -35,7 +35,7 @@ function App() {
               path="/inventory/:userId"
               element={<Inventory setOrder={setOrder} />}
             />
-            <Route path="/ordersheet" element={<OrderSheet />} />
+            <Route path="/ordersheet" element={<OrderSheet order={order} />} />
             <Route path="*" element={<NotFound />} />
           </Route>
         </Routes>

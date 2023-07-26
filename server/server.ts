@@ -228,23 +228,18 @@ app.post('/api/createorder', async (req, res, next) => {
       if (!orderItem) throw new Error(`Item ${item[0]} could not be added`);
     });
     res.status(201).json(orderId);
-
-    // sql = `
-    //   select *
-    //   from "orderItem"
-    //   where  "orderId" = $1
-    // `;
-    // params = [orderId];
-    // const orderedItems = await db.query(sql, params);
-    // if (!orderedItems)
-    //   throw new Error(`Could not find ordered items by ${orderId}`);
-    // const order = orderedItems.rows;
   } catch (err) {
     next(err);
   }
 });
 
 // create new order sheet
+type Map = {
+  [key: string]: {
+    par: number;
+    stock: number;
+  };
+};
 app.post('/api/createorder', async (req, res, next) => {
   try {
     const { formData, userId } = req.body;
@@ -253,12 +248,6 @@ app.post('/api/createorder', async (req, res, next) => {
     }
     const entries = Object.entries(formData);
 
-    type Map = {
-      [key: string]: {
-        par: number;
-        stock: number;
-      };
-    };
     const map: Map = {};
     for (let i = 0; i < entries.length; i++) {
       const split = entries[i][0].split(' ');
@@ -283,6 +272,30 @@ app.post('/api/createorder', async (req, res, next) => {
     const orderId = orderNumber.rows[0].orderId;
 
     const orderItems = Object.entries(map);
+
+    orderItems.forEach(async (item) => {
+      let parSql = `
+        select "par"
+        from "items"
+        where "item" = $1
+        returning *
+      `;
+      let parParams = [item[0]];
+      const itemPar = await db.query(parSql, parParams);
+      if (!itemPar) throw new Error(`Item ${item[0]} could not be found`);
+      if (item[1].par !== Number(itemPar)) {
+        parSql = `
+        update "items"
+          set "par" = $1
+          where "item" = $2
+          returning *
+        `;
+        parParams = [item[1].par.toString(), item[0]];
+        const updatedPar = await db.query(parSql, parParams);
+        if (!updatedPar) throw new Error(`Item ${item[0]} could not be found`);
+      }
+    });
+
     orderItems.forEach(async (item) => {
       const quantity = item[1].par - item[1].stock;
       sql = `
@@ -316,6 +329,55 @@ app.get('/api/order/:orderId', async (req, res, next) => {
       throw new Error(`Could not find ordered items by ${orderId}`);
     const order = orderedItems.rows;
     res.status(201).json(order);
+  } catch (err) {
+    next(err);
+  }
+});
+
+// update pars
+app.post('/api/parupdate', async (req, res, next) => {
+  try {
+    const { formData, userId } = req.body;
+    if (!formData || !userId) {
+      throw new ClientError(401, 'invalid input');
+    }
+    const entries = Object.entries(formData);
+    const map: Map = {};
+    for (let i = 0; i < entries.length; i++) {
+      const split = entries[i][0].split(' ');
+      split.pop();
+      const key = split.join(' ');
+      if (!map[key]) {
+        map[key] = {
+          par: Number(entries[i][1]),
+          stock: Number(entries[i + 1][1]),
+        };
+      }
+    }
+    const orderItems = Object.entries(map);
+    orderItems.forEach(async (item) => {
+      let parSql = `
+        select "par"
+        from "items"
+        where "item" = $1
+      `;
+      let parParams = [item[0]];
+      const result = await db.query(parSql, parParams);
+      if (!result) throw new Error(`Item ${item[0]} could not be found`);
+      const itemPar = result.rows[0];
+      if (item[1].par !== itemPar.par) {
+        parSql = `
+        update "items"
+          set "par" = $1
+          where "item" = $2
+        `;
+        parParams = [item[1].par.toString(), item[0]];
+        const updatedPar = await db.query(parSql, parParams);
+        if (!updatedPar)
+          throw new Error(`Item ${item[0]}'s par could not be updated`);
+      }
+    });
+    res.sendStatus(204);
   } catch (err) {
     next(err);
   }

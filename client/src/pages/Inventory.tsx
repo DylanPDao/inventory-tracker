@@ -59,7 +59,7 @@ export default function Inventory({ setOrder }: SetOrderType) {
   }
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
-    //  setLoading(true);
+    setLoading(true);
     event.preventDefault();
     const formData = new FormData(event.currentTarget);
     const data = Object.fromEntries(formData);
@@ -78,6 +78,8 @@ export default function Inventory({ setOrder }: SetOrderType) {
       const order = await fetch('/api/createorder', req);
       const orderId = await order.json();
       const orderItems = await getOrder(orderId);
+      setOrder(orderItems);
+      await fetch('/api/parupdate', req);
       console.log(orderItems);
       setLoading(false);
     } catch (err) {
