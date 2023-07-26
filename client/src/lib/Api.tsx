@@ -77,11 +77,22 @@ export function Api() {
     if (!res.ok) throw new Error(`Could not add selected`);
   }
 
+  async function getOrder(uuid: string) {
+    const res = await fetch(`/api/order/${uuid}`);
+    if (!res.ok) throw new Error(`Could not get order`);
+    const order = await res.json();
+    return order;
+  }
+
+  async function setPar(par: number) {}
+
   return {
     signUpOrIn,
     getInventory,
     deleteItem,
     addItem,
     getCategory,
+    getOrder,
+    setPar,
   };
 }

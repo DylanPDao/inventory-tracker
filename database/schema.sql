@@ -31,7 +31,7 @@ CREATE TABLE "public"."users" (
 
 
 CREATE TABLE "public"."orders" (
-	"orderId" VARCHAR(255) NOT NULL UNIQUE,
+	"orderId" UUID NOT NULL UNIQUE,
 	"userId" integer NOT NULL,
 	"orderedAt" VARCHAR(255) NOT NULL,
 	CONSTRAINT "orders_pk" PRIMARY KEY ("orderId")
@@ -43,7 +43,7 @@ CREATE TABLE "public"."orders" (
 
 CREATE TABLE "public"."orderItem" (
 	"orderItemId" serial NOT NULL UNIQUE,
-	"orderId" VARCHAR(255) NOT NULL,
+	"orderId" UUID NOT NULL,
 	"item" VARCHAR(255) NOT NULL,
 	"quantity" integer NOT NULL,
 	CONSTRAINT "orderItem_pk" PRIMARY KEY ("orderItemId")

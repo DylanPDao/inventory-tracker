@@ -13,7 +13,7 @@ export type TableRowType = {
 
 export default function Inventory() {
   const user = useContext(UserContext);
-  const { getInventory, deleteItem } = Api();
+  const { getInventory, deleteItem, getOrder, setPar } = Api();
   const [inventory, setInventory] = useState<TableRowType[]>();
   const [error, setError] = useState<unknown>();
   const [isLoading, setLoading] = useState(true);
@@ -71,12 +71,9 @@ export default function Inventory() {
         },
         body: reqData,
       };
-      const res = await fetch('/api/createorder', req);
-      const result = await res.json();
-      console.log(result);
-      // if (!result) {
-      //   return <div className="text-red-900 text-2xl">Order not created</div>;
-      // }
+      const order = await fetch('/api/createorder', req);
+      const orderId = await order.json();
+      const orderItems = await getOrder(orderId);
       setLoading(false);
     } catch (err) {
       setError(err);
@@ -87,6 +84,19 @@ export default function Inventory() {
     try {
       setLoading(true);
       await deleteItem({ itemId });
+      const inv = await getInventory(user?.user.userId);
+      setInventory(inv);
+      setLoading(false);
+    } catch (err) {
+      setError(err);
+    }
+  }
+
+  async function handlePar(event: FormEvent<HTMLFormElement>) {
+    try {
+      console.log(event);
+      // setLoading(true)
+      // await setPar()
       const inv = await getInventory(user?.user.userId);
       setInventory(inv);
       setLoading(false);
@@ -119,6 +129,7 @@ export default function Inventory() {
           </div>
           <div className="flex w-6/12 justify-between">
             <select
+              onChange={() => handlePar()}
               defaultValue={`${item.par}`}
               name={`${item.item} par`}
               className="form-control border-2 rounded-lg ml-1 w-6/12">

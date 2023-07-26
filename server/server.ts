@@ -1,6 +1,6 @@
 import 'dotenv/config';
 import express from 'express';
-import { ClientError, errorMiddleware } from './lib/index.js';
+import { ClientError, errorMiddleware, generateUUID } from './lib/index.js';
 import pg from 'pg';
 import argon2 from 'argon2';
 import jwt from 'jsonwebtoken';
@@ -145,7 +145,6 @@ app.post('/api/inventory/delete', async (req, res, next) => {
     const result = await db.query(sql, params);
     if (!result) throw new Error('Delete not completed');
     res.sendStatus(200);
-    return;
   } catch (err) {
     next(err);
   }
@@ -173,7 +172,6 @@ app.post('/api/inventory/add', async (req, res, next) => {
     if (!result) throw new Error('add not completed');
     const [addedItem] = result.rows;
     res.status(201).json(addedItem);
-    return;
   } catch (err) {
     next(err);
   }
@@ -212,7 +210,74 @@ app.post('/api/createorder', async (req, res, next) => {
       values ($1, $2, $3)
       returning "orderId"
     `;
-    let params = [userId, Date.now(), Date()];
+    let params = [userId, generateUUID(), Date()];
+    const orderNumber = await db.query(sql, params);
+    if (!orderNumber) throw new Error('invalid user');
+    const orderId = orderNumber.rows[0].orderId;
+
+    const orderItems = Object.entries(map);
+    orderItems.forEach(async (item) => {
+      const quantity = item[1].par - item[1].stock;
+      sql = `
+      insert into "orderItem" ("orderId", "item", "quantity")
+        values ($1, $2, $3)
+        returning *
+      `;
+      params = [orderId, item[0], quantity];
+      const orderItem = await db.query(sql, params);
+      if (!orderItem) throw new Error(`Item ${item[0]} could not be added`);
+    });
+    res.status(201).json(orderId);
+
+    // sql = `
+    //   select *
+    //   from "orderItem"
+    //   where  "orderId" = $1
+    // `;
+    // params = [orderId];
+    // const orderedItems = await db.query(sql, params);
+    // if (!orderedItems)
+    //   throw new Error(`Could not find ordered items by ${orderId}`);
+    // const order = orderedItems.rows;
+  } catch (err) {
+    next(err);
+  }
+});
+
+// create new order sheet
+app.post('/api/createorder', async (req, res, next) => {
+  try {
+    const { formData, userId } = req.body;
+    if (!formData || !userId) {
+      throw new ClientError(401, 'invalid input');
+    }
+    const entries = Object.entries(formData);
+
+    type Map = {
+      [key: string]: {
+        par: number;
+        stock: number;
+      };
+    };
+    const map: Map = {};
+    for (let i = 0; i < entries.length; i++) {
+      const split = entries[i][0].split(' ');
+      split.pop();
+      const key = split.join(' ');
+      if (!map[key]) {
+        map[key] = {
+          par: Number(entries[i][1]),
+          stock: Number(entries[i + 1][1]),
+        };
+      }
+    }
+
+    let sql = `
+      insert into "orders" ("userId", "orderId", "orderedAt")
+      values ($1, $2, $3)
+      returning "orderId"
+    `;
+    let params = [userId, generateUUID(), Date()];
     const orderNumber = await db.query(sql, params);
     if (!orderNumber) throw new Error('invalid user');
     const orderId = orderNumber.rows[0].orderId;
@@ -230,24 +295,31 @@ app.post('/api/createorder', async (req, res, next) => {
       if (!orderItem) throw new Error(`Item ${item[0]} could not be added`);
     });
 
-    sql = `
-      select *
-      from "orderItem"
-      where  "orderId" = $1
-    `;
-    params = [orderId];
-    const orderedItems = await db.query(sql, params);
-    if (!orderedItems)
-      throw new Error(`Could not find ordered items by ${orderId}`);
-    const order = orderedItems.rows;
-    console.log(orderedItems);
-    res.status(201).json(order);
-    return;
+    res.status(201).json(orderId);
   } catch (err) {
     next(err);
   }
 });
 
+// get order items
+app.get('/api/order/:orderId', async (req, res, next) => {
+  try {
+    const orderId = req.params.orderId;
+    const sql = `
+      select *
+      from "orderItem"
+      where  "orderId" = $1
+    `;
+    const params = [orderId];
+    const orderedItems = await db.query(sql, params);
+    if (!orderedItems)
+      throw new Error(`Could not find ordered items by ${orderId}`);
+    const order = orderedItems.rows;
+    res.status(201).json(order);
+  } catch (err) {
+    next(err);
+  }
+});
 /**
  * Serves React's index.html if no api route matches.
  *
