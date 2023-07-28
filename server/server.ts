@@ -382,6 +382,26 @@ app.post('/api/parupdate', async (req, res, next) => {
     next(err);
   }
 });
+
+// get all orders
+app.get('/api/all/order/:userId', async (req, res, next) => {
+  try {
+    const userId = req.params.userId;
+    const sql = `
+      select *
+      from "orders"
+      where  "userId" = $1
+    `;
+    const params = [userId];
+    const result = await db.query(sql, params);
+    if (!result) throw new Error(`Could not find ordered items by ${userId}`);
+    const orders = result.rows;
+    res.status(201).json(orders);
+  } catch (err) {
+    next(err);
+  }
+});
+
 /**
  * Serves React's index.html if no api route matches.
  *

@@ -10,6 +10,7 @@ import {
   SignOut,
   Inventory,
   OrderSheet,
+  Orders,
 } from './pages';
 import { OrderSheetType } from './pages/OrderSheet';
 
@@ -22,8 +23,9 @@ function App() {
       <UserContext.Provider value={user}>
         <Routes>
           <Route path="/" element={<Header />}>
+            <Route path="/orders" element={<Orders setOrder={setOrder} />} />
             <Route
-              path="/"
+              index
               element={<SignInOrUpForm user={setUser} action="sign-in" />}
             />
             <Route

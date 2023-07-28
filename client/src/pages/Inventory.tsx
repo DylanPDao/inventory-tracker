@@ -1,7 +1,7 @@
 import { FormEvent, useContext, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { LoadingSpinner, Modal } from '../components';
 import { UserContext, Api } from '../lib';
+import { LoadingSpinner, Modal } from '../components';
 import { OrderSheetType } from './OrderSheet';
 
 export type TableRowType = {
@@ -18,7 +18,7 @@ type SetOrderType = {
 };
 export default function Inventory({ setOrder }: SetOrderType) {
   const user = useContext(UserContext);
-  const { getInventory, deleteItem, getOrder, setPar } = Api();
+  const { getInventory, deleteItem, getOrder } = Api();
   const [inventory, setInventory] = useState<TableRowType[]>();
   const [error, setError] = useState<unknown>();
   const [isLoading, setLoading] = useState(true);

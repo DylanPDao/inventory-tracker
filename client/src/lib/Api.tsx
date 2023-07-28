@@ -84,8 +84,12 @@ export function Api() {
     return order;
   }
 
-  async function setPar(par: number) {}
-
+  async function getAllOrders(userId: number | undefined) {
+    const res = await fetch(`/api/all/order/${userId}`);
+    if (!res.ok) throw new Error(`Could not get order`);
+    const orders = await res.json();
+    return orders;
+  }
   return {
     signUpOrIn,
     getInventory,
@@ -93,6 +97,6 @@ export function Api() {
     addItem,
     getCategory,
     getOrder,
-    setPar,
+    getAllOrders,
   };
 }
