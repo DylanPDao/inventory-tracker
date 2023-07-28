@@ -1,4 +1,5 @@
 import { FormEvent, useContext, useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { LoadingSpinner, Modal } from '../components';
 import { UserContext, Api } from '../lib';
 import { OrderSheetType } from './OrderSheet';
@@ -22,6 +23,7 @@ export default function Inventory({ setOrder }: SetOrderType) {
   const [error, setError] = useState<unknown>();
   const [isLoading, setLoading] = useState(true);
   const [isModal, setModal] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
     async function getInv() {
@@ -80,7 +82,7 @@ export default function Inventory({ setOrder }: SetOrderType) {
       const orderItems = await getOrder(orderId);
       setOrder(orderItems);
       await fetch('/api/parupdate', req);
-      console.log(orderItems);
+      navigate('/ordersheet');
       setLoading(false);
     } catch (err) {
       setError(err);

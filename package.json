@@ -49,6 +49,7 @@
     "typescript": "^5.1.6"
   },
   "dependencies": {
+    "emailjs-com": "^3.2.0",
     "stripe": "^12.9.0",
     "ts-node": "^10.9.1"
   }
