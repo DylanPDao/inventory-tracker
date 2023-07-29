@@ -8,6 +8,7 @@ type OrdersType = {
   orderId: string;
   orderedAt: string;
   userId: number;
+  username: string;
 };
 type SetOrderType = {
   setOrder: React.Dispatch<React.SetStateAction<OrderSheetType | undefined>>;
@@ -47,7 +48,6 @@ export default function Orders({ setOrder }: SetOrderType) {
     const orderId = event.target.innerHTML;
     setLoading(true);
     const orderItems = await getOrder(orderId);
-    console.log(orderItems);
     setOrder(orderItems);
     navigate('/ordersheet');
     setLoading(false);
@@ -72,6 +72,12 @@ export default function Orders({ setOrder }: SetOrderType) {
           className="mt-2 border rounded-lg p-1 border-gold text-gold mr-1 ml-1">
           Inventory Sheet
         </button>
+        <button
+          type="button"
+          onClick={() => navigate(`/sign-out`)}
+          className="mt-2 border rounded-lg p-1 border-gold text-gold mr-1 ml-1">
+          Sign out
+        </button>
       </div>
       <div>
         {!orders ? (
@@ -80,21 +86,25 @@ export default function Orders({ setOrder }: SetOrderType) {
           <>
             <div className="flex flex-col">
               <div className="flex">
-                <div className="w-6/12 text-2xl pt-2 pb-2">Order Id:</div>
-                <div className="w-6/12 text-2xl pt-2 pb-2">Order Date:</div>
+                <div className="w-4/12 text-2xl pt-2 pb-2">User</div>
+                <div className="w-4/12 text-2xl pt-2 pb-2">Order Id:</div>
+                <div className="w-4/12 text-2xl pt-2 pb-2">Order Date:</div>
               </div>
             </div>
             <div>
               {orders.reverse().map((order: OrdersType) => (
                 <div className="flex w-full border-2 border-gold m-2">
-                  <div className="w-6/12 text-md pt-2 pb-2 flex items-center justify-center">
+                  <div className="w-4/12 text-md pt-2 pb-2 flex items-center justify-center">
+                    {order.username}
+                  </div>
+                  <div className="w-4/12 text-md pt-2 pb-2 flex items-center justify-center">
                     <button
                       className="pointer"
                       onClick={(event) => handleClick(event)}>
                       {order.orderId}
                     </button>
                   </div>
-                  <div className="w-6/12 text-md pt-2 pb-2 flex items-center justify-center">
+                  <div className="w-4/12 text-md pt-2 pb-2 flex items-center justify-center">
                     {order.orderedAt}
                   </div>
                 </div>

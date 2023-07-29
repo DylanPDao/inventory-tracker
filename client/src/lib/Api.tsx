@@ -90,6 +90,7 @@ export function Api() {
     const orders = await res.json();
     return orders;
   }
+
   return {
     signUpOrIn,
     getInventory,

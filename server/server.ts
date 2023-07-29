@@ -388,12 +388,14 @@ app.get('/api/all/order/:userId', async (req, res, next) => {
   try {
     const userId = req.params.userId;
     const sql = `
-      select *
+      select "userId", "username", "orderId", "orderedAt"
       from "orders"
-      where  "userId" = $1
+      join "users" using ("userId")
+      ${userId === '1' ? '' : `where  "userId" = $1`}
     `;
     const params = [userId];
-    const result = await db.query(sql, params);
+    const result =
+      userId === '1' ? await db.query(sql) : await db.query(sql, params);
     if (!result) throw new Error(`Could not find ordered items by ${userId}`);
     const orders = result.rows;
     res.status(201).json(orders);

@@ -167,6 +167,18 @@ export default function Inventory({ setOrder }: SetOrderType) {
         <div className="w-full flex justify-end mb-2">
           <button
             type="button"
+            onClick={() => navigate(`/orders`)}
+            className="mt-2 border rounded-lg p-1 border-gold text-gold mr-1 ml-1">
+            All Orders
+          </button>
+          <button
+            type="button"
+            onClick={() => navigate(`/sign-out`)}
+            className="mt-2 border rounded-lg p-1 border-gold text-gold mr-1 ml-1">
+            Sign out
+          </button>
+          <button
+            type="button"
             onClick={() => setModal(true)}
             className="mt-2 border rounded-lg p-1 border-gold text-gold mr-1 ml-1">
             Add Item/Category
