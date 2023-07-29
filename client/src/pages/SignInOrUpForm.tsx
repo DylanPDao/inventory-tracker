@@ -34,6 +34,7 @@ export default function SignInOrUpForm({ action, user }: Props) {
       const result = await signUpOrIn(action, username, password);
       if (action === 'sign-up') {
         navigate('/');
+        console.log(result);
         setFormValues({ username: '', password: '' });
       } else if (result.user && result.token) {
         user(result);

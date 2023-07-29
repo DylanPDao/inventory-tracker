@@ -359,9 +359,10 @@ app.post('/api/parupdate', async (req, res, next) => {
       let parSql = `
         select "par"
         from "items"
-        where "item" = $1
+        join "category" using ("categoryId")
+        where "item" = $1 and "userId" = $2
       `;
-      let parParams = [item[0]];
+      let parParams = [item[0], userId];
       const result = await db.query(parSql, parParams);
       if (!result) throw new Error(`Item ${item[0]} could not be found`);
       const itemPar = result.rows[0];
@@ -369,9 +370,10 @@ app.post('/api/parupdate', async (req, res, next) => {
         parSql = `
         update "items"
           set "par" = $1
-          where "item" = $2
+          join "category" using ("categoryId")
+          where "item" = $2 and "userId" = $3
         `;
-        parParams = [item[1].par.toString(), item[0]];
+        parParams = [item[1].par.toString(), item[0], userId];
         const updatedPar = await db.query(parSql, parParams);
         if (!updatedPar)
           throw new Error(`Item ${item[0]}'s par could not be updated`);
