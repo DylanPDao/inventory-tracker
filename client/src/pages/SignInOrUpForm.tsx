@@ -14,8 +14,8 @@ export default function SignInOrUpForm({ action, user }: Props) {
   const [error, setError] = useState<unknown>();
   const [isLoading, setLoading] = useState(false);
   const [formValues, setFormValues] = useState({
-    username: 'user',
-    password: 'user',
+    username: 'houston1',
+    password: 'houston1',
   });
 
   if (error) {

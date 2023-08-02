@@ -93,7 +93,9 @@ export default function Orders({ setOrder }: SetOrderType) {
             </div>
             <div>
               {orders.reverse().map((order: OrdersType) => (
-                <div className="flex w-full border-2 border-gold m-2">
+                <div
+                  key={order.orderId}
+                  className="flex w-full border-2 border-gold m-2">
                   <div className="w-4/12 text-md pt-2 pb-2 flex items-center justify-center">
                     {order.username}
                   </div>

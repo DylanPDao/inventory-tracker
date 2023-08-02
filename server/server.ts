@@ -357,10 +357,10 @@ app.post('/api/parupdate', async (req, res, next) => {
     const orderItems = Object.entries(map);
     orderItems.forEach(async (item) => {
       let parSql = `
-        select "par"
-        from "items"
-        join "category" using ("categoryId")
-        where "item" = $1 and "userId" = $2
+        select "par", "itemId"
+          from "items"
+          join "category" using ("categoryId")
+          where "item" = $1 and "userId" = $2
       `;
       let parParams = [item[0], userId];
       const result = await db.query(parSql, parParams);
@@ -370,10 +370,9 @@ app.post('/api/parupdate', async (req, res, next) => {
         parSql = `
         update "items"
           set "par" = $1
-          join "category" using ("categoryId")
-          where "item" = $2 and "userId" = $3
+          where "item" = $2 and "itemId" = $3
         `;
-        parParams = [item[1].par.toString(), item[0], userId];
+        parParams = [item[1].par, item[0], itemPar.itemId];
         const updatedPar = await db.query(parSql, parParams);
         if (!updatedPar)
           throw new Error(`Item ${item[0]}'s par could not be updated`);
